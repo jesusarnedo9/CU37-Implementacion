@@ -1,0 +1,24 @@
+namespace ImplementacionCU37.Entidades
+{
+    public class Rol
+    {
+        public string descripcionRol { get; set; }
+        public string nombre { get; set; }
+
+        // Roles predefinidos
+        public static readonly Rol RESPONSABLE_REPARACION = new Rol("Responsable de Reparación", "Encargado de gestionar reparaciones");
+        public static readonly Rol ADMINISTRADOR_REPARACION = new Rol("Administrador", "Gestiona el sistema");
+
+
+        public Rol(string nombre, string descripcionRol)
+        {
+            this.nombre = nombre;
+            this.descripcionRol = descripcionRol;
+        }
+
+        public bool esResponsable()
+        {
+            return this.nombre == RESPONSABLE_REPARACION.nombre;
+        }
+    }
+}
