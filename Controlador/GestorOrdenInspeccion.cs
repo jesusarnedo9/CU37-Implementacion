@@ -33,7 +33,13 @@ namespace ImplementacionCU37.Controlador
         public GestorOrdenInspeccion()
         {
             empleado = new Empleado("Jesus", "Arnedo", "jesus@mail.com", "12345", 5, Rol.RESPONSABLE_REPARACION);
+            empleado = new Empleado("Nazareno", "Sotomayor", "nanosotomayor@gmail.com", "56789", 2, Rol.ADMINISTRADOR_REPARACION);
+            empleado = new Empleado("Pedro", "Colapinto", "colapa@gmail.com", "434343", 4, Rol.RESPONSABLE_REPARACION);
+            empleado = new Empleado("Juancito", "Lopez", "juanete@gmail.com", "5645559", 8, Rol.ADMINISTRADOR_REPARACION);
             usuario = new Usuario("jesus", empleado);
+            usuario = new Usuario("Nazareno", empleado);
+            usuario = new Usuario("Pedro", empleado);
+            usuario = new Usuario("Juancito", empleado);
             sesion = new Sesion(usuario);
 
             ordenes = new List<OrdenDeInspeccion>();
