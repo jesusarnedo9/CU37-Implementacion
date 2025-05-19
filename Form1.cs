@@ -17,10 +17,16 @@ namespace ImplementacionCU37
             InitializeComponent();
         }
 
+        //Boton Cerrar Orden
         private void button1_Click(object sender, EventArgs e)
         {
             PantallaCierreOrden pantalla = new PantallaCierreOrden();
             pantalla.ShowDialog();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
