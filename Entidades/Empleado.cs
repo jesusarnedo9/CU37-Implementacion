@@ -8,7 +8,7 @@ namespace ImplementacionCU37.Entidades
         public string mail { get; set; }
         public string nombre { get; set; }
         public string telefono { get; set; }
-        public int id { get; set; } // ID del empleado (opcional si lo querés usar para filtrar)
+        public int id { get; set; }
 
         public Rol rol;
 

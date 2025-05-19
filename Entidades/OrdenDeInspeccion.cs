@@ -14,7 +14,7 @@ namespace ImplementacionCU37.Entidades
         public EstacionSismologica estacion { get; set; } // relación 1 a 1
         public Estado estado { get; set; } // relación 1 a 1
 
-        public OrdenDeInspeccion(int numeroOrden, DateTime fechaHoraInicio, EstacionSismologica estacion, Estado estado)
+        public OrdenDeInspeccion(int numeroOrden, DateTime fechaHoraInicio, EstacionSismologica estacion, Estado estado, Empleado empleadoAsignado)
         {
             this.numeroOrden = numeroOrden;
             this.fechaHoraInicio = fechaHoraInicio;

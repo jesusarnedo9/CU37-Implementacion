@@ -25,17 +25,35 @@ namespace ImplementacionCU37.Controlador
         private Estado estado;
         private Sesion sesion;
 
+        //Datos de prueba
+        private Empleado empleado;
+        private Usuario usuario;
 
-        // Métodos
-        public void opcionCerrarOrdenInspeccion() 
+        // Constructor para inicializar los datos de prueba
+        public GestorOrdenInspeccion()
         {
+            empleado = new Empleado("Jesus", "Arnedo", "jesus@mail.com", "12345", 5, Rol.RESPONSABLE_REPARACION);
+            usuario = new Usuario("jesus", empleado);
+            sesion = new Sesion(usuario);
+
+            ordenes = new List<OrdenDeInspeccion>();
+
             
         }
 
+        // Métodos
+        public void opcionCerrarOrdenInspeccion()
+        {
+        }
+        public void buscarUsuario()
+        {
+            Usuario usuario = sesion.getUsuario();
+            responsableLogueado = usuario.getEmpleado();
+        }
 
         public void buscarEstadoFueraServicio() { }
         public void buscarMotivo() { }
-        public void buscarUsuario() { }
+
         public void finCU() { }
         public DateTime getFechaActual() => DateTime.Now.Date;
         public TimeSpan getHoraActual() => DateTime.Now.TimeOfDay;
