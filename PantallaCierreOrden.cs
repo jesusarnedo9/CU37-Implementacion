@@ -16,5 +16,10 @@ namespace ImplementacionCU37
         {
             InitializeComponent();
         }
+
+        private void PantallaCierreOrden_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
