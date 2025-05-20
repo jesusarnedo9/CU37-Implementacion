@@ -33,7 +33,7 @@ namespace ImplementacionCU37
         private Button btnCancelar;
         private Button btnConfirmar;
         private TextBox inputComentario;
-        private TextBox inputObservacionCierre;
+        //private TextBox inputObservacionCierre;
         private Label lblComentario;
         private Label lblObservacionCierre;
         private CheckedListBox listaMotivo;
@@ -96,7 +96,7 @@ namespace ImplementacionCU37
 
         public string tomarObservacionCierre()
         {
-            return inputObservacionCierre.Text;
+            return txtObservacionCierre.Text;
         }
 
         public OrdenDeInspeccion tomarOrdenSeleccionada()
@@ -115,6 +115,32 @@ namespace ImplementacionCU37
         }
 
         private void listaOrdenInspeccion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OrdenDeInspeccion orden = listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion;
+            if (orden != null)
+            {
+                // Mostrar input y botón
+                label1.Visible = true;
+                txtObservacionCierre.Visible = true;
+                btnConfirmarObservacion.Visible = true;
+
+                // Notifica al gestor
+                gestor.tomarOrdenSeleccionada(orden);
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCerrarOrden_Click(object sender, EventArgs e)
+        {
+            string observacion = txtObservacionCierre.Text;
+            gestor.tomarObservacionCierre(observacion);
+        }
+
+        private void txtObservacionCierre_TextChanged(object sender, EventArgs e)
         {
 
         }

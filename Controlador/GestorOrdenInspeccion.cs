@@ -111,8 +111,11 @@ namespace ImplementacionCU37.Controlador
             var orden1 = new OrdenDeInspeccion(1, DateTime.Now.AddDays(-4), e1, estadoRealizada, empleadoJesus);
             orden1.fechaHoraFinalizacion = DateTime.Now.AddDays(-3);
             var orden2 = new OrdenDeInspeccion(2, DateTime.Now.AddDays(-3), e2, estadoCerrada, empleadoNazareno);
+            orden2.fechaHoraFinalizacion = DateTime.Now.AddDays(-5);
             var orden3 = new OrdenDeInspeccion(3, DateTime.Now.AddDays(-2), e3, estadoFueraServicio, empleadoPedro);
+            orden3.fechaHoraFinalizacion = DateTime.Now.AddDays(-7);
             var orden4 = new OrdenDeInspeccion(4, DateTime.Now.AddDays(-1), e4, estadoRealizado, empleadoJuancito);
+            orden4.fechaHoraFinalizacion = DateTime.Now.AddDays(-9);
 
             // Cargar lista
             ordenes = new List<OrdenDeInspeccion> { orden1, orden2, orden3, orden4 };
@@ -161,7 +164,12 @@ namespace ImplementacionCU37.Controlador
         public void tomarComentario(string comentario) => this.comentario = comentario;
         public void tomarConfirmacionCierre(bool confirmacion) => this.confirmacionCierre = confirmacion;
         public void tomarObservacionCierre(string observacion) => this.observacionCierre = observacion;
-        public void tomarOrdenSeleccionada(OrdenDeInspeccion orden) => this.ordenSeleccionada = orden;
+        public void tomarOrdenSeleccionada(OrdenDeInspeccion orden)
+        {
+            this.ordenSeleccionada = orden;
+            pantalla.solicitarObservacionCierre();
+        }
+
         public void tomarSeleccionMotivo(List<string> motivos) => this.solicitudMotivo = motivos;
         public void validarDatosIngresados() { }
     }
