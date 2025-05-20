@@ -156,7 +156,7 @@ namespace ImplementacionCU37.Controlador
         public void tomarConfirmacionCierre(bool confirmacion) => this.confirmacionCierre = confirmacion;
         public void tomarObservacionCierre(string observacion) => this.observacionCierre = observacion;
         public void tomarOrdenSeleccionada(OrdenDeInspeccion orden) => this.ordenSeleccionada = orden;
-        public void tomarSolicitudMotivo(List<string> motivos) => this.solicitudMotivo = motivos;
+        public void tomarSeleccionMotivo(List<string> motivos) => this.solicitudMotivo = motivos;
         public void validarDatosIngresados() { }
     }
 }
