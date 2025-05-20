@@ -14,16 +14,18 @@ namespace ImplementacionCU37
 {
     public partial class PantallaCierreOrden : Form
     {
-        //-----------Esto Ya estaba-------
+        private GestorOrdenInspeccion gestor;
         public PantallaCierreOrden()
         {
             InitializeComponent();
+            gestor = new GestorOrdenInspeccion(this); // Pasa referencia de pantalla
+            gestor.opcionCerrarOrdenInspeccion(); // Llamá acá directamente
         }
 
         private void PantallaCierreOrden_Load(object sender, EventArgs e)
         {
+            gestor.opcionCerrarOrdenInspeccion();
         }
-        //---------------------
 
         //Agrego metodos y atributos del otro proyecto
 
@@ -35,16 +37,8 @@ namespace ImplementacionCU37
         private Label lblComentario;
         private Label lblObservacionCierre;
         private CheckedListBox listaMotivo;
-        private ComboBox listaOrdenInspeccion;
 
-        // Dependencia con el gestor
-        private GestorOrdenInspeccion gestor;
 
-        public PantallaCierreOrden(GestorOrdenInspeccion gestor)
-        {
-            InitializeComponent();
-            this.gestor = gestor;
-        }
 
         // Métodos
 
@@ -79,10 +73,15 @@ namespace ImplementacionCU37
             gestor.tomarSeleccionMotivo(tomarSeleccionMotivo());
         }
 
-        public void solicitarSeleccionOrden()
+        public void solicitarSeleccionOrden(List<OrdenDeInspeccion> ordenes)
         {
-            gestor.tomarOrdenSeleccionada(tomarOrdenSeleccionada());
+            listaOrdenInspeccion.Items.Clear();
+            foreach (var orden in ordenes)
+            {
+                listaOrdenInspeccion.Items.Add(orden);
+            }
         }
+
 
         public string tomarComentario()
         {
@@ -113,6 +112,11 @@ namespace ImplementacionCU37
                 motivos.Add(item.ToString());
             }
             return motivos;
+        }
+
+        private void listaOrdenInspeccion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

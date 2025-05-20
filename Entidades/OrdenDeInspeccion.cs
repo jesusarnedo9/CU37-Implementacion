@@ -58,5 +58,10 @@ namespace ImplementacionCU37.Entidades
         {
             this.estado = nuevoEstado;
         }
+
+        public override string ToString()
+        {
+            return $"Orden #{numeroOrden} - {estacion.nombre} - {estado.nombreEstado}";
+        }
     }
 }

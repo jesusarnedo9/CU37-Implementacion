@@ -2,11 +2,14 @@ using ImplementacionCU37.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
 
 namespace ImplementacionCU37.Controlador
 {
     public class GestorOrdenInspeccion
     {
+        
         // Atributos propios
         private string comentario;
         private bool confirmacionCierre;
@@ -32,8 +35,10 @@ namespace ImplementacionCU37.Controlador
 
         // Constructor para inicializar los datos de prueba
 
-        public GestorOrdenInspeccion()
+        public GestorOrdenInspeccion(PantallaCierreOrden pantalla)
         {
+            this.pantalla = pantalla;
+
             // Crear estados
             var estadoRealizada = new Estado { nombreEstado = Estado.ESTADO_REALIZADA, ambito = Estado.AMBITO_OI };
             var estadoCerrada = new Estado { nombreEstado = Estado.ESTADO_CERRADA, ambito = Estado.AMBITO_OI };
@@ -104,6 +109,7 @@ namespace ImplementacionCU37.Controlador
 
             // Crear órdenes
             var orden1 = new OrdenDeInspeccion(1, DateTime.Now.AddDays(-4), e1, estadoRealizada, empleadoJesus);
+            orden1.fechaHoraFinalizacion = DateTime.Now.AddDays(-3);
             var orden2 = new OrdenDeInspeccion(2, DateTime.Now.AddDays(-3), e2, estadoCerrada, empleadoNazareno);
             var orden3 = new OrdenDeInspeccion(3, DateTime.Now.AddDays(-2), e3, estadoFueraServicio, empleadoPedro);
             var orden4 = new OrdenDeInspeccion(4, DateTime.Now.AddDays(-1), e4, estadoRealizado, empleadoJuancito);
@@ -118,21 +124,21 @@ namespace ImplementacionCU37.Controlador
         public void opcionCerrarOrdenInspeccion()
         {
             // 1. Obtener el empleado desde la sesión
-            //Usuario usuario = Sesion.actual.getUsuario();
-            //Empleado empleado = usuario.getEmpleado();
+            Usuario usuario = sesion.getUsuario();
+            Empleado empleado = usuario.getEmpleado();
 
             // 2. Filtrar órdenes realizadas del empleado
-            //List<OrdenDeInspeccion> ordenesRealizadas = new List<OrdenDeInspeccion>();
-            //foreach (OrdenDeInspeccion orden in ordenes)
-            //{
-            //    if (orden.esDeEmpleado(empleado) && orden.estaRealizada())
-            //    {
-            //        ordenesRealizadas.Add(orden);
-            //    }
-            //}
+            List<OrdenDeInspeccion> ordenesRealizadas = new List<OrdenDeInspeccion>();
+            foreach (OrdenDeInspeccion orden in ordenes)
+            {
+                if (orden.esDeEmpleado(empleado) && orden.estaRealizada())
+                {
+                    ordenesRealizadas.Add(orden);
+                }
+            }
 
             // 3. Enviar a la pantalla para mostrar
-            //pantalla.solicitarSeleccionOrden(ordenesRealizadas);
+            pantalla.solicitarSeleccionOrden(ordenesRealizadas);
         }
 
 
