@@ -149,7 +149,7 @@ namespace ImplementacionCU37.Controlador
         public DateTime getFechaActual() => DateTime.Now.Date;
         public TimeSpan getHoraActual() => DateTime.Now.TimeOfDay;
         public void notificarCierre() { }
-        public void ordenar() { }
+        public void ordenarOI() { }
         public void publicarEnPantallaCCRS() { }
         public void registrarCierre() { }
         public void tomarComentario(string comentario) => this.comentario = comentario;
