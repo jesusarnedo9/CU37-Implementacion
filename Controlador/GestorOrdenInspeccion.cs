@@ -25,7 +25,7 @@ namespace ImplementacionCU37.Controlador
         //private InterfazEmail interfazEmail;
         //private PantallaCCRS pantallaCCRS;
         private PantallaCierreOrden pantalla;
-        private List<MotivoTipo> motivos;
+        private List<MotivoTipo> motivosTipo;
         private Estado estado;
         private Sesion sesion;
 
@@ -152,7 +152,20 @@ namespace ImplementacionCU37.Controlador
         }
 
         public void buscarEstadoFueraServicio() { }
-        public void buscarMotivo() { }
+        public void buscarMotivo() {
+            if (motivosTipo == null)
+            {
+                motivosTipo = new List<MotivoTipo>
+                {
+            new MotivoTipo("Falla eléctrica"),
+            new MotivoTipo("Mantenimiento programado"),
+            new MotivoTipo("Condiciones climáticas"),
+            new MotivoTipo("Robo o vandalismo")
+                };
+            }
+
+            pantalla.solicitarSeleccionMotivo(motivosTipo);
+        }
 
         public void finCU() { }
         public DateTime getFechaActual() => DateTime.Now.Date;
@@ -163,21 +176,21 @@ namespace ImplementacionCU37.Controlador
         public void registrarCierre() { }
         public void tomarComentario(string comentario) => this.comentario = comentario;
         public void tomarConfirmacionCierre(bool confirmacion) => this.confirmacionCierre = confirmacion;
-        public void tomarObservacionCierre(string observacion)
-    {
-    //    this.observacionCierre = observacion;
+        public void tomarObservacionCierre(string observacion) 
+        {
+            this.observacionCierre = observacion;
 
-    //    // Paso 6: buscar motivos
-    //    List<Motivo> motivos = buscarMotivos(); // puede estar hardcodeado por ahora
-
-    //    // Paso 7: mostrar motivos en pantalla
-    //    pantalla.solicitarSeleccionMotivo(motivos);
-    }
+            // Cargar motivos si aún no están cargados
+            if (motivosTipo == null)
+            {
+                buscarMotivo(); // Esto llama a pantalla.solicitarSeleccionMotivo()
+            }
+        }
+        
 
         public void tomarOrdenSeleccionada(OrdenDeInspeccion orden)
         {
             this.ordenSeleccionada = orden;
-            pantalla.solicitarObservacionCierre();
         }
 
         public void tomarSeleccionMotivo(List<string> motivos) => this.solicitudMotivo = motivos;

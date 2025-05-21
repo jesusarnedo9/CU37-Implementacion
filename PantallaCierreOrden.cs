@@ -27,7 +27,6 @@ namespace ImplementacionCU37
             gestor.opcionCerrarOrdenInspeccion();
         }
 
-        //Agrego metodos y atributos del otro proyecto
 
         // Atributos: Controles de la pantalla
         private Button btnCancelar;
@@ -37,6 +36,7 @@ namespace ImplementacionCU37
         private Label lblComentario;
         private Label lblObservacionCierre;
         private CheckedListBox listaMotivo;
+
 
 
 
@@ -68,9 +68,18 @@ namespace ImplementacionCU37
             gestor.tomarObservacionCierre(tomarObservacionCierre());
         }
 
-        public void solicitarSeleccionMotivo()
+        public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)
         {
-            gestor.tomarSeleccionMotivo(tomarSeleccionMotivo());
+            chkMotivos.DisplayMember = "Descripcion";
+            chkMotivos.Items.Clear();
+
+            foreach (var motivo in motivos)
+            {
+                chkMotivos.Items.Add(motivo); // Mostrará la descripción si sobreescribiste ToString()
+            }
+
+            chkMotivos.Visible = true;
+            btnConfirmarMotivos.Visible = true;
         }
 
         public void solicitarSeleccionOrden(List<OrdenDeInspeccion> ordenes)
@@ -138,18 +147,48 @@ namespace ImplementacionCU37
         {
             string observacion = txtObservacionCierre.Text;
 
-            // Paso 1: Enviar la observación al gestor
+            // Enviar la observación al gestor
             gestor.tomarObservacionCierre(observacion);
 
-            // Paso 2: Ocultar los controles de observación
+            // Ocultar los controles de observación
             label1.Visible = false;
             txtObservacionCierre.Visible = false;
             btnConfirmarObservacion.Visible = false;
 
-            // (El gestor se encarga de pedir los motivos y mostrar el siguiente paso en pantalla)
         }
 
         private void txtObservacionCierre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnConfirmarMotivos_Click(object sender, EventArgs e)
+        {
+            List<string> motivosSeleccionados = new List<string>();
+
+            foreach (var item in chkMotivos.CheckedItems)
+            {
+                if (item is MotivoTipo motivo)
+                {
+                    motivosSeleccionados.Add(motivo.descripcion);
+                }
+            }
+
+            gestor.tomarSeleccionMotivo(motivosSeleccionados);
+
+            // Ocultar luego de confirmar
+            chkMotivos.Visible = false;
+            btnConfirmarMotivos.Visible = false;
+
+            MessageBox.Show("Motivos confirmados.");
+        }
+
+        private void label2_Click(object sender, EventArgs e)
         {
 
         }
