@@ -137,7 +137,16 @@ namespace ImplementacionCU37
         private void btnCerrarOrden_Click(object sender, EventArgs e)
         {
             string observacion = txtObservacionCierre.Text;
+
+            // Paso 1: Enviar la observación al gestor
             gestor.tomarObservacionCierre(observacion);
+
+            // Paso 2: Ocultar los controles de observación
+            label1.Visible = false;
+            txtObservacionCierre.Visible = false;
+            btnConfirmarObservacion.Visible = false;
+
+            // (El gestor se encarga de pedir los motivos y mostrar el siguiente paso en pantalla)
         }
 
         private void txtObservacionCierre_TextChanged(object sender, EventArgs e)

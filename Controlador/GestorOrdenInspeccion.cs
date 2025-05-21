@@ -163,7 +163,17 @@ namespace ImplementacionCU37.Controlador
         public void registrarCierre() { }
         public void tomarComentario(string comentario) => this.comentario = comentario;
         public void tomarConfirmacionCierre(bool confirmacion) => this.confirmacionCierre = confirmacion;
-        public void tomarObservacionCierre(string observacion) => this.observacionCierre = observacion;
+        public void tomarObservacionCierre(string observacion)
+    {
+    //    this.observacionCierre = observacion;
+
+    //    // Paso 6: buscar motivos
+    //    List<Motivo> motivos = buscarMotivos(); // puede estar hardcodeado por ahora
+
+    //    // Paso 7: mostrar motivos en pantalla
+    //    pantalla.solicitarSeleccionMotivo(motivos);
+    }
+
         public void tomarOrdenSeleccionada(OrdenDeInspeccion orden)
         {
             this.ordenSeleccionada = orden;
