@@ -7,10 +7,10 @@ namespace ImplementacionCU37.Entidades
         public string nombreEstado { get; set; }
 
         // Constantes internas
-        public const string ESTADO_REALIZADA = "Realizada";
-        public const string ESTADO_CERRADA = "Cerrada";
-        public const string ESTADO_FUERA_SERVICIO = "Fuera de Servicio";
-        public const string ESTADO_REALIZADO = "Realizado";
+        public const string ESTADO_REALIZADA_OI = "Realizada";
+        public const string ESTADO_CERRADA_OI = "Cerrada";
+        public const string ESTADO_FUERA_SERVICIO_S = "Fuera de Servicio";
+        public const string ESTADO_REALIZADO_S = "Realizado";
         public const string AMBITO_OI = "OrdenInspeccion";
         public const string AMBITO_SISMOGRAFO = "Sismografo";
 
@@ -27,22 +27,22 @@ namespace ImplementacionCU37.Entidades
 
         public bool esRealizado()
         {
-            return nombreEstado == ESTADO_REALIZADO;
+            return nombreEstado == ESTADO_REALIZADO_S;
         }
 
         public bool estaRealizada()
         {
-            return nombreEstado == ESTADO_REALIZADA;
+            return nombreEstado == ESTADO_REALIZADA_OI;
         }
 
         public bool esFueraServicio()
         {
-            return nombreEstado == ESTADO_FUERA_SERVICIO;
+            return nombreEstado == ESTADO_FUERA_SERVICIO_S;
         }
 
         public bool esCerrada()
         {
-            return nombreEstado == ESTADO_CERRADA;
+            return nombreEstado == ESTADO_CERRADA_OI;
         }
     }
 }

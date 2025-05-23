@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 
 
 namespace ImplementacionCU37.Controlador
@@ -26,6 +27,7 @@ namespace ImplementacionCU37.Controlador
         //private PantallaCCRS pantallaCCRS;
         private PantallaCierreOrden pantalla;
         private List<MotivoTipo> motivosTipo;
+        private List<Estado> estadosDisponibles;
         private Estado estado;
         private Sesion sesion;
 
@@ -33,17 +35,24 @@ namespace ImplementacionCU37.Controlador
         private Empleado empleado;
         private Usuario usuario;
 
+
+
         // Constructor para inicializar los datos de prueba
 
         public GestorOrdenInspeccion(PantallaCierreOrden pantalla)
         {
             this.pantalla = pantalla;
 
-            // Crear estados
-            var estadoRealizada = new Estado { nombreEstado = Estado.ESTADO_REALIZADA, ambito = Estado.AMBITO_OI };
-            var estadoCerrada = new Estado { nombreEstado = Estado.ESTADO_CERRADA, ambito = Estado.AMBITO_OI };
-            var estadoFueraServicio = new Estado { nombreEstado = Estado.ESTADO_FUERA_SERVICIO, ambito = Estado.AMBITO_OI };
-            var estadoRealizado = new Estado { nombreEstado = Estado.ESTADO_REALIZADO, ambito = Estado.AMBITO_OI };
+            // Crear estados ordenes
+            var estadoRealizada = new Estado { nombreEstado = Estado.ESTADO_REALIZADA_OI, ambito = Estado.AMBITO_OI };
+            var estadoCerrada = new Estado { nombreEstado = Estado.ESTADO_CERRADA_OI, ambito = Estado.AMBITO_OI };
+            // Crear estados sismógrafos
+            var estadoFueraServicio = new Estado { nombreEstado = Estado.ESTADO_FUERA_SERVICIO_S, ambito = Estado.AMBITO_SISMOGRAFO };
+            var estadoRealizado = new Estado { nombreEstado = Estado.ESTADO_REALIZADO_S, ambito = Estado.AMBITO_SISMOGRAFO };
+
+            // Crear lista de estados
+            estadosDisponibles = new List<Estado> { estadoRealizada, estadoCerrada, estadoFueraServicio, estadoRealizado };
+
 
             // Crear empleados
             var empleadoJesus = new Empleado("Jesus", "Arnedo", "jesus@mail.com", "12345", 5, Rol.RESPONSABLE_REPARACION);
@@ -57,10 +66,10 @@ namespace ImplementacionCU37.Controlador
             responsableLogueado = usuario.getEmpleado();
 
             // Crear sismógrafos
-            var s1 = new Sismografo { identificadorSismografo = "SISMO-001", nroSerie = "SN001", fechaAdquisicion = DateTime.Now, estadoActual = estadoRealizada };
-            var s2 = new Sismografo { identificadorSismografo = "SISMO-002", nroSerie = "SN002", fechaAdquisicion = DateTime.Now, estadoActual = estadoCerrada };
-            var s3 = new Sismografo { identificadorSismografo = "SISMO-003", nroSerie = "SN003", fechaAdquisicion = DateTime.Now, estadoActual = estadoFueraServicio };
-            var s4 = new Sismografo { identificadorSismografo = "SISMO-004", nroSerie = "SN004", fechaAdquisicion = DateTime.Now, estadoActual = estadoRealizado };
+            var s1 = new Sismografo { identificadorSismografo = "SISMO-001", nroSerie = "SN001", fechaAdquisicion = DateTime.Now, estadoActual = estadoRealizado };
+            var s2 = new Sismografo { identificadorSismografo = "SISMO-002", nroSerie = "SN002", fechaAdquisicion = DateTime.Now, estadoActual = estadoFueraServicio };
+            var s3 = new Sismografo { identificadorSismografo = "SISMO-003", nroSerie = "SN003", fechaAdquisicion = DateTime.Now, estadoActual = estadoRealizado };
+            var s4 = new Sismografo { identificadorSismografo = "SISMO-004", nroSerie = "SN003", fechaAdquisicion = DateTime.Now, estadoActual = estadoFueraServicio };
 
             // Crear estaciones
             var e1 = new EstacionSismologica(s1)
@@ -112,9 +121,9 @@ namespace ImplementacionCU37.Controlador
             orden1.fechaHoraFinalizacion = DateTime.Now.AddDays(-3);
             var orden2 = new OrdenDeInspeccion(2, DateTime.Now.AddDays(-3), e2, estadoCerrada, empleadoNazareno);
             orden2.fechaHoraFinalizacion = DateTime.Now.AddDays(-5);
-            var orden3 = new OrdenDeInspeccion(3, DateTime.Now.AddDays(-2), e3, estadoFueraServicio, empleadoPedro);
+            var orden3 = new OrdenDeInspeccion(3, DateTime.Now.AddDays(-2), e3, estadoRealizada, empleadoJesus);
             orden3.fechaHoraFinalizacion = DateTime.Now.AddDays(-7);
-            var orden4 = new OrdenDeInspeccion(4, DateTime.Now.AddDays(-1), e4, estadoRealizado, empleadoJuancito);
+            var orden4 = new OrdenDeInspeccion(4, DateTime.Now.AddDays(-1), e4, estadoRealizada, empleadoJesus);
             orden4.fechaHoraFinalizacion = DateTime.Now.AddDays(-9);
 
             // Cargar lista
@@ -151,7 +160,19 @@ namespace ImplementacionCU37.Controlador
             responsableLogueado = usuario.getEmpleado();
         }
 
-        public void buscarEstadoFueraServicio() { }
+        public Estado buscarEstadoFueraServicio()
+        {
+            foreach (Estado estado in estadosDisponibles)
+            {
+                if (estado.esAmbitoSismografo() && estado.esFueraServicio())
+                {
+                    return estado;
+
+                }
+            }
+            return null;
+        }
+
         public void buscarMotivo() {
             if (motivosTipo == null)
             {
@@ -173,7 +194,21 @@ namespace ImplementacionCU37.Controlador
         public void notificarCierre() { }
         public void ordenarOI() { }
         public void publicarEnPantallaCCRS() { }
-        public void registrarCierre() { }
+        public void registrarCierre() 
+        {
+            // Obtener estado cerrado
+            Estado estadoCerrada = new Estado
+            {
+                nombreEstado = Estado.ESTADO_CERRADA_OI,
+                ambito = Estado.AMBITO_OI
+            };
+
+            // Setear fecha, hora y estado
+            ordenSeleccionada.setFechaHoraCierre(DateTime.Now);
+            ordenSeleccionada.setEstado(estadoCerrada);
+
+            pantalla.mostrarMensaje("La orden fue cerrada exitosamente.");
+        }
         public void tomarComentario(string comentario) => this.comentario = comentario;
         public void tomarConfirmacionCierre(bool confirmacion) => this.confirmacionCierre = confirmacion;
         public void tomarObservacionCierre(string observacion) 
@@ -186,7 +221,6 @@ namespace ImplementacionCU37.Controlador
                 buscarMotivo(); // Esto llama a pantalla.solicitarSeleccionMotivo()
             }
         }
-        
 
         public void tomarOrdenSeleccionada(OrdenDeInspeccion orden)
         {
@@ -194,6 +228,31 @@ namespace ImplementacionCU37.Controlador
         }
 
         public void tomarSeleccionMotivo(List<string> motivos) => this.solicitudMotivo = motivos;
-        public void validarDatosIngresados() { }
+
+        public void validarDatosIngresados() 
+        {
+            // Verifica si hay observación
+            bool hayObservacion = !string.IsNullOrWhiteSpace(observacionCierre);
+
+            // Verifica si hay al menos un motivo seleccionado
+            bool hayMotivos = solicitudMotivo != null && solicitudMotivo.Count > 0;
+
+            if (!hayObservacion)
+            {
+                MessageBox.Show("Debe ingresar una observación de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!hayMotivos)
+            {
+                MessageBox.Show("Debe seleccionar al menos un motivo de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Si todo está bien
+            registrarCierre();
+
+            // Acá podrías continuar con registrarCierre() u otra acción
+        }
     }
 }

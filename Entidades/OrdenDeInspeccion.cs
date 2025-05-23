@@ -44,15 +44,11 @@ namespace ImplementacionCU37.Entidades
             return $"Orden #{numeroOrden} | Estación: {getCodigoEstacionSismologica()} | Inicio: {fechaHoraInicio}";
         }
 
-        public void setFechaCierre(DateTime fecha)
+        public void setFechaHoraCierre(DateTime fechaHora)
         {
-            this.fechaHoraCierre = fecha;
+            this.fechaHoraCierre = fechaHora;
         }
 
-        public void setHoraCierre(DateTime hora)
-        {
-            this.fechaHoraCierre = new DateTime(fechaHoraCierre.Year, fechaHoraCierre.Month, fechaHoraCierre.Day, hora.Hour, hora.Minute, hora.Second);
-        }
 
         public void setEstado(Estado nuevoEstado)
         {

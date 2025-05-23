@@ -36,6 +36,7 @@ namespace ImplementacionCU37
         private Label lblComentario;
         private Label lblObservacionCierre;
         private CheckedListBox listaMotivo;
+        
 
 
 
@@ -185,12 +186,38 @@ namespace ImplementacionCU37
             chkMotivos.Visible = false;
             btnConfirmarMotivos.Visible = false;
 
-            MessageBox.Show("Motivos confirmados.");
+            // Mostrar cuadro de confirmación
+            DialogResult resultado = MessageBox.Show(
+                "¿Estás seguro de cerrar la orden de inspección?",
+                "Confirmar Cierre",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (resultado == DialogResult.Yes)
+            {
+                gestor.validarDatosIngresados();
+            }
+            else
+            {
+                // Opcional: mostrar mensaje de cancelación
+                MessageBox.Show("Cierre cancelado.");
+            }
         }
 
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        internal void mostrarMensaje(string mensaje)
+        {
+            MessageBox.Show(mensaje);
+        }
+
+        internal void mostrarBotonConfirmarCierre()
+        {
+            throw new NotImplementedException();
         }
     }
 }
