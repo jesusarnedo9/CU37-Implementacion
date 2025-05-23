@@ -35,23 +35,26 @@
             this.chkMotivos = new System.Windows.Forms.CheckedListBox();
             this.btnConfirmarMotivos = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listaOrdenInspeccion
             // 
             this.listaOrdenInspeccion.FormattingEnabled = true;
-            this.listaOrdenInspeccion.Location = new System.Drawing.Point(234, 107);
+            this.listaOrdenInspeccion.Location = new System.Drawing.Point(312, 132);
+            this.listaOrdenInspeccion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.listaOrdenInspeccion.Name = "listaOrdenInspeccion";
-            this.listaOrdenInspeccion.Size = new System.Drawing.Size(284, 21);
+            this.listaOrdenInspeccion.Size = new System.Drawing.Size(377, 24);
             this.listaOrdenInspeccion.TabIndex = 0;
             this.listaOrdenInspeccion.SelectedIndexChanged += new System.EventHandler(this.listaOrdenInspeccion_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(231, 172);
+            this.label1.Location = new System.Drawing.Point(308, 212);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 13);
+            this.label1.Size = new System.Drawing.Size(142, 16);
             this.label1.TabIndex = 1;
             this.label1.Text = "Observacion de Cierre";
             this.label1.Visible = false;
@@ -59,9 +62,10 @@
             // 
             // txtObservacionCierre
             // 
-            this.txtObservacionCierre.Location = new System.Drawing.Point(360, 172);
+            this.txtObservacionCierre.Location = new System.Drawing.Point(480, 212);
+            this.txtObservacionCierre.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtObservacionCierre.Name = "txtObservacionCierre";
-            this.txtObservacionCierre.Size = new System.Drawing.Size(158, 20);
+            this.txtObservacionCierre.Size = new System.Drawing.Size(209, 22);
             this.txtObservacionCierre.TabIndex = 2;
             this.txtObservacionCierre.Visible = false;
             this.txtObservacionCierre.TextChanged += new System.EventHandler(this.txtObservacionCierre_TextChanged);
@@ -73,9 +77,10 @@
             this.btnConfirmarObservacion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConfirmarObservacion.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnConfirmarObservacion.ForeColor = System.Drawing.Color.White;
-            this.btnConfirmarObservacion.Location = new System.Drawing.Point(387, 222);
+            this.btnConfirmarObservacion.Location = new System.Drawing.Point(516, 273);
+            this.btnConfirmarObservacion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnConfirmarObservacion.Name = "btnConfirmarObservacion";
-            this.btnConfirmarObservacion.Size = new System.Drawing.Size(131, 46);
+            this.btnConfirmarObservacion.Size = new System.Drawing.Size(175, 57);
             this.btnConfirmarObservacion.TabIndex = 4;
             this.btnConfirmarObservacion.Text = "Confirmar";
             this.btnConfirmarObservacion.UseVisualStyleBackColor = false;
@@ -85,9 +90,10 @@
             // chkMotivos
             // 
             this.chkMotivos.FormattingEnabled = true;
-            this.chkMotivos.Location = new System.Drawing.Point(234, 215);
+            this.chkMotivos.Location = new System.Drawing.Point(312, 265);
+            this.chkMotivos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkMotivos.Name = "chkMotivos";
-            this.chkMotivos.Size = new System.Drawing.Size(284, 109);
+            this.chkMotivos.Size = new System.Drawing.Size(377, 123);
             this.chkMotivos.TabIndex = 5;
             this.chkMotivos.Visible = false;
             this.chkMotivos.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
@@ -99,9 +105,10 @@
             this.btnConfirmarMotivos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConfirmarMotivos.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnConfirmarMotivos.ForeColor = System.Drawing.Color.White;
-            this.btnConfirmarMotivos.Location = new System.Drawing.Point(273, 330);
+            this.btnConfirmarMotivos.Location = new System.Drawing.Point(364, 406);
+            this.btnConfirmarMotivos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnConfirmarMotivos.Name = "btnConfirmarMotivos";
-            this.btnConfirmarMotivos.Size = new System.Drawing.Size(193, 42);
+            this.btnConfirmarMotivos.Size = new System.Drawing.Size(257, 52);
             this.btnConfirmarMotivos.TabIndex = 6;
             this.btnConfirmarMotivos.Text = "Confirmar Motivos";
             this.btnConfirmarMotivos.UseVisualStyleBackColor = false;
@@ -111,19 +118,30 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(326, 54);
+            this.label2.Location = new System.Drawing.Point(435, 66);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(117, 13);
+            this.label2.Size = new System.Drawing.Size(146, 16);
             this.label2.TabIndex = 7;
             this.label2.Text = "Ordenes de Inspeccion";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(435, 245);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(129, 16);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Seleccionar Motivos";
+            // 
             // PantallaCierreOrden
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Beige;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnConfirmarMotivos);
             this.Controls.Add(this.chkMotivos);
@@ -131,6 +149,7 @@
             this.Controls.Add(this.txtObservacionCierre);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listaOrdenInspeccion);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "PantallaCierreOrden";
             this.Text = "CerrarOrdenInscripcion";
             this.Load += new System.EventHandler(this.PantallaCierreOrden_Load);
@@ -148,5 +167,6 @@
         private System.Windows.Forms.CheckedListBox chkMotivos;
         private System.Windows.Forms.Button btnConfirmarMotivos;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

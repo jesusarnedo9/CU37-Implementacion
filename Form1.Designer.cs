@@ -39,11 +39,12 @@
             this.btnCerrarOrden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrarOrden.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnCerrarOrden.ForeColor = System.Drawing.Color.White;
-            this.btnCerrarOrden.Location = new System.Drawing.Point(162, 72);
+            this.btnCerrarOrden.Location = new System.Drawing.Point(216, 89);
+            this.btnCerrarOrden.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCerrarOrden.Name = "btnCerrarOrden";
-            this.btnCerrarOrden.Size = new System.Drawing.Size(232, 49);
+            this.btnCerrarOrden.Size = new System.Drawing.Size(309, 60);
             this.btnCerrarOrden.TabIndex = 0;
-            this.btnCerrarOrden.Text = "Cerrar Orden Inscripcion";
+            this.btnCerrarOrden.Text = "Cerrar Orden Inspeccion";
             this.btnCerrarOrden.UseVisualStyleBackColor = false;
             this.btnCerrarOrden.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -54,23 +55,24 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(162, 176);
+            this.button1.Location = new System.Drawing.Point(216, 217);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(232, 49);
+            this.button1.Size = new System.Drawing.Size(309, 60);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Crear Orden Inscripcion";
+            this.button1.Text = "Crear Orden Inspeccion";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Beige;
-            this.ClientSize = new System.Drawing.Size(600, 366);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnCerrarOrden);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Pantalla Principal";
             this.Load += new System.EventHandler(this.Form1_Load);
