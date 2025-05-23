@@ -38,6 +38,10 @@ namespace ImplementacionCU37.Entidades
         {
             return estacion != null ? estacion.getIDSismografo() : "";
         }
+        public EstacionSismologica getEstacionSismologica()
+        {
+            return estacion;
+        }
 
         public string obtenerInfoOI()
         {

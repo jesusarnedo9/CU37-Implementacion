@@ -1,12 +1,14 @@
 using ImplementacionCU37.Entidades;
 using System;
+using System.Collections.Generic;
 
 public class CambioEstado
 {
     public DateTime fechaHoraInicio { get; set; }
     public DateTime? fechaHoraFin { get; set; }
 
-    private MotivoFueraServicio motivo;
+    public MotivoFueraServicio motivo;
+    public List<MotivoFueraServicio> motivos;
     private Empleado responsableLogueado;
 
 
@@ -14,6 +16,12 @@ public class CambioEstado
     {
         this.fechaHoraInicio = inicio;
         this.motivo = motivo;
+    }
+
+    public CambioEstado(DateTime inicio, List<MotivoFueraServicio> motivos)
+    {
+        this.fechaHoraInicio = inicio;
+        this.motivos = motivos;
     }
 
     public bool esActual() 

@@ -10,5 +10,12 @@
         {
             this.descripcion = descripcion;
         }
+
+        public override string ToString()
+        {
+            return this.descripcion; // o como se llame tu propiedad con la descripción
+        }
+
     }
+
 }

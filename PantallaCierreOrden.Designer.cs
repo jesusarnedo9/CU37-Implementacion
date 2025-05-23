@@ -35,14 +35,14 @@
             this.chkMotivos = new System.Windows.Forms.CheckedListBox();
             this.btnConfirmarMotivos = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblSeleccionarMotivo = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listaOrdenInspeccion
             // 
             this.listaOrdenInspeccion.FormattingEnabled = true;
             this.listaOrdenInspeccion.Location = new System.Drawing.Point(312, 132);
-            this.listaOrdenInspeccion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listaOrdenInspeccion.Margin = new System.Windows.Forms.Padding(4);
             this.listaOrdenInspeccion.Name = "listaOrdenInspeccion";
             this.listaOrdenInspeccion.Size = new System.Drawing.Size(377, 24);
             this.listaOrdenInspeccion.TabIndex = 0;
@@ -63,11 +63,12 @@
             // txtObservacionCierre
             // 
             this.txtObservacionCierre.Location = new System.Drawing.Point(480, 212);
-            this.txtObservacionCierre.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtObservacionCierre.Margin = new System.Windows.Forms.Padding(4);
             this.txtObservacionCierre.Name = "txtObservacionCierre";
             this.txtObservacionCierre.Size = new System.Drawing.Size(209, 22);
             this.txtObservacionCierre.TabIndex = 2;
             this.txtObservacionCierre.Visible = false;
+            this.txtObservacionCierre.Click += new System.EventHandler(this.listaOrdenInspeccion_SelectedIndexChanged);
             this.txtObservacionCierre.TextChanged += new System.EventHandler(this.txtObservacionCierre_TextChanged);
             // 
             // btnConfirmarObservacion
@@ -78,20 +79,20 @@
             this.btnConfirmarObservacion.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnConfirmarObservacion.ForeColor = System.Drawing.Color.White;
             this.btnConfirmarObservacion.Location = new System.Drawing.Point(516, 273);
-            this.btnConfirmarObservacion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnConfirmarObservacion.Margin = new System.Windows.Forms.Padding(4);
             this.btnConfirmarObservacion.Name = "btnConfirmarObservacion";
             this.btnConfirmarObservacion.Size = new System.Drawing.Size(175, 57);
             this.btnConfirmarObservacion.TabIndex = 4;
             this.btnConfirmarObservacion.Text = "Confirmar";
             this.btnConfirmarObservacion.UseVisualStyleBackColor = false;
             this.btnConfirmarObservacion.Visible = false;
-            this.btnConfirmarObservacion.Click += new System.EventHandler(this.btnCerrarOrden_Click);
+            this.btnConfirmarObservacion.Click += new System.EventHandler(this.btnConfirmarObservacion_Click);
             // 
             // chkMotivos
             // 
             this.chkMotivos.FormattingEnabled = true;
-            this.chkMotivos.Location = new System.Drawing.Point(312, 265);
-            this.chkMotivos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkMotivos.Location = new System.Drawing.Point(314, 265);
+            this.chkMotivos.Margin = new System.Windows.Forms.Padding(4);
             this.chkMotivos.Name = "chkMotivos";
             this.chkMotivos.Size = new System.Drawing.Size(377, 123);
             this.chkMotivos.TabIndex = 5;
@@ -106,7 +107,7 @@
             this.btnConfirmarMotivos.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnConfirmarMotivos.ForeColor = System.Drawing.Color.White;
             this.btnConfirmarMotivos.Location = new System.Drawing.Point(364, 406);
-            this.btnConfirmarMotivos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnConfirmarMotivos.Margin = new System.Windows.Forms.Padding(4);
             this.btnConfirmarMotivos.Name = "btnConfirmarMotivos";
             this.btnConfirmarMotivos.Size = new System.Drawing.Size(257, 52);
             this.btnConfirmarMotivos.TabIndex = 6;
@@ -126,14 +127,16 @@
             this.label2.Text = "Ordenes de Inspeccion";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
-            // label3
+            // lblSeleccionarMotivo
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(435, 245);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(129, 16);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Seleccionar Motivos";
+            this.lblSeleccionarMotivo.AutoSize = true;
+            this.lblSeleccionarMotivo.Location = new System.Drawing.Point(435, 245);
+            this.lblSeleccionarMotivo.Name = "lblSeleccionarMotivo";
+            this.lblSeleccionarMotivo.Size = new System.Drawing.Size(129, 16);
+            this.lblSeleccionarMotivo.TabIndex = 8;
+            this.lblSeleccionarMotivo.Text = "Seleccionar Motivos";
+            this.lblSeleccionarMotivo.VisibleChanged += new System.EventHandler(this.label1_Click);
+            this.lblSeleccionarMotivo.Click += new System.EventHandler(this.label3_Click);
             // 
             // PantallaCierreOrden
             // 
@@ -141,15 +144,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Beige;
             this.ClientSize = new System.Drawing.Size(1067, 554);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lblSeleccionarMotivo);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnConfirmarMotivos);
-            this.Controls.Add(this.chkMotivos);
             this.Controls.Add(this.btnConfirmarObservacion);
             this.Controls.Add(this.txtObservacionCierre);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listaOrdenInspeccion);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Controls.Add(this.chkMotivos);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "PantallaCierreOrden";
             this.Text = "CerrarOrdenInscripcion";
             this.Load += new System.EventHandler(this.PantallaCierreOrden_Load);
@@ -167,6 +170,6 @@
         private System.Windows.Forms.CheckedListBox chkMotivos;
         private System.Windows.Forms.Button btnConfirmarMotivos;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblSeleccionarMotivo;
     }
 }

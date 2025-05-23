@@ -26,5 +26,10 @@ namespace ImplementacionCU37.Entidades
             return sismografo != null ? sismografo.getID() : "";
         }
 
+        public Sismografo getSismografo()
+        {
+            return this.sismografo;
+        }
+
     }
 }

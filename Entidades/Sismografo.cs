@@ -6,6 +6,8 @@ namespace ImplementacionCU37.Entidades
 {
     public class Sismografo
     {
+        private Sismografo sismografo;
+
         public DateTime fechaAdquisicion { get; set; }
         public string identificadorSismografo { get; set; }
         public string nroSerie { get; set; }
@@ -14,6 +16,8 @@ namespace ImplementacionCU37.Entidades
         public List<CambioEstado> historialEstados { get; set; } = new List<CambioEstado>(); // 1 a muchos
 
         public string getID() => identificadorSismografo;
+
+
 
         public void setEstadoActual()
         {
@@ -33,5 +37,27 @@ namespace ImplementacionCU37.Entidades
             setEstadoActual();
             return estadoActual;
         }
+
+        public CambioEstado getCambioEstadoActual()
+        {
+            return historialEstados.FirstOrDefault(ce => ce.esActual());
+        }
+
+        public void agregarCambioEstado(CambioEstado nuevoCambio, Estado nuevoEstado)
+        {
+            historialEstados.Add(nuevoCambio);
+            estadoActual = nuevoEstado;
+        }
+
+        public void cerrarEstadoActual()
+        {
+            var actual = getCambioEstadoActual();
+            if (actual != null)
+            {
+                actual.finalizar();
+            }
+        }
+
+
     }
 }

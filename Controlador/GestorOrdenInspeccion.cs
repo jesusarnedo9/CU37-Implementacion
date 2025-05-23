@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 
+
 namespace ImplementacionCU37.Controlador
 {
     public class GestorOrdenInspeccion
@@ -16,17 +17,22 @@ namespace ImplementacionCU37.Controlador
         private bool confirmacionCierre;
         private DateTime fechaActual;
         private TimeSpan horaActual;
-        private string observacionCierre;
+        private string observacion;
+        private List<MotivoTipo> motivosTipo;
         private OrdenDeInspeccion ordenSeleccionada;
         private List<string> solicitudMotivo;
         private Empleado responsableLogueado;
         private List<OrdenDeInspeccion> ordenes;
+        private List<string> motivosSeleccionados;
+        private List<MotivoFueraServicio> todosLosMotivos;
+
 
         // Dependencias
         //private InterfazEmail interfazEmail;
         //private PantallaCCRS pantallaCCRS;
         private PantallaCierreOrden pantalla;
-        private List<MotivoTipo> motivosTipo;
+        // Remove the duplicate declaration of 'motivosTipo2' or rename it to avoid conflict
+        private List<MotivoTipo> motivosTipo2;
         private List<Estado> estadosDisponibles;
         private Estado estado;
         private Sesion sesion;
@@ -34,6 +40,16 @@ namespace ImplementacionCU37.Controlador
         //Datos de prueba
         private Empleado empleado;
         private Usuario usuario;
+
+        // Rename one of the 'motivosTipo' declarations to avoid ambiguity
+        private List<MotivoTipo> motivoTipo = new List<MotivoTipo>
+        {
+            new MotivoTipo("Falla eléctrica"),
+            new MotivoTipo("Mantenimiento programado"),
+            new MotivoTipo("Condiciones climáticas"),
+            new MotivoTipo("Robo o vandalismo")
+        };
+
 
 
 
@@ -52,6 +68,7 @@ namespace ImplementacionCU37.Controlador
 
             // Crear lista de estados
             estadosDisponibles = new List<Estado> { estadoRealizada, estadoCerrada, estadoFueraServicio, estadoRealizado };
+
 
 
             // Crear empleados
@@ -128,6 +145,8 @@ namespace ImplementacionCU37.Controlador
 
             // Cargar lista
             ordenes = new List<OrdenDeInspeccion> { orden1, orden2, orden3, orden4 };
+
+           
         }
 
 
@@ -173,20 +192,56 @@ namespace ImplementacionCU37.Controlador
             return null;
         }
 
-        public void buscarMotivo() {
-            if (motivosTipo == null)
+        public void actualizarEstadoSismografo()
+        {
+            Estado estadoFS = buscarEstadoFueraServicio();
+            if (estadoFS == null)
             {
-                motivosTipo = new List<MotivoTipo>
-                {
-            new MotivoTipo("Falla eléctrica"),
-            new MotivoTipo("Mantenimiento programado"),
-            new MotivoTipo("Condiciones climáticas"),
-            new MotivoTipo("Robo o vandalismo")
-                };
+                MessageBox.Show("No se encontró el estado 'Fuera de Servicio'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
-            pantalla.solicitarSeleccionMotivo(motivosTipo);
+            // Obtener estación desde la orden seleccionada
+            EstacionSismologica estacion = ordenSeleccionada.getEstacionSismologica();
+
+            // Obtener sismógrafo de la estación
+            Sismografo sismografo = estacion.getSismografo();
+
+            // Cerrar estado actual
+            sismografo.cerrarEstadoActual();
+
+            // Crear nuevo cambio de estado
+
+            // Convertir strings a objetos MotivoFueraServicio
+            List<MotivoFueraServicio> motivos = motivosSeleccionados
+                .Select(m => new MotivoFueraServicio(m))
+                .ToList();
+            CambioEstado nuevoCambio = new CambioEstado(DateTime.Now, motivos); // Reemplazar por el motivo actual
+            nuevoCambio.setRILogueado(responsableLogueado);
+
+            CambioEstado cambioActual = sismografo.historialEstados.FirstOrDefault(ce => ce.esActual());
+            if (cambioActual != null)
+                cambioActual.finalizar();
+
+            sismografo.agregarCambioEstado(nuevoCambio, estadoFS);
+
+
         }
+
+        public class GestorCerrarOrden
+        {
+            public List<string> ObtenerMotivos()
+            {
+                return new List<string> { "Motivo A", "Motivo B", "Motivo C" };
+            }
+        }
+
+
+        public List<MotivoTipo> buscarMotivo()
+        {
+            return motivoTipo;
+        }
+
 
         public void finCU() { }
         public DateTime getFechaActual() => DateTime.Now.Date;
@@ -196,6 +251,15 @@ namespace ImplementacionCU37.Controlador
         public void publicarEnPantallaCCRS() { }
         public void registrarCierre() 
         {
+
+            ordenSeleccionada = pantalla.tomarOrdenSeleccionada();
+
+            if (ordenSeleccionada == null)
+            {
+                pantalla.mostrarMensaje("Debe seleccionar una orden antes de cerrarla.");
+                return;
+            }
+
             // Obtener estado cerrado
             Estado estadoCerrada = new Estado
             {
@@ -204,7 +268,7 @@ namespace ImplementacionCU37.Controlador
             };
 
             // Setear fecha, hora y estado
-            ordenSeleccionada.setFechaHoraCierre(DateTime.Now);
+            ordenSeleccionada.fechaHoraCierre = DateTime.Now;
             ordenSeleccionada.setEstado(estadoCerrada);
 
             pantalla.mostrarMensaje("La orden fue cerrada exitosamente.");
@@ -213,13 +277,8 @@ namespace ImplementacionCU37.Controlador
         public void tomarConfirmacionCierre(bool confirmacion) => this.confirmacionCierre = confirmacion;
         public void tomarObservacionCierre(string observacion) 
         {
-            this.observacionCierre = observacion;
-
-            // Cargar motivos si aún no están cargados
-            if (motivosTipo == null)
-            {
-                buscarMotivo(); // Esto llama a pantalla.solicitarSeleccionMotivo()
-            }
+            this.observacion = observacion;
+            pantalla.solicitarSeleccionMotivo(buscarMotivo());
         }
 
         public void tomarOrdenSeleccionada(OrdenDeInspeccion orden)
@@ -227,15 +286,15 @@ namespace ImplementacionCU37.Controlador
             this.ordenSeleccionada = orden;
         }
 
-        public void tomarSeleccionMotivo(List<string> motivos) => this.solicitudMotivo = motivos;
+        public void tomarSeleccionMotivo(List<string> solicitudMotivos) => this.motivosSeleccionados = solicitudMotivos;
 
         public void validarDatosIngresados() 
         {
             // Verifica si hay observación
-            bool hayObservacion = !string.IsNullOrWhiteSpace(observacionCierre);
+            bool hayObservacion = string.IsNullOrWhiteSpace(observacion);
 
             // Verifica si hay al menos un motivo seleccionado
-            bool hayMotivos = solicitudMotivo != null && solicitudMotivo.Count > 0;
+            bool hayMotivos = motivosSeleccionados != null && motivosSeleccionados.Count > 0;
 
             if (!hayObservacion)
             {
@@ -251,8 +310,6 @@ namespace ImplementacionCU37.Controlador
 
             // Si todo está bien
             registrarCierre();
-
-            // Acá podrías continuar con registrarCierre() u otra acción
         }
     }
 }

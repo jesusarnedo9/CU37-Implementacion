@@ -22,9 +22,22 @@ namespace ImplementacionCU37
             gestor.opcionCerrarOrdenInspeccion(); // Llamá acá directamente
         }
 
+
+        //LOAD
         private void PantallaCierreOrden_Load(object sender, EventArgs e)
         {
             gestor.opcionCerrarOrdenInspeccion();
+
+            // Ocultamos todo al inicio
+            label1.Visible = false;
+            txtObservacionCierre.Visible = false;
+            btnConfirmarObservacion.Visible = false;
+            lblSeleccionarMotivo.Visible = false;
+            chkMotivos.Visible = false;
+            btnConfirmarMotivos.Visible = false;
+
+            
+
         }
 
 
@@ -32,6 +45,7 @@ namespace ImplementacionCU37
         private Button btnCancelar;
         private Button btnConfirmar;
         private TextBox inputComentario;
+
         //private TextBox inputObservacionCierre;
         private Label lblComentario;
         private Label lblObservacionCierre;
@@ -51,8 +65,9 @@ namespace ImplementacionCU37
 
         public void opcionCerrarOrdenInspeccion()
         {
-            gestor.opcionCerrarOrdenInspeccion();
+            gestor.opcionCerrarOrdenInspeccion();   
         }
+
 
         public void solicitarComentario()
         {
@@ -90,6 +105,8 @@ namespace ImplementacionCU37
             {
                 listaOrdenInspeccion.Items.Add(orden);
             }
+            
+           
         }
 
 
@@ -126,17 +143,15 @@ namespace ImplementacionCU37
 
         private void listaOrdenInspeccion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            OrdenDeInspeccion orden = listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion;
-            if (orden != null)
-            {
-                // Mostrar input y botón
-                label1.Visible = true;
-                txtObservacionCierre.Visible = true;
-                btnConfirmarObservacion.Visible = true;
+            // Mostrar los controles de observación
+            label1.Visible = true;
+            txtObservacionCierre.Visible = true;
+            btnConfirmarObservacion.Visible = true;
 
-                // Notifica al gestor
-                gestor.tomarOrdenSeleccionada(orden);
-            }
+            // Ocultar controles de motivos por si estaban visibles
+            lblSeleccionarMotivo.Visible = false;
+            chkMotivos.Visible = false;
+            btnConfirmarMotivos.Visible = false;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -151,36 +166,37 @@ namespace ImplementacionCU37
             // Enviar la observación al gestor
             gestor.tomarObservacionCierre(observacion);
 
+            /*
             // Ocultar los controles de observación
             label1.Visible = false;
             txtObservacionCierre.Visible = false;
-            btnConfirmarObservacion.Visible = false;
+            btnConfirmarObservacion.Visible = false;*/
 
         }
 
         private void txtObservacionCierre_TextChanged(object sender, EventArgs e)
         {
-
+        
         }
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void btnConfirmarMotivos_Click(object sender, EventArgs e)
         {
-            List<string> motivosSeleccionados = new List<string>();
+            List<string> solicitudMotivo = new List<string>();
 
             foreach (var item in chkMotivos.CheckedItems)
             {
                 if (item is MotivoTipo motivo)
                 {
-                    motivosSeleccionados.Add(motivo.descripcion);
+                    solicitudMotivo.Add(motivo.descripcion);
                 }
             }
 
-            gestor.tomarSeleccionMotivo(motivosSeleccionados);
+            gestor.tomarSeleccionMotivo(solicitudMotivo);
 
             // Ocultar luego de confirmar
             chkMotivos.Visible = false;
@@ -215,9 +231,26 @@ namespace ImplementacionCU37
             MessageBox.Show(mensaje);
         }
 
-        internal void mostrarBotonConfirmarCierre()
+        private void btnConfirmarObservacion_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            lblSeleccionarMotivo.Visible = true;
+            chkMotivos.Visible = true;
+            btnConfirmarMotivos.Visible = true;
+            btnConfirmarObservacion.Visible = false;
+
+            GestorOrdenInspeccion gestor = new GestorOrdenInspeccion(this);
+
+            chkMotivos.Items.Clear();
+            foreach (MotivoTipo motivo in gestor.buscarMotivo())
+            {
+                chkMotivos.Items.Add(motivo);
+            }
+        }
+
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+    
         }
     }
 }
