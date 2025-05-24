@@ -25,7 +25,7 @@ namespace ImplementacionCU37.Entidades
 
         public bool estaRealizada()
         {
-            return fechaHoraFinalizacion != DateTime.MinValue;
+            return estado != null && estado.nombreEstado.Equals("Realizada");
         }
 
         public bool esDeEmpleado(Empleado empleado)

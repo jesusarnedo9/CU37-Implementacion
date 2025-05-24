@@ -152,6 +152,9 @@ namespace ImplementacionCU37
             lblSeleccionarMotivo.Visible = false;
             chkMotivos.Visible = false;
             btnConfirmarMotivos.Visible = false;
+
+            //pasar la orden seleccionada al gestor
+            OrdenDeInspeccion ordenSeleccionada = listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -238,7 +241,7 @@ namespace ImplementacionCU37
             btnConfirmarMotivos.Visible = true;
             btnConfirmarObservacion.Visible = false;
 
-            GestorOrdenInspeccion gestor = new GestorOrdenInspeccion(this);
+            gestor.tomarObservacionCierre(txtObservacionCierre.Text);
 
             chkMotivos.Items.Clear();
             foreach (MotivoTipo motivo in gestor.buscarMotivo())

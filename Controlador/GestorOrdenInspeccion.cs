@@ -50,9 +50,6 @@ namespace ImplementacionCU37.Controlador
             new MotivoTipo("Robo o vandalismo")
         };
 
-
-
-
         // Constructor para inicializar los datos de prueba
 
         public GestorOrdenInspeccion(PantallaCierreOrden pantalla)
@@ -135,10 +132,10 @@ namespace ImplementacionCU37.Controlador
 
             // Crear órdenes
             var orden1 = new OrdenDeInspeccion(1, DateTime.Now.AddDays(-4), e1, estadoRealizada, empleadoJesus);
-            orden1.fechaHoraFinalizacion = DateTime.Now.AddDays(-3);
+            orden1.fechaHoraFinalizacion = DateTime.Now.AddDays(-10);
             var orden2 = new OrdenDeInspeccion(2, DateTime.Now.AddDays(-3), e2, estadoCerrada, empleadoNazareno);
             orden2.fechaHoraFinalizacion = DateTime.Now.AddDays(-5);
-            var orden3 = new OrdenDeInspeccion(3, DateTime.Now.AddDays(-2), e3, estadoRealizada, empleadoJesus);
+            var orden3 = new OrdenDeInspeccion(3, DateTime.Now.AddDays(-8), e3, estadoRealizada, empleadoJesus);
             orden3.fechaHoraFinalizacion = DateTime.Now.AddDays(-7);
             var orden4 = new OrdenDeInspeccion(4, DateTime.Now.AddDays(-1), e4, estadoRealizada, empleadoJesus);
             orden4.fechaHoraFinalizacion = DateTime.Now.AddDays(-9);
@@ -167,6 +164,8 @@ namespace ImplementacionCU37.Controlador
                     ordenesRealizadas.Add(orden);
                 }
             }
+
+            ordenesRealizadas = ordenarOI(ordenesRealizadas);
 
             // 3. Enviar a la pantalla para mostrar
             pantalla.solicitarSeleccionOrden(ordenesRealizadas);
@@ -243,11 +242,17 @@ namespace ImplementacionCU37.Controlador
         }
 
 
-        public void finCU() { }
-        public DateTime getFechaActual() => DateTime.Now.Date;
-        public TimeSpan getHoraActual() => DateTime.Now.TimeOfDay;
-        public void notificarCierre() { }
-        public void ordenarOI() { }
+        //public void finCU() { }
+        //public DateTime getFechaActual() => DateTime.Now.Date;
+        //public TimeSpan getHoraActual() => DateTime.Now.TimeOfDay;
+        //public void notificarCierre() { }
+        public List<OrdenDeInspeccion> ordenarOI(List<OrdenDeInspeccion> lista)
+        {
+            return lista
+                .OrderByDescending(o => o.fechaHoraFinalizacion)
+                .ToList();
+        }
+
         public void publicarEnPantallaCCRS() { }
         public void registrarCierre() 
         {
@@ -296,7 +301,7 @@ namespace ImplementacionCU37.Controlador
             // Verifica si hay al menos un motivo seleccionado
             bool hayMotivos = motivosSeleccionados != null && motivosSeleccionados.Count > 0;
 
-            if (!hayObservacion)
+            if (hayObservacion)
             {
                 MessageBox.Show("Debe ingresar una observación de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

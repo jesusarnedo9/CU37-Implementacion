@@ -58,17 +58,17 @@
     <Compile Include="Entidades\Sesion.cs" />
     <Compile Include="Entidades\Sismografo.cs" />
     <Compile Include="Entidades\Usuario.cs" />
-    <Compile Include="PantallaCierreOrden.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PantallaCierreOrden.Designer.cs">
-      <DependentUpon>PantallaCierreOrden.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PantallaCierreOrden.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PantallaCierreOrden.Designer.cs">
+      <DependentUpon>PantallaCierreOrden.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
