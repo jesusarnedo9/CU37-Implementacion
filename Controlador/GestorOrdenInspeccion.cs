@@ -1,4 +1,4 @@
-using ImplementacionCU37.Entidades;
+Ôªøusing ImplementacionCU37.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,9 +41,9 @@ namespace ImplementacionCU37.Controlador
 
         private List<MotivoTipo> motivoTipo = new List<MotivoTipo>
         {
-            new MotivoTipo("Falla elÈctrica"),
+            new MotivoTipo("Falla el√©ctrica"),
             new MotivoTipo("Mantenimiento programado"),
-            new MotivoTipo("Condiciones clim·ticas"),
+            new MotivoTipo("Condiciones clim√°ticas"),
             new MotivoTipo("Robo o vandalismo")
         };
 
@@ -55,7 +55,7 @@ namespace ImplementacionCU37.Controlador
             // Crear estados ordenes
             var estadoRealizada = new Estado { nombreEstado = Estado.ESTADO_REALIZADA_OI, ambito = Estado.AMBITO_OI };
             var estadoCerrada = new Estado { nombreEstado = Estado.ESTADO_CERRADA_OI, ambito = Estado.AMBITO_OI };
-            // Crear estados sismÛgrafos
+            // Crear estados sism√≥grafos
             var estadoFueraServicio = new Estado { nombreEstado = Estado.ESTADO_FUERA_SERVICIO_S, ambito = Estado.AMBITO_SISMOGRAFO };
             var estadoRealizado = new Estado { nombreEstado = Estado.ESTADO_REALIZADO_S, ambito = Estado.AMBITO_SISMOGRAFO };
 
@@ -68,12 +68,12 @@ namespace ImplementacionCU37.Controlador
             var empleadoPedro = new Empleado("Pedro", "Colapinto", "colapa@gmail.com", "434343", 4, Rol.RESPONSABLE_REPARACION);
             var empleadoJuancito = new Empleado("Juancito", "Lopez", "juanete@gmail.com", "5645559", 8, Rol.ADMINISTRADOR_REPARACION);
 
-            // Crear usuarios y sesiÛn (usamos a Jes˙s como logueado)
+            // Crear usuarios y sesi√≥n (usamos a Jes√∫s como logueado)
             usuario = new Usuario("jesus", empleadoJesus);
             sesion = new Sesion(usuario);
             responsableLogueado = usuario.getEmpleado();
 
-            // Crear sismÛgrafos
+            // Crear sism√≥grafos
             var s1 = new Sismografo { identificadorSismografo = "SISMO-001", nroSerie = "SN001", fechaAdquisicion = DateTime.Now, estadoActual = estadoRealizado };
             var s2 = new Sismografo { identificadorSismografo = "SISMO-002", nroSerie = "SN002", fechaAdquisicion = DateTime.Now, estadoActual = estadoFueraServicio };
             var s3 = new Sismografo { identificadorSismografo = "SISMO-003", nroSerie = "SN003", fechaAdquisicion = DateTime.Now, estadoActual = estadoRealizado };
@@ -83,7 +83,7 @@ namespace ImplementacionCU37.Controlador
             var e1 = new EstacionSismologica(s1)
             {
                 codigoEstacion = "EST001",
-                nombre = "EstaciÛn CÛrdoba",
+                nombre = "Estaci√≥n C√≥rdoba",
                 latitud = -31.4167,
                 longitud = -64.1833,
                 documentoCertificacionAdq = "DOC001",
@@ -94,7 +94,7 @@ namespace ImplementacionCU37.Controlador
             var e2 = new EstacionSismologica(s2)
             {
                 codigoEstacion = "EST002",
-                nombre = "EstaciÛn Mendoza",
+                nombre = "Estaci√≥n Mendoza",
                 latitud = -32.8908,
                 longitud = -68.8272,
                 documentoCertificacionAdq = "DOC002",
@@ -105,7 +105,7 @@ namespace ImplementacionCU37.Controlador
             var e3 = new EstacionSismologica(s3)
             {
                 codigoEstacion = "EST003",
-                nombre = "EstaciÛn Salta",
+                nombre = "Estaci√≥n Salta",
                 latitud = -24.7821,
                 longitud = -65.4232,
                 documentoCertificacionAdq = "DOC003",
@@ -116,7 +116,7 @@ namespace ImplementacionCU37.Controlador
             var e4 = new EstacionSismologica(s4)
             {
                 codigoEstacion = "EST004",
-                nombre = "EstaciÛn Ushuaia",
+                nombre = "Estaci√≥n Ushuaia",
                 latitud = -54.8019,
                 longitud = -68.3030,
                 documentoCertificacionAdq = "DOC004",
@@ -124,7 +124,7 @@ namespace ImplementacionCU37.Controlador
                 fechaSituacionCertificacion = "2023-09-01"
             };
 
-            // Crear Ûrdenes
+            // Crear √≥rdenes
             var orden1 = new OrdenDeInspeccion(1, DateTime.Now.AddDays(-4), e1, estadoRealizada, empleadoJesus);
             orden1.fechaHoraFinalizacion = DateTime.Now.AddDays(-15);
             var orden2 = new OrdenDeInspeccion(2, DateTime.Now.AddDays(-3), e2, estadoCerrada, empleadoNazareno);
@@ -138,13 +138,13 @@ namespace ImplementacionCU37.Controlador
             ordenes = new List<OrdenDeInspeccion> { orden1, orden2, orden3, orden4 };   
         }
 
-        // MÈtodos
+        // M√©todos
         public void opcionCerrarOrdenInspeccion()
         {
-            // 1. Obtener el empleado desde la sesiÛn
+            // 1. Obtener el empleado desde la sesi√≥n
             buscarUsuario();
 
-            // 2. Filtrar Ûrdenes realizadas del empleado
+            // 2. Filtrar √≥rdenes realizadas del empleado
             List<OrdenDeInspeccion> ordenesRealizadas = new List<OrdenDeInspeccion>();
             foreach (OrdenDeInspeccion orden in ordenes)
             {
@@ -186,14 +186,14 @@ namespace ImplementacionCU37.Controlador
             Estado estadoFS = buscarEstadoFueraServicio();
             if (estadoFS == null)
             {
-                MessageBox.Show("No se encontrÛ el estado 'Fuera de Servicio'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se encontr√≥ el estado 'Fuera de Servicio'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Obtener estaciÛn desde la orden seleccionada
+            // Obtener estaci√≥n desde la orden seleccionada
             EstacionSismologica estacion = ordenSeleccionada.getEstacionSismologica();
 
-            // Obtener sismÛgrafo de la estaciÛn
+            // Obtener sism√≥grafo de la estaci√≥n
             Sismografo sismografo = estacion.getSismografo();
 
             // Cerrar estado actual
@@ -215,6 +215,31 @@ namespace ImplementacionCU37.Controlador
                 cambioActual.finalizar();
 
             sismografo.agregarCambioEstado(nuevoCambio, estadoFS);
+
+            // Obtener el √∫ltimo cambio de estado agregado al historial
+            CambioEstado ultimoCambio = sismografo.historialEstados.LastOrDefault();
+
+            if (ultimoCambio != null)
+            {
+                string nombreEstacion = estacion.nombre;
+                string idSismografo = sismografo.getID(); 
+                string motivo = ultimoCambio.getMotivo() != null ? ultimoCambio.getMotivo().ToString() : "Sin motivo";
+                string fechaFin = ultimoCambio.fechaHoraFin.HasValue ? ultimoCambio.fechaHoraFin.Value.ToString("g") : "Sin definir";
+
+
+                string mensaje = $"Estado actualizado con √©xito.\n" +
+                     $"Estaci√≥n: {nombreEstacion}\n" +
+                     $"Sism√≥grafo: {idSismografo}\n" +
+                     $"Motivos: {string.Join(", ", ultimoCambio.motivos)}\n" + 
+                     $"Responsable: {empleado.id}, {empleado.apellido} {empleado.nombre}\n" +
+                     $"Fecha/Hora de cierre: {ultimoCambio.fechaHoraFin?.ToString("g")}";
+                MessageBox.Show(mensaje, "Informaci√≥n", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("‚ùå No se pudo obtener el cambio de estado recientemente agregado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         public List<MotivoTipo> buscarMotivo()
@@ -253,10 +278,10 @@ namespace ImplementacionCU37.Controlador
 
             pantalla.mostrarMensaje("La orden fue cerrada exitosamente.");
 
-            // Actualizar estado del sismÛgrafo
+            // Actualizar estado del sism√≥grafo
             actualizarEstadoSismografo();
 
-            pantalla.mostrarMensaje("Orden cerrada y estado del sismÛgrafo actualizado.");
+            pantalla.mostrarMensaje("Orden cerrada y estado del sism√≥grafo actualizado.");
 
             // Enviar email
             pantalla.mostrarMensaje("Mails enviados");
@@ -278,7 +303,7 @@ namespace ImplementacionCU37.Controlador
 
         public void validarDatosIngresados() 
         {
-            // Verifica si hay observaciÛn
+            // Verifica si hay observaci√≥n
             bool hayObservacion = string.IsNullOrWhiteSpace(observacion);
 
             // Verifica si hay al menos un motivo seleccionado
@@ -286,7 +311,7 @@ namespace ImplementacionCU37.Controlador
 
             if (hayObservacion)
             {
-                MessageBox.Show("Debe ingresar una observaciÛn de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Debe ingresar una observaci√≥n de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -296,7 +321,7 @@ namespace ImplementacionCU37.Controlador
                 return;
             }
 
-            // Si todo est· bien
+            // Si todo est√° bien
             registrarCierre();
         }
     }

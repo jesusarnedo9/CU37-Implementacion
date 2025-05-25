@@ -21,5 +21,11 @@ namespace ImplementacionCU37.Entidades
         {
             return tipo;
         }
+        public override string ToString()
+        {
+            return this.comentario; 
+        }
     }
+
+
 }

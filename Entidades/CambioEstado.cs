@@ -18,6 +18,12 @@ public class CambioEstado
         this.motivos = motivos;
     }
 
+
+    public MotivoFueraServicio getMotivo()
+    {
+        return motivo;
+    }
+
     public bool esActual() 
     {
         return fechaHoraFin == null;
@@ -37,7 +43,10 @@ public class CambioEstado
     {
         this.fechaHoraFin = cierre;
     }
-
+    public DateTime? getFechaHoraFin()
+    {
+        return fechaHoraFin;
+    }
     public void setRILogueado(Empleado responsable)
     {
         this.responsableLogueado = responsable;
