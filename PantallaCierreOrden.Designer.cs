@@ -41,10 +41,10 @@
             // listaOrdenInspeccion
             // 
             this.listaOrdenInspeccion.FormattingEnabled = true;
-            this.listaOrdenInspeccion.Location = new System.Drawing.Point(312, 132);
+            this.listaOrdenInspeccion.Location = new System.Drawing.Point(157, 120);
             this.listaOrdenInspeccion.Margin = new System.Windows.Forms.Padding(4);
             this.listaOrdenInspeccion.Name = "listaOrdenInspeccion";
-            this.listaOrdenInspeccion.Size = new System.Drawing.Size(377, 24);
+            this.listaOrdenInspeccion.Size = new System.Drawing.Size(707, 24);
             this.listaOrdenInspeccion.TabIndex = 0;
             this.listaOrdenInspeccion.SelectedIndexChanged += new System.EventHandler(this.listaOrdenInspeccion_SelectedIndexChanged);
             // 

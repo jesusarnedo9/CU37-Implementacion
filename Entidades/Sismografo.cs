@@ -6,18 +6,17 @@ namespace ImplementacionCU37.Entidades
 {
     public class Sismografo
     {
-        private Sismografo sismografo;
+        //private Sismografo sismografo;
 
+        //Atributos
         public DateTime fechaAdquisicion { get; set; }
         public string identificadorSismografo { get; set; }
         public string nroSerie { get; set; }
-
         public Estado estadoActual { get; set; } // relación 1 a 1
         public List<CambioEstado> historialEstados { get; set; } = new List<CambioEstado>(); // 1 a muchos
 
+        //Metodos
         public string getID() => identificadorSismografo;
-
-
 
         public void setEstadoActual()
         {
@@ -32,11 +31,11 @@ namespace ImplementacionCU37.Entidades
             }
         }
 
-        public Estado getEstadoActual()
+        /*public Estado getEstadoActual()
         {
             setEstadoActual();
             return estadoActual;
-        }
+        }*/
 
         public CambioEstado getCambioEstadoActual()
         {

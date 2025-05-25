@@ -12,10 +12,8 @@ namespace ImplementacionCU37.Entidades
         public string nombre { get; set; }
         public string nroCertificacionAdquisicion { get; set; }
 
-        // Relación 1 a 1 con Sismografo
         private Sismografo sismografo;
 
-        // Constructor opcional
         public EstacionSismologica(Sismografo sismografo)
         {
             this.sismografo = sismografo;

@@ -51,10 +51,6 @@ namespace ImplementacionCU37
         private Label lblObservacionCierre;
         private CheckedListBox listaMotivo;
         
-
-
-
-
         // Métodos
 
         public void habilitarPantalla()
@@ -62,12 +58,10 @@ namespace ImplementacionCU37
             this.Enabled = true;
         }
 
-
         public void opcionCerrarOrdenInspeccion()
         {
             gestor.opcionCerrarOrdenInspeccion();   
         }
-
 
         public void solicitarComentario()
         {
@@ -98,17 +92,14 @@ namespace ImplementacionCU37
             btnConfirmarMotivos.Visible = true;
         }
 
-        public void solicitarSeleccionOrden(List<OrdenDeInspeccion> ordenes)
+        public void solicitarSeleccionOrden(List<OrdenDeInspeccion> ordenesRealizadas)
         {
             listaOrdenInspeccion.Items.Clear();
-            foreach (var orden in ordenes)
+            foreach (var orden in ordenesRealizadas)
             {
                 listaOrdenInspeccion.Items.Add(orden);
             }
-            
-           
         }
-
 
         public string tomarComentario()
         {
@@ -126,10 +117,10 @@ namespace ImplementacionCU37
             return txtObservacionCierre.Text;
         }
 
-        public OrdenDeInspeccion tomarOrdenSeleccionada()
+        /*public OrdenDeInspeccion tomarOrdenSeleccionada()
         {
             return listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion;
-        }
+        }*/
 
         public List<string> tomarSeleccionMotivo()
         {
@@ -155,6 +146,7 @@ namespace ImplementacionCU37
 
             //pasar la orden seleccionada al gestor
             OrdenDeInspeccion ordenSeleccionada = listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion;
+            gestor.tomarOrdenSeleccionada(ordenSeleccionada);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -249,7 +241,6 @@ namespace ImplementacionCU37
                 chkMotivos.Items.Add(motivo);
             }
         }
-
 
         private void label3_Click(object sender, EventArgs e)
         {

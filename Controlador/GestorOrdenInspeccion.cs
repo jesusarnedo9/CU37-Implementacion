@@ -15,33 +15,30 @@ namespace ImplementacionCU37.Controlador
         // Atributos propios
         private string comentario;
         private bool confirmacionCierre;
-        private DateTime fechaActual;
-        private TimeSpan horaActual;
+        //private DateTime fechaActual;
+        //private TimeSpan horaActual;
         private string observacion;
-        private List<MotivoTipo> motivosTipo;
+        //private List<MotivoTipo> motivosTipo;
         private OrdenDeInspeccion ordenSeleccionada;
-        private List<string> solicitudMotivo;
+        //private List<string> solicitudMotivo;
         private Empleado responsableLogueado;
         private List<OrdenDeInspeccion> ordenes;
         private List<string> motivosSeleccionados;
-        private List<MotivoFueraServicio> todosLosMotivos;
+        //private List<MotivoFueraServicio> todosLosMotivos;
 
 
         // Dependencias
         //private InterfazEmail interfazEmail;
         //private PantallaCCRS pantallaCCRS;
         private PantallaCierreOrden pantalla;
-        // Remove the duplicate declaration of 'motivosTipo2' or rename it to avoid conflict
-        private List<MotivoTipo> motivosTipo2;
         private List<Estado> estadosDisponibles;
-        private Estado estado;
+        //private Estado estado;
         private Sesion sesion;
 
         //Datos de prueba
         private Empleado empleado;
         private Usuario usuario;
 
-        // Rename one of the 'motivosTipo' declarations to avoid ambiguity
         private List<MotivoTipo> motivoTipo = new List<MotivoTipo>
         {
             new MotivoTipo("Falla eléctrica"),
@@ -50,7 +47,6 @@ namespace ImplementacionCU37.Controlador
             new MotivoTipo("Robo o vandalismo")
         };
 
-        // Constructor para inicializar los datos de prueba
 
         public GestorOrdenInspeccion(PantallaCierreOrden pantalla)
         {
@@ -65,8 +61,6 @@ namespace ImplementacionCU37.Controlador
 
             // Crear lista de estados
             estadosDisponibles = new List<Estado> { estadoRealizada, estadoCerrada, estadoFueraServicio, estadoRealizado };
-
-
 
             // Crear empleados
             var empleadoJesus = new Empleado("Jesus", "Arnedo", "jesus@mail.com", "12345", 5, Rol.RESPONSABLE_REPARACION);
@@ -132,28 +126,23 @@ namespace ImplementacionCU37.Controlador
 
             // Crear órdenes
             var orden1 = new OrdenDeInspeccion(1, DateTime.Now.AddDays(-4), e1, estadoRealizada, empleadoJesus);
-            orden1.fechaHoraFinalizacion = DateTime.Now.AddDays(-10);
+            orden1.fechaHoraFinalizacion = DateTime.Now.AddDays(-15);
             var orden2 = new OrdenDeInspeccion(2, DateTime.Now.AddDays(-3), e2, estadoCerrada, empleadoNazareno);
             orden2.fechaHoraFinalizacion = DateTime.Now.AddDays(-5);
             var orden3 = new OrdenDeInspeccion(3, DateTime.Now.AddDays(-8), e3, estadoRealizada, empleadoJesus);
             orden3.fechaHoraFinalizacion = DateTime.Now.AddDays(-7);
             var orden4 = new OrdenDeInspeccion(4, DateTime.Now.AddDays(-1), e4, estadoRealizada, empleadoJesus);
-            orden4.fechaHoraFinalizacion = DateTime.Now.AddDays(-9);
+            orden4.fechaHoraFinalizacion = DateTime.Now.AddDays(-12);
 
             // Cargar lista
-            ordenes = new List<OrdenDeInspeccion> { orden1, orden2, orden3, orden4 };
-
-           
+            ordenes = new List<OrdenDeInspeccion> { orden1, orden2, orden3, orden4 };   
         }
-
-
 
         // Métodos
         public void opcionCerrarOrdenInspeccion()
         {
             // 1. Obtener el empleado desde la sesión
-            Usuario usuario = sesion.getUsuario();
-            Empleado empleado = usuario.getEmpleado();
+            buscarUsuario();
 
             // 2. Filtrar órdenes realizadas del empleado
             List<OrdenDeInspeccion> ordenesRealizadas = new List<OrdenDeInspeccion>();
@@ -175,7 +164,8 @@ namespace ImplementacionCU37.Controlador
         public void buscarUsuario()
         {
             Usuario usuario = sesion.getUsuario();
-            responsableLogueado = usuario.getEmpleado();
+            empleado = usuario.getEmpleado();
+            responsableLogueado = usuario.getRILogueado() ? empleado : null;
         }
 
         public Estado buscarEstadoFueraServicio()
@@ -215,36 +205,25 @@ namespace ImplementacionCU37.Controlador
             List<MotivoFueraServicio> motivos = motivosSeleccionados
                 .Select(m => new MotivoFueraServicio(m))
                 .ToList();
-            CambioEstado nuevoCambio = new CambioEstado(DateTime.Now, motivos); // Reemplazar por el motivo actual
+            CambioEstado nuevoCambio = new CambioEstado(DateTime.Now, motivos);
             nuevoCambio.setRILogueado(responsableLogueado);
+            nuevoCambio.setFechaHoraCierre(DateTime.Now);
+            nuevoCambio.setMotivosSeleccionado(motivos.FirstOrDefault());
 
             CambioEstado cambioActual = sismografo.historialEstados.FirstOrDefault(ce => ce.esActual());
             if (cambioActual != null)
                 cambioActual.finalizar();
 
             sismografo.agregarCambioEstado(nuevoCambio, estadoFS);
-
-
         }
-
-        public class GestorCerrarOrden
-        {
-            public List<string> ObtenerMotivos()
-            {
-                return new List<string> { "Motivo A", "Motivo B", "Motivo C" };
-            }
-        }
-
 
         public List<MotivoTipo> buscarMotivo()
         {
             return motivoTipo;
         }
 
-
         //public void finCU() { }
-        //public DateTime getFechaActual() => DateTime.Now.Date;
-        //public TimeSpan getHoraActual() => DateTime.Now.TimeOfDay;
+        //public DateTime getFechaHoraActual() => DateTime.Now;
         //public void notificarCierre() { }
         public List<OrdenDeInspeccion> ordenarOI(List<OrdenDeInspeccion> lista)
         {
@@ -252,13 +231,9 @@ namespace ImplementacionCU37.Controlador
                 .OrderByDescending(o => o.fechaHoraFinalizacion)
                 .ToList();
         }
-
-        public void publicarEnPantallaCCRS() { }
+        //public void publicarEnPantallaCCRS() { }
         public void registrarCierre() 
         {
-
-            ordenSeleccionada = pantalla.tomarOrdenSeleccionada();
-
             if (ordenSeleccionada == null)
             {
                 pantalla.mostrarMensaje("Debe seleccionar una orden antes de cerrarla.");
@@ -273,10 +248,18 @@ namespace ImplementacionCU37.Controlador
             };
 
             // Setear fecha, hora y estado
-            ordenSeleccionada.fechaHoraCierre = DateTime.Now;
+            ordenSeleccionada.setFechaHoraCierre(DateTime.Now);
             ordenSeleccionada.setEstado(estadoCerrada);
 
             pantalla.mostrarMensaje("La orden fue cerrada exitosamente.");
+
+            // Actualizar estado del sismógrafo
+            actualizarEstadoSismografo();
+
+            pantalla.mostrarMensaje("Orden cerrada y estado del sismógrafo actualizado.");
+
+            // Enviar email
+            pantalla.mostrarMensaje("Mails enviados");
         }
         public void tomarComentario(string comentario) => this.comentario = comentario;
         public void tomarConfirmacionCierre(bool confirmacion) => this.confirmacionCierre = confirmacion;

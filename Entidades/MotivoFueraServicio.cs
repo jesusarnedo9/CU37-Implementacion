@@ -2,9 +2,9 @@ namespace ImplementacionCU37.Entidades
 {
     public class MotivoFueraServicio
     {
+        // Atributos
         public string comentario { get; set; }
 
-        // Relación 1 a 1 con MotivoTipo
         private MotivoTipo tipo;
 
         public MotivoFueraServicio(string comentario)

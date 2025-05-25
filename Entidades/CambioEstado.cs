@@ -12,12 +12,6 @@ public class CambioEstado
     private Empleado responsableLogueado;
 
 
-    public CambioEstado(DateTime inicio, MotivoFueraServicio motivo = null)
-    {
-        this.fechaHoraInicio = inicio;
-        this.motivo = motivo;
-    }
-
     public CambioEstado(DateTime inicio, List<MotivoFueraServicio> motivos)
     {
         this.fechaHoraInicio = inicio;
