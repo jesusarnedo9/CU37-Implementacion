@@ -58,6 +58,10 @@ namespace ImplementacionCU37
         {
             this.Enabled = true;
         }
+        public void cerrarVentana()
+        {
+            this.Close();
+        }
 
         public void opcionCerrarOrdenInspeccion()
         {

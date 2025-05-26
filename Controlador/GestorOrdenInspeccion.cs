@@ -280,6 +280,8 @@ namespace ImplementacionCU37.Controlador
 
             // Enviar email
             pantalla.mostrarMensaje("Mails enviados");
+
+            pantalla.cerrarVentana();
         }
         public void tomarComentario(string comentario) => this.comentario = comentario;
         public void tomarConfirmacionCierre(bool confirmacion) => this.confirmacionCierre = confirmacion;
