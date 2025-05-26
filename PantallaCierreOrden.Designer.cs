@@ -1,4 +1,6 @@
-﻿namespace ImplementacionCU37
+﻿using System.Drawing;
+
+namespace ImplementacionCU37
 {
     partial class PantallaCierreOrden
     {
@@ -36,6 +38,7 @@
             this.btnConfirmarMotivos = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.lblSeleccionarMotivo = new System.Windows.Forms.Label();
+            this.btnCancelarCerrarOI = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listaOrdenInspeccion
@@ -138,12 +141,32 @@
             this.lblSeleccionarMotivo.VisibleChanged += new System.EventHandler(this.label1_Click);
             this.lblSeleccionarMotivo.Click += new System.EventHandler(this.label3_Click);
             // 
+            // btnCancelarCerrarOI
+            // 
+            this.btnCancelarCerrarOI.BackColor = Color.Tomato;
+            this.btnCancelarCerrarOI.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancelarCerrarOI.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelarCerrarOI.FlatAppearance.BorderSize = 0;
+            this.btnCancelarCerrarOI.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnCancelarCerrarOI.ForeColor = System.Drawing.Color.White;
+            this.btnCancelarCerrarOI.Location = new System.Drawing.Point(13, 484);
+            this.btnCancelarCerrarOI.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCancelarCerrarOI.Name = "btnCancelarCerrarOI";
+            this.btnCancelarCerrarOI.Size = new System.Drawing.Size(175, 57);
+            this.btnCancelarCerrarOI.TabIndex = 9;
+            this.btnCancelarCerrarOI.Text = "Cancelar";
+            this.btnCancelarCerrarOI.UseVisualStyleBackColor = false;
+            this.btnCancelarCerrarOI.Visible = false;
+            this.btnCancelarCerrarOI.Click += new System.EventHandler(this.button1_Click);
+
+            // 
             // PantallaCierreOrden
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Beige;
             this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.Controls.Add(this.btnCancelarCerrarOI);
             this.Controls.Add(this.lblSeleccionarMotivo);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnConfirmarMotivos);
@@ -171,5 +194,6 @@
         private System.Windows.Forms.Button btnConfirmarMotivos;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblSeleccionarMotivo;
+        private System.Windows.Forms.Button btnCancelarCerrarOI;
     }
 }

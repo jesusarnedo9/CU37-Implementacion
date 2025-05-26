@@ -18,21 +18,16 @@ namespace ImplementacionCU37.Controlador
         //private DateTime fechaActual;
         //private TimeSpan horaActual;
         private string observacion;
-        //private List<MotivoTipo> motivosTipo;
         private OrdenDeInspeccion ordenSeleccionada;
         //private List<string> solicitudMotivo;
         private Empleado responsableLogueado;
         private List<OrdenDeInspeccion> ordenes;
         private List<string> motivosSeleccionados;
-        //private List<MotivoFueraServicio> todosLosMotivos;
-
-
-        // Dependencias
         //private InterfazEmail interfazEmail;
         //private PantallaCCRS pantallaCCRS;
         private PantallaCierreOrden pantalla;
         private List<Estado> estadosDisponibles;
-        //private Estado estado;
+        private Estado estado;
         private Sesion sesion;
 
         //Datos de prueba
@@ -237,7 +232,7 @@ namespace ImplementacionCU37.Controlador
             }
             else
             {
-                MessageBox.Show("❌ No se pudo obtener el cambio de estado recientemente agregado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(" No se pudo obtener el cambio de estado recientemente agregado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }

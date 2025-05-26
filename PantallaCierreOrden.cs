@@ -20,6 +20,7 @@ namespace ImplementacionCU37
             InitializeComponent();
             gestor = new GestorOrdenInspeccion(this); // Pasa referencia de pantalla
             gestor.opcionCerrarOrdenInspeccion(); // Llamá acá directamente
+            btnCancelarCerrarOI.Visible = true;
         }
 
 
@@ -245,6 +246,11 @@ namespace ImplementacionCU37
         private void label3_Click(object sender, EventArgs e)
         {
     
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
