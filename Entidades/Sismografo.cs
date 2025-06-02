@@ -18,6 +18,22 @@ namespace ImplementacionCU37.Entidades
         //Metodos
         public string getID() => identificadorSismografo;
 
+        public void actualizarEstado(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
+        {
+            if (nuevoEstado == null) throw new ArgumentNullException(nameof(nuevoEstado), "El nuevo estado no puede ser nulo.");
+            if (motivos == null || !motivos.Any()) throw new ArgumentException("La lista de motivos no puede estar vacía.", nameof(motivos));
+            if (responsableLogueado == null) throw new ArgumentNullException(nameof(responsableLogueado), "El responsable logueado no puede ser nulo.");
+            // Cerrar el estado actual si existe
+            cerrarEstadoActual();
+            // Crear un nuevo cambio de estado
+            var nuevoCambio = new CambioEstado(DateTime.Now, motivos);
+            nuevoCambio.setRILogueado(responsableLogueado);
+            nuevoCambio.setMotivosSeleccionado(motivos.FirstOrDefault());
+            // Agregar el cambio al historial
+            agregarCambioEstado(nuevoCambio, nuevoEstado);
+            setEstadoActual();
+        }
+
         public void setEstadoActual()
         {
             if (historialEstados != null && historialEstados.Any())
@@ -30,12 +46,6 @@ namespace ImplementacionCU37.Entidades
                 estadoActual = ultimoCambio != null && ultimoCambio.esActual() ? estadoActual : null;
             }
         }
-
-        /*public Estado getEstadoActual()
-        {
-            setEstadoActual();
-            return estadoActual;
-        }*/
 
         public CambioEstado getCambioEstadoActual()
         {

@@ -15,14 +15,14 @@ namespace ImplementacionCU37.Entidades
         }
 
         //Metodos
-        public Empleado getEmpleado()
+        public Empleado getRIlogueado() 
         {
-            return empleado;
+            if (empleado != null && empleado.esResponsableReparacion()) 
+            {
+                return empleado;
+            }
+            return null;
         }
 
-        public bool getRILogueado()
-        {
-            return empleado != null && empleado.esResponsableReparacion();
-        }
     }
 }

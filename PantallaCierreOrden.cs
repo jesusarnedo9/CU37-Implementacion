@@ -15,106 +15,88 @@ namespace ImplementacionCU37
     public partial class PantallaCierreOrden : Form
     {
         private GestorOrdenInspeccion gestor;
-        public PantallaCierreOrden()
+        private List<MotivoFueraServicio> motivosSeleccionados;
+        private List<MotivoTipo> motivos;
+
+        public PantallaCierreOrden(Sistema sistema)
         {
             InitializeComponent();
-            gestor = new GestorOrdenInspeccion(this); // Pasa referencia de pantalla
-            gestor.opcionCerrarOrdenInspeccion(); // Llamá acá directamente
-            btnCancelarCerrarOI.Visible = true;
+            gestor = new GestorOrdenInspeccion(sistema, this);
+            motivos = new List<MotivoTipo>();
+            motivosSeleccionados = new List<MotivoFueraServicio>();
+            this.AcceptButton = btnConfirmarMotivos;
+            
         }
-
-
         //LOAD
         private void PantallaCierreOrden_Load(object sender, EventArgs e)
         {
             gestor.opcionCerrarOrdenInspeccion();
-
-            // Ocultamos todo al inicio
-            label1.Visible = false;
-            txtObservacionCierre.Visible = false;
-            btnConfirmarObservacion.Visible = false;
-            lblSeleccionarMotivo.Visible = false;
-            chkMotivos.Visible = false;
-            btnConfirmarMotivos.Visible = false;
-
-            
-
         }
-
-
-        // Atributos: Controles de la pantalla
+        // Atributos
         private Button btnCancelar;
         private Button btnConfirmar;
         private TextBox inputComentario;
-
-        //private TextBox inputObservacionCierre;
+        private TextBox inputObservacionCierre;
         private Label lblComentario;
         private Label lblObservacionCierre;
         private CheckedListBox listaMotivo;
         
-        // Métodos
 
+        // Métodos
         public void habilitarPantalla()
         {
-            this.Enabled = true;
+            this.Show();
         }
         public void cerrarVentana()
         {
             this.Close();
         }
-
-        public void opcionCerrarOrdenInspeccion()
-        {
-            gestor.opcionCerrarOrdenInspeccion();   
-        }
-
-        public void solicitarComentario()
-        {
-            gestor.tomarComentario(inputComentario.Text);
-        }
-
-        public void solicitarConfirmacionCierre()
-        {
-            gestor.tomarConfirmacionCierre(tomarConfirmacionCierre());
-        }
-
-        public void solicitarObservacionCierre()
-        {
-            gestor.tomarObservacionCierre(tomarObservacionCierre());
-        }
-
-        public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)
-        {
-            chkMotivos.DisplayMember = "Descripcion";
-            chkMotivos.Items.Clear();
-
-            foreach (var motivo in motivos)
-            {
-                chkMotivos.Items.Add(motivo); // Mostrará la descripción si sobreescribiste ToString()
-            }
-
-            chkMotivos.Visible = true;
-            btnConfirmarMotivos.Visible = true;
-        }
-
         public void solicitarSeleccionOrden(List<OrdenDeInspeccion> ordenesRealizadas)
         {
             listaOrdenInspeccion.Items.Clear();
+            if (ordenesRealizadas == null || ordenesRealizadas.Count == 0)
+            {
+                MessageBox.Show("No hay ordenes realizdas", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+                return;
+            }
             foreach (var orden in ordenesRealizadas)
             {
                 listaOrdenInspeccion.Items.Add(orden);
             }
         }
-
-        public string tomarComentario()
+        private void listaOrdenInspeccion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            return inputComentario.Text;
+            try
+            {
+                if (listaOrdenInspeccion.SelectedItem == null)
+                {
+                    throw new Exception("Debe seleccionar una orden válida.");
+                }
+                solicitarObservacionCierre();
+
+                // Ocultar controles de motivos por si estaban visibles
+                lblSeleccionarMotivo.Visible = false;
+                chkMotivos.Visible = false;
+                btnConfirmarMotivos.Visible = false;
+
+                // Pasar la orden seleccionada al gestor
+                string numeroOrden = (listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion).numeroOrden.ToString();
+                gestor.tomarOrdenSeleccionada(numeroOrden);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtObservacionCierre.Text = "";
+            }
         }
 
-        public bool tomarConfirmacionCierre()
+        public void solicitarObservacionCierre()
         {
-            // Simula que hay una confirmación, podés mejorarlo con un diálogo
-            return MessageBox.Show("¿Confirmar cierre?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes;
+            label1.Visible = true;
+            txtObservacionCierre.Visible = true;
+            btnConfirmarObservacion.Visible = true;
+            txtObservacionCierre.Focus();
         }
 
         public string tomarObservacionCierre()
@@ -122,139 +104,125 @@ namespace ImplementacionCU37
             return txtObservacionCierre.Text;
         }
 
-        /*public OrdenDeInspeccion tomarOrdenSeleccionada()
+        public void opcionCerrarOrdenInspeccion()
         {
-            return listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion;
-        }*/
-
-        public List<string> tomarSeleccionMotivo()
-        {
-            var motivos = new List<string>();
-            foreach (var item in listaMotivo.CheckedItems)
-            {
-                motivos.Add(item.ToString());
-            }
-            return motivos;
+            gestor.opcionCerrarOrdenInspeccion();   
         }
 
-        private void listaOrdenInspeccion_SelectedIndexChanged(object sender, EventArgs e)
+        public void solicitarConfirmacionCierre()
         {
-            // Mostrar los controles de observación
-            label1.Visible = true;
-            txtObservacionCierre.Visible = true;
-            btnConfirmarObservacion.Visible = true;
+            bool confirmacion = MessageBox.Show("¿Confirmar cierre de Orden de Inspeccion?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+            gestor.tomarConfirmacionCierre(confirmacion);
+            gestor.validarDatosIngresados();
+        }
 
-            // Ocultar controles de motivos por si estaban visibles
-            lblSeleccionarMotivo.Visible = false;
-            chkMotivos.Visible = false;
-            btnConfirmarMotivos.Visible = false;
+        public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)
+        {
+            chkMotivos.Items.Clear();
+            chkMotivos.DisplayMember = "descripcion";
+            foreach (var motivo in motivos)
+                chkMotivos.Items.Add(motivo);
 
-            //pasar la orden seleccionada al gestor
-            OrdenDeInspeccion ordenSeleccionada = listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion;
-            gestor.tomarOrdenSeleccionada(ordenSeleccionada);
+            chkMotivos.Visible = true;
+            btnConfirmarMotivos.Visible = true;
+        }
+
+
+        public string tomarComentario()
+        {
+            return inputComentario.Text;
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-
         }
-
         private void btnCerrarOrden_Click(object sender, EventArgs e)
         {
             string observacion = txtObservacionCierre.Text;
-
-            // Enviar la observación al gestor
-            gestor.tomarObservacionCierre(observacion);
-
-            /*
-            // Ocultar los controles de observación
-            label1.Visible = false;
-            txtObservacionCierre.Visible = false;
-            btnConfirmarObservacion.Visible = false;*/
-
         }
-
         private void txtObservacionCierre_TextChanged(object sender, EventArgs e)
         {
-        
         }
-
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
+        {   
         }
-
         private void btnConfirmarMotivos_Click(object sender, EventArgs e)
         {
-            List<string> solicitudMotivo = new List<string>();
-
-            foreach (var item in chkMotivos.CheckedItems)
+            foreach (MotivoFueraServicio motivoFS in motivosSeleccionados)
             {
-                if (item is MotivoTipo motivo)
-                {
-                    solicitudMotivo.Add(motivo.descripcion);
-                }
+                gestor.tomarSeleccionMotivo(motivoFS.tipo);
+                gestor.tomarComentario(motivoFS.comentario);
             }
-
-            gestor.tomarSeleccionMotivo(solicitudMotivo);
-
-            // Ocultar luego de confirmar
+            solicitarConfirmacionCierre();
             chkMotivos.Visible = false;
-            btnConfirmarMotivos.Visible = false;
-
-            // Mostrar cuadro de confirmación
-            DialogResult resultado = MessageBox.Show(
-                "¿Estás seguro de cerrar la orden de inspección?",
-                "Confirmar Cierre",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (resultado == DialogResult.Yes)
-            {
-                gestor.validarDatosIngresados();
-            }
-            else
-            {
-                // Opcional: mostrar mensaje de cancelación
-                MessageBox.Show("Cierre cancelado.");
-            }
         }
 
+        public string solicitarComentario(MotivoTipo motivo)
+        {
+            using (var form = new VentanaComentario(motivo.descripcion))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    return form.ComentarioIngresado;
+                }
+                return string.Empty;
+            }
+        }
         private void label2_Click(object sender, EventArgs e)
         {
-
         }
-
         internal void mostrarMensaje(string mensaje)
         {
             MessageBox.Show(mensaje);
         }
-
         private void btnConfirmarObservacion_Click(object sender, EventArgs e)
         {
+            string observacion = tomarObservacionCierre();
+            gestor.tomarObservacionCierre(observacion);
+            List<MotivoTipo> motivosDisponibles = gestor.buscarMotivo();
+            solicitarSeleccionMotivo(motivosDisponibles);
+
             lblSeleccionarMotivo.Visible = true;
             chkMotivos.Visible = true;
-            btnConfirmarMotivos.Visible = true;
             btnConfirmarObservacion.Visible = false;
-
-            gestor.tomarObservacionCierre(txtObservacionCierre.Text);
-
-            chkMotivos.Items.Clear();
-            foreach (MotivoTipo motivo in gestor.buscarMotivo())
-            {
-                chkMotivos.Items.Add(motivo);
-            }
         }
-
         private void label3_Click(object sender, EventArgs e)
         {
-    
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+        private void chkMotivos_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Checked)
+            {
+                MotivoTipo motivoSeleccionado = chkMotivos.Items[e.Index] as MotivoTipo;
+                if (motivoSeleccionado == null) return;
+
+                string comentario = solicitarComentario(motivoSeleccionado);
+
+                if (!string.IsNullOrEmpty(comentario))
+                {
+                    MotivoFueraServicio motivoFueraServicio = new MotivoFueraServicio(motivoSeleccionado, comentario);
+                    motivosSeleccionados.Add(motivoFueraServicio);
+                }
+                else
+                {
+                    e.NewValue = CheckState.Unchecked;
+                }
+            }
+            else if (e.NewValue == CheckState.Unchecked)
+            {
+                MotivoTipo motivo = chkMotivos.Items[e.Index] as MotivoTipo;
+                if (motivo == null) return;
+                motivosSeleccionados.RemoveAll(m => m.tipo == motivo);
+            }
+        }
+
+        private void tomarObservacionCierre(object sender, EventArgs e)
+        {
+
         }
     }
 }

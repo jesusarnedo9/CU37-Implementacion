@@ -1,31 +1,24 @@
 namespace ImplementacionCU37.Entidades
 {
-    public class MotivoFueraServicio
+   public class MotivoFueraServicio
     {
-        // Atributos
         public string comentario { get; set; }
+        public MotivoTipo tipo;
 
-        private MotivoTipo tipo;
-
-        public MotivoFueraServicio(string comentario)
-        {
-            this.comentario = comentario;
-        }
-
-        public void setMotivoTipo(MotivoTipo tipo)
+        public MotivoFueraServicio(MotivoTipo tipo, string comentario)
         {
             this.tipo = tipo;
+            this.comentario = comentario;
         }
 
         public MotivoTipo getMotivoTipo()
         {
             return tipo;
         }
+
         public override string ToString()
         {
-            return this.comentario; 
+            return $"{tipo.descripcion}: {comentario}";
         }
     }
-
-
 }

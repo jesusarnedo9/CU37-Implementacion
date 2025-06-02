@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ImplementacionCU37.Controlador;
+using ImplementacionCU37.Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,13 +20,14 @@ namespace ImplementacionCU37
         }
 
         //Boton Cerrar Orden
-        private void button1_Click(object sender, EventArgs e)
+        private void btnCerrar(object sender, EventArgs e)
         {
-            PantallaCierreOrden pantalla = new PantallaCierreOrden();
+            Sistema sistema = new Sistema();
+            PantallaCierreOrden pantalla = new PantallaCierreOrden(sistema);
             pantalla.ShowDialog();
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
 
         }

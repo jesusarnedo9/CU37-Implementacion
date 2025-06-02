@@ -44,7 +44,7 @@ namespace ImplementacionCU37
             // listaOrdenInspeccion
             // 
             this.listaOrdenInspeccion.FormattingEnabled = true;
-            this.listaOrdenInspeccion.Location = new System.Drawing.Point(157, 120);
+            this.listaOrdenInspeccion.Location = new System.Drawing.Point(173, 101);
             this.listaOrdenInspeccion.Margin = new System.Windows.Forms.Padding(4);
             this.listaOrdenInspeccion.Name = "listaOrdenInspeccion";
             this.listaOrdenInspeccion.Size = new System.Drawing.Size(707, 24);
@@ -54,10 +54,12 @@ namespace ImplementacionCU37
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(308, 212);
+            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(271, 178);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 16);
+            this.label1.Size = new System.Drawing.Size(198, 20);
             this.label1.TabIndex = 1;
             this.label1.Text = "Observacion de Cierre";
             this.label1.Visible = false;
@@ -65,23 +67,24 @@ namespace ImplementacionCU37
             // 
             // txtObservacionCierre
             // 
-            this.txtObservacionCierre.Location = new System.Drawing.Point(480, 212);
+            this.txtObservacionCierre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtObservacionCierre.Location = new System.Drawing.Point(528, 179);
             this.txtObservacionCierre.Margin = new System.Windows.Forms.Padding(4);
             this.txtObservacionCierre.Name = "txtObservacionCierre";
-            this.txtObservacionCierre.Size = new System.Drawing.Size(209, 22);
+            this.txtObservacionCierre.Size = new System.Drawing.Size(352, 22);
             this.txtObservacionCierre.TabIndex = 2;
             this.txtObservacionCierre.Visible = false;
-            this.txtObservacionCierre.Click += new System.EventHandler(this.listaOrdenInspeccion_SelectedIndexChanged);
+            this.txtObservacionCierre.Click += new System.EventHandler(this.tomarObservacionCierre);
             this.txtObservacionCierre.TextChanged += new System.EventHandler(this.txtObservacionCierre_TextChanged);
             // 
             // btnConfirmarObservacion
             // 
             this.btnConfirmarObservacion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.btnConfirmarObservacion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConfirmarObservacion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConfirmarObservacion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnConfirmarObservacion.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnConfirmarObservacion.ForeColor = System.Drawing.Color.White;
-            this.btnConfirmarObservacion.Location = new System.Drawing.Point(516, 273);
+            this.btnConfirmarObservacion.Location = new System.Drawing.Point(528, 223);
             this.btnConfirmarObservacion.Margin = new System.Windows.Forms.Padding(4);
             this.btnConfirmarObservacion.Name = "btnConfirmarObservacion";
             this.btnConfirmarObservacion.Size = new System.Drawing.Size(175, 57);
@@ -93,6 +96,8 @@ namespace ImplementacionCU37
             // 
             // chkMotivos
             // 
+            this.chkMotivos.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.chkMotivos.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkMotivos.FormattingEnabled = true;
             this.chkMotivos.Location = new System.Drawing.Point(314, 265);
             this.chkMotivos.Margin = new System.Windows.Forms.Padding(4);
@@ -100,13 +105,14 @@ namespace ImplementacionCU37
             this.chkMotivos.Size = new System.Drawing.Size(377, 123);
             this.chkMotivos.TabIndex = 5;
             this.chkMotivos.Visible = false;
+            this.chkMotivos.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.chkMotivos_ItemCheck);
             this.chkMotivos.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // btnConfirmarMotivos
             // 
             this.btnConfirmarMotivos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.btnConfirmarMotivos.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConfirmarMotivos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConfirmarMotivos.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnConfirmarMotivos.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnConfirmarMotivos.ForeColor = System.Drawing.Color.White;
             this.btnConfirmarMotivos.Location = new System.Drawing.Point(364, 406);
@@ -122,31 +128,36 @@ namespace ImplementacionCU37
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(435, 66);
+            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(359, 52);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(146, 16);
+            this.label2.Size = new System.Drawing.Size(291, 25);
             this.label2.TabIndex = 7;
-            this.label2.Text = "Ordenes de Inspeccion";
+            this.label2.Text = "ORDENES DE INSPECCION";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // lblSeleccionarMotivo
             // 
             this.lblSeleccionarMotivo.AutoSize = true;
+            this.lblSeleccionarMotivo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.lblSeleccionarMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSeleccionarMotivo.Location = new System.Drawing.Point(435, 245);
             this.lblSeleccionarMotivo.Name = "lblSeleccionarMotivo";
-            this.lblSeleccionarMotivo.Size = new System.Drawing.Size(129, 16);
+            this.lblSeleccionarMotivo.Size = new System.Drawing.Size(148, 16);
             this.lblSeleccionarMotivo.TabIndex = 8;
             this.lblSeleccionarMotivo.Text = "Seleccionar Motivos";
+            this.lblSeleccionarMotivo.Visible = false;
             this.lblSeleccionarMotivo.VisibleChanged += new System.EventHandler(this.label1_Click);
             this.lblSeleccionarMotivo.Click += new System.EventHandler(this.label3_Click);
             // 
             // btnCancelarCerrarOI
             // 
-            this.btnCancelarCerrarOI.BackColor = Color.Tomato;
+            this.btnCancelarCerrarOI.BackColor = System.Drawing.Color.Tomato;
             this.btnCancelarCerrarOI.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancelarCerrarOI.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelarCerrarOI.FlatAppearance.BorderSize = 0;
+            this.btnCancelarCerrarOI.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCancelarCerrarOI.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnCancelarCerrarOI.ForeColor = System.Drawing.Color.White;
             this.btnCancelarCerrarOI.Location = new System.Drawing.Point(13, 484);
@@ -158,7 +169,6 @@ namespace ImplementacionCU37
             this.btnCancelarCerrarOI.UseVisualStyleBackColor = false;
             this.btnCancelarCerrarOI.Visible = false;
             this.btnCancelarCerrarOI.Click += new System.EventHandler(this.button1_Click);
-
             // 
             // PantallaCierreOrden
             // 
