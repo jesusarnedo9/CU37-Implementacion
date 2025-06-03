@@ -78,7 +78,7 @@ namespace ImplementacionCU37
 }
         }implementarlo abajo*/ 
 
-        private void listaOrdenInspeccion_SelectedIndexChanged(object sender, EventArgs e)//tomarOrdenSeleccionada
+        private void tomarOrdenSeleccionada(object sender, EventArgs e)//tomarOrdenSeleccionada
         {
             try
             {
@@ -117,10 +117,10 @@ namespace ImplementacionCU37
             return txtObservacionCierre.Text;
         }
 
-        public void tomarObservacionCierre(object sender, EventArgs e)//Este metodo lo tengo que cambiar en el designer
+        /*public void tomarObservacionCierre(object sender, EventArgs e)//Este metodo lo tengo que cambiar en el designer
         {
 
-        }
+        }*/
 
         public void opcionCerrarOrdenInspeccion()
         {
@@ -130,9 +130,16 @@ namespace ImplementacionCU37
         public void solicitarConfirmacionCierre()//Agregar tomarConfirmacionCierre de pantalla
         {
             bool confirmacion = MessageBox.Show("¿Confirmar cierre de Orden de Inspeccion?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+            tomarConfirmacionCierre(confirmacion);
+        }
+
+        public void tomarConfirmacionCierre(bool confirmacion) 
+        { 
             gestor.tomarConfirmacionCierre(confirmacion);
             gestor.validarDatosIngresados();
         }
+
+
 
         public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)//tengo que hacer el metodo tomarSeleccionMotivo
         {

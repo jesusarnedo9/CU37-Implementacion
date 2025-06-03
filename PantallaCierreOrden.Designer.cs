@@ -49,7 +49,7 @@ namespace ImplementacionCU37
             this.listaOrdenInspeccion.Name = "listaOrdenInspeccion";
             this.listaOrdenInspeccion.Size = new System.Drawing.Size(707, 24);
             this.listaOrdenInspeccion.TabIndex = 0;
-            this.listaOrdenInspeccion.SelectedIndexChanged += new System.EventHandler(this.listaOrdenInspeccion_SelectedIndexChanged);
+            this.listaOrdenInspeccion.SelectedIndexChanged += new System.EventHandler(this.tomarOrdenSeleccionada);
             // 
             // label1
             // 
@@ -74,7 +74,7 @@ namespace ImplementacionCU37
             this.txtObservacionCierre.Size = new System.Drawing.Size(352, 22);
             this.txtObservacionCierre.TabIndex = 2;
             this.txtObservacionCierre.Visible = false;
-            this.txtObservacionCierre.Click += new System.EventHandler(this.tomarObservacionCierre);
+            //this.txtObservacionCierre.Click += new System.EventHandler(this.tomarObservacionCierre);
             this.txtObservacionCierre.TextChanged += new System.EventHandler(this.txtObservacionCierre_TextChanged);
             // 
             // btnConfirmarObservacion
