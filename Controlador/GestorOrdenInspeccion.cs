@@ -17,7 +17,6 @@ namespace ImplementacionCU37.Controlador
         private Empleado empleado;
         private List<OrdenDeInspeccion> ordenes;
         private bool confirmacionCierre;
-        private DateTime fechaHoraActual;
         private string observacion;
         private OrdenDeInspeccion ordenSeleccionada;
         private Estado estadoCerrada;
@@ -153,7 +152,7 @@ namespace ImplementacionCU37.Controlador
             }
         }
 
-        public List<MotivoTipo> buscarMotivo()
+        public List<MotivoTipo> buscarMotivo()//Probar de poner el metodo get descripciones
         {
             return sistema.MotivoTipos;
         }

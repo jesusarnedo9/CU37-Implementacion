@@ -65,7 +65,20 @@ namespace ImplementacionCU37
                 listaOrdenInspeccion.Items.Add(orden);
             }
         }
-        private void listaOrdenInspeccion_SelectedIndexChanged(object sender, EventArgs e)
+
+        /*public void mostrarOrdenSelecionada();
+        {
+            if (listaOrdenInspeccion.SelectedItem != null)
+            {
+                OrdenDeInspeccion ordenSeleccionada = listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion;
+                if (ordenSeleccionada != null)
+                {
+                    txtObservacionCierre.Text = ordenSeleccionada.observacionCierre;
+                }
+}
+        }implementarlo abajo*/ 
+
+        private void listaOrdenInspeccion_SelectedIndexChanged(object sender, EventArgs e)//tomarOrdenSeleccionada
         {
             try
             {
@@ -104,19 +117,24 @@ namespace ImplementacionCU37
             return txtObservacionCierre.Text;
         }
 
+        public void tomarObservacionCierre(object sender, EventArgs e)//Este metodo lo tengo que cambiar en el designer
+        {
+
+        }
+
         public void opcionCerrarOrdenInspeccion()
         {
             gestor.opcionCerrarOrdenInspeccion();   
         }
 
-        public void solicitarConfirmacionCierre()
+        public void solicitarConfirmacionCierre()//Agregar tomarConfirmacionCierre de pantalla
         {
             bool confirmacion = MessageBox.Show("¿Confirmar cierre de Orden de Inspeccion?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
             gestor.tomarConfirmacionCierre(confirmacion);
             gestor.validarDatosIngresados();
         }
 
-        public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)
+        public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)//tengo que hacer el metodo tomarSeleccionMotivo
         {
             chkMotivos.Items.Clear();
             chkMotivos.DisplayMember = "descripcion";
@@ -127,12 +145,10 @@ namespace ImplementacionCU37
             btnConfirmarMotivos.Visible = true;
         }
 
-
         public string tomarComentario()
         {
             return inputComentario.Text;
         }
-
         private void label1_Click(object sender, EventArgs e)
         {
         }
@@ -218,11 +234,6 @@ namespace ImplementacionCU37
                 if (motivo == null) return;
                 motivosSeleccionados.RemoveAll(m => m.tipo == motivo);
             }
-        }
-
-        private void tomarObservacionCierre(object sender, EventArgs e)
-        {
-
         }
     }
 }
