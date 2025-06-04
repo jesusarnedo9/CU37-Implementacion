@@ -32,7 +32,6 @@ namespace ImplementacionCU37.Controlador
         // Main
         public void opcionCerrarOrdenInspeccion()
         {
-            //pantalla.habilitarPantalla();
             buscarEmpleado();
             buscarOrdenesInspecciones();
         }
@@ -88,9 +87,8 @@ namespace ImplementacionCU37.Controlador
                 MessageBox.Show("Debe seleccionar al menos un motivo de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            // Todo OK
-            registrarCierre();
+            getFechaHoraActual();
+            registrarCierreOI();
         }
         /*public void tomarSeleccionMotivo(MotivoTipo motivo)
         {
@@ -117,7 +115,7 @@ namespace ImplementacionCU37.Controlador
                 }
             }
         }
-        public void registrarCierre()
+        public void registrarCierreOI()
         {
             if (ordenSeleccionada == null)
             {
@@ -183,11 +181,16 @@ namespace ImplementacionCU37.Controlador
         {
             pantalla.mostrarMensaje("Mails enviados");
         }
-        public void finCU() 
+        public void finCU()
         {
-            pantalla.cerrarVentana();
-            pantalla.Dispose();
-            pantalla = null;
+            // Cierra la pantalla de cierre de orden si está abierta
+            if (pantalla != null && !pantalla.IsDisposed)
+            {
+                pantalla.Close();
+                pantalla = null;
+            }
+
+            // Limpieza de otras referencias
             sistema = null;
             empleado = null;
             ordenes = null;
@@ -197,9 +200,5 @@ namespace ImplementacionCU37.Controlador
             motivosSeleccionados.Clear();
             motivoActual = null;
         }
-
-
-
-
     }
 }

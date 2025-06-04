@@ -25,8 +25,6 @@ namespace ImplementacionCU37
             motivos = new List<MotivoTipo>();
             motivosSeleccionados = new List<MotivoFueraServicio>();
             this.AcceptButton = btnConfirmarMotivos;
-            
-
         }
         //LOAD
         private void PantallaCierreOrden_Load(object sender, EventArgs e)
@@ -46,8 +44,7 @@ namespace ImplementacionCU37
         // Métodos
         public void habilitarPantalla()
         {
-            this.Show();
-            gestor.opcionCerrarOrdenInspeccion();
+            this.ShowDialog();
         }
         public void cerrarVentana()
         {
