@@ -25,6 +25,8 @@ namespace ImplementacionCU37
             Sistema sistema = new Sistema();
             PantallaCierreOrden pantalla = new PantallaCierreOrden(sistema);
             pantalla.ShowDialog();
+            pantalla.habilitarPantalla();
+
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -8,10 +8,11 @@
             this.descripcion = descripcion;
         }
 
-        /*public string getDescripciones()
+        public string getDescripciones()
         {
             return this.descripcion;
-        }*/
+        }
+
         public override string ToString()
         {
             return this.descripcion;

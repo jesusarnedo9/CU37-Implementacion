@@ -22,10 +22,15 @@ namespace ImplementacionCU37
 
         }
 
+        public string tomarComentario()
+        {
+            return txtComentario.Text.Trim();
+        }
+
+
         private void btnAceptarComentario_Click(object sender, EventArgs e)
         {
-            ComentarioIngresado = txtComentario.Text.Trim();
-            if (string.IsNullOrEmpty(ComentarioIngresado))
+            if (string.IsNullOrEmpty(txtComentario.Text))
             {
                 MessageBox.Show("Debe ingresar un comentario.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -38,6 +43,11 @@ namespace ImplementacionCU37
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void txtComentario_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

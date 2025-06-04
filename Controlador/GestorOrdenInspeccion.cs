@@ -32,11 +32,10 @@ namespace ImplementacionCU37.Controlador
         // Main
         public void opcionCerrarOrdenInspeccion()
         {
-            pantalla.habilitarPantalla();
+            //pantalla.habilitarPantalla();
             buscarEmpleado();
             buscarOrdenesInspecciones();
         }
-
         // Metodos
         public void buscarEmpleado()
         {
@@ -66,6 +65,7 @@ namespace ImplementacionCU37.Controlador
                     break;
                 }
             }
+            pantalla.solicitarObservacionCierre();
         }
         public void tomarObservacionCierre(string observacion)
         {
@@ -74,6 +74,7 @@ namespace ImplementacionCU37.Controlador
         public void tomarConfirmacionCierre(bool confirmacion)
         {
             this.confirmacionCierre = confirmacion;
+            validarDatosIngresados();
         }
         public void validarDatosIngresados()
         {
@@ -82,7 +83,6 @@ namespace ImplementacionCU37.Controlador
                 MessageBox.Show("Debe ingresar una observación de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             if (motivosSeleccionados == null || motivosSeleccionados.Count == 0)
             {
                 MessageBox.Show("Debe seleccionar al menos un motivo de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -92,19 +92,18 @@ namespace ImplementacionCU37.Controlador
             // Todo OK
             registrarCierre();
         }
-
-
-        public void tomarSeleccionMotivo(MotivoTipo motivo)
+        /*public void tomarSeleccionMotivo(MotivoTipo motivo)
         {
             motivoActual = motivo;
-        }
-
-        public void tomarComentario(string comentario)
+        }*/
+        public void tomarMotivoYComentario(MotivoTipo motivo, string comentario)
         {
+            motivoActual = motivo;
             var motivoFS = new MotivoFueraServicio(motivoActual, comentario);
-            motivosSeleccionados.Add(motivoFS);
-        }
 
+            motivosSeleccionados.Add(motivoFS);
+            pantalla.solicitarConfirmacionCierre();
+        }
 
         public void buscarEstadoCerrada()
         {
@@ -151,7 +150,6 @@ namespace ImplementacionCU37.Controlador
                 }
             }
         }
-
         public List<MotivoTipo> buscarMotivo()//Probar de poner el metodo get descripciones
         {
             return sistema.MotivoTipos;

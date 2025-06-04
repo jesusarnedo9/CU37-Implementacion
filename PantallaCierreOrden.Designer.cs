@@ -105,7 +105,7 @@ namespace ImplementacionCU37
             this.chkMotivos.Size = new System.Drawing.Size(377, 123);
             this.chkMotivos.TabIndex = 5;
             this.chkMotivos.Visible = false;
-            this.chkMotivos.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.chkMotivos_ItemCheck);
+            this.chkMotivos.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tomarSeleccionMotivo);
             this.chkMotivos.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // btnConfirmarMotivos

@@ -52,6 +52,7 @@
             this.txtComentario.Name = "txtComentario";
             this.txtComentario.Size = new System.Drawing.Size(538, 59);
             this.txtComentario.TabIndex = 1;
+            this.txtComentario.TextChanged += new System.EventHandler(this.txtComentario_TextChanged);
             // 
             // btnAceptarComentario
             // 
