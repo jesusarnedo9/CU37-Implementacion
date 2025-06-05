@@ -224,6 +224,18 @@ namespace ImplementacionCU37
         {
             this.Close();
         }
-       
+
+        public void mostrarActualizacionEstado(EstacionSismologica estacion, string sismografo, List<MotivoFueraServicio> motivosSeleccionados, Empleado empleado, object fechaHoraCierre)
+        {
+            string mensaje =
+                $"Estado actualizado con éxito.\n" +
+                $"Estación: {estacion.nombre}\n" +
+                $"Sismógrafo: {sismografo}\n" +
+                $"Motivos: {string.Join(", ", motivos.Select(m => m.descripcion))}\n" +
+                $"Responsable: {empleado.id}, {empleado.apellido} {empleado.nombre}\n" +
+                $"Fecha/Hora de cierre: {fechaHoraCierre}";
+
+            MessageBox.Show(mensaje, "Actualización Exitosa");
+        }
     }
 }

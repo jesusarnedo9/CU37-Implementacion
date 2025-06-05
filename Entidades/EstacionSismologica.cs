@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace ImplementacionCU37.Entidades
 {
@@ -18,16 +20,21 @@ namespace ImplementacionCU37.Entidades
         {
             this.sismografo = sismografo;
         }
-
         public string getIDSismografo()
         {
-            return sismografo != null ? sismografo.getID() : "";
+            return sismografo.getID();
         }
-
         public Sismografo getSismografo()
         {
             return this.sismografo;
         }
-
+        public void actualizarSismografo(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
+        {
+            // Lógica para actualizar el sismógrafo asociado a la estación
+            if (sismografo != null)
+            {
+                sismografo.actualizarEstado(nuevoEstado, motivos, responsableLogueado);
+            }
+        }
     }
 }

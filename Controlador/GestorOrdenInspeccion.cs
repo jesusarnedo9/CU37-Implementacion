@@ -1,6 +1,7 @@
 ﻿using ImplementacionCU37.Entidades;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
@@ -16,6 +17,7 @@ namespace ImplementacionCU37.Controlador
         private PantallaCierreOrden pantalla;
         private Empleado empleado;
         private List<OrdenDeInspeccion> ordenes;
+        private DateTime fechaHoraActual;
         private bool confirmacionCierre;
         private string observacion;
         private OrdenDeInspeccion ordenSeleccionada;
@@ -87,13 +89,9 @@ namespace ImplementacionCU37.Controlador
                 MessageBox.Show("Debe seleccionar al menos un motivo de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            getFechaHoraActual();
+            fechaHoraActual = getFechaHoraActual();
             registrarCierreOI();
         }
-        /*public void tomarSeleccionMotivo(MotivoTipo motivo)
-        {
-            motivoActual = motivo;
-        }*/
         public void tomarMotivoYComentario(MotivoTipo motivo, string comentario)
         {
             motivoActual = motivo;
@@ -108,7 +106,7 @@ namespace ImplementacionCU37.Controlador
             List<Estado> estados = sistema.EstadosDisponibles;
             foreach (Estado estado in estados)
             {
-                if (estado.esCerrada())
+                if (estado.esAmbitoOI() && estado.esCerrada())
                 {
                     estadoCerrada = estado;
                     break;
@@ -117,36 +115,33 @@ namespace ImplementacionCU37.Controlador
         }
         public void registrarCierreOI()
         {
-            if (ordenSeleccionada == null)
-            {
-                pantalla.mostrarMensaje("Debe seleccionar una orden antes de cerrarla.");
-                return;
-            }
             buscarEstadoCerrada();
-            // Setear fecha, hora y estado
-            ordenSeleccionada.setFechaHoraCierre(DateTime.Now);
-            ordenSeleccionada.setEstado(estadoCerrada);
+            cerrarOI();//Agregar self en Diagramas
 
             // Actualizar estado del sismógrafo
-
-            string mensaje = actualizarEstadoSismografo();
-            MessageBox.Show(mensaje, "Estado actualizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            
+            actualizarEstadoSismografo();
+            pantalla.mostrarMensaje("Estado actualizado");
             pantalla.mostrarMensaje("Orden cerrada y estado del sismógrafo actualizado.");
             notificarCierre();
             finCU();
         }
+
+        public void cerrarOI() 
+        { 
+            ordenSeleccionada.setFechaHoraCierre(fechaHoraActual);
+            ordenSeleccionada.setEstado(estadoCerrada);
+        }
         public DateTime getFechaHoraActual() => DateTime.Now;
-        public void buscarEstadoFueraServicio()
+        public Estado buscarEstadoFueraServicio()
         {
             foreach (Estado estado in sistema.EstadosDisponibles)
             {
                 if (estado.esAmbitoSismografo() && estado.esFueraServicio())
                 {
-                    estadoFueraServicio = estado;
-                    break;
+                    return estado;
                 }
             }
+            return null;
         }
         public List<MotivoTipo> buscarMotivo()//Probar de poner el metodo get descripciones
         {
@@ -158,24 +153,13 @@ namespace ImplementacionCU37.Controlador
                 .OrderByDescending(o => o.fechaHoraFinalizacion)
                 .ToList();
         }
-
-        public string actualizarEstadoSismografo()
+        public void actualizarEstadoSismografo()
         {
-            buscarEstadoFueraServicio();
-            EstacionSismologica estacion = ordenSeleccionada.getEstacionSismologica();
-            Sismografo sismografo = estacion.getSismografo();
-            List<MotivoFueraServicio> motivos = motivosSeleccionados;
-
-            sismografo.actualizarEstado(estadoFueraServicio, motivos, empleado);
-
-            string mensaje = $"Estado actualizado con éxito.\n" +
-                 $"Estación: {estacion.nombre}\n" +
-                 $"Sismógrafo: {sismografo.getID()}\n" +
-                 $"Motivos: {string.Join(", ", motivos)}\n" +
-                 $"Responsable: {empleado.id}, {empleado.apellido} {empleado.nombre}\n" +
-                 $"Fecha/Hora de cierre: {getFechaHoraActual()}";
-
-            return mensaje;
+            estadoFueraServicio = buscarEstadoFueraServicio();
+            ordenSeleccionada.actualizarEstadoSismografo(estadoFueraServicio, motivosSeleccionados, empleado);
+            var estacion = ordenSeleccionada.getEstacionSismologica();
+            var sismografo = estacion.getIDSismografo();
+            pantalla.mostrarActualizacionEstado(estacion, sismografo ,motivosSeleccionados, empleado, fechaHoraActual);
         }   
         public void notificarCierre() 
         {

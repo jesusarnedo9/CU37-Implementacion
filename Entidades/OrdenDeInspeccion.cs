@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ImplementacionCU37.Entidades
 {
@@ -55,6 +56,9 @@ namespace ImplementacionCU37.Entidades
             return $"Orden #{numeroOrden} - Estación: {estacion.nombre} - Sismógrafo: {estacion.getSismografo().getID()} - Finalización: {fechaHoraFinalizacion.ToShortDateString()}";
         }
 
-
+        public void actualizarEstadoSismografo(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
+        {
+            estacion.actualizarSismografo(nuevoEstado, motivos, responsableLogueado);
+        }
     }
 }
