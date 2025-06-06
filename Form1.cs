@@ -20,7 +20,7 @@ namespace ImplementacionCU37
         }
 
         //Boton Cerrar Orden
-        private void btnCerrar(object sender, EventArgs e)
+        private void opcionCerrarOrdenInspeccion(object sender, EventArgs e)
         {
             Sistema sistema = new Sistema();
             PantallaCierreOrden pantalla = new PantallaCierreOrden(sistema);

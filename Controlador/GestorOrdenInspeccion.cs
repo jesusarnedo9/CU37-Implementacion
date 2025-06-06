@@ -25,6 +25,7 @@ namespace ImplementacionCU37.Controlador
         private Estado estadoFueraServicio;
         private List<MotivoFueraServicio> motivosSeleccionados = new List<MotivoFueraServicio>();
         private MotivoTipo motivoActual;
+        private List<MotivoTipo> motivosTipos;
 
         public GestorOrdenInspeccion(Sistema sistema, PantallaCierreOrden pantalla)
         {
@@ -71,12 +72,24 @@ namespace ImplementacionCU37.Controlador
         public void tomarObservacionCierre(string observacion)
         {
             this.observacion = observacion;
+            List<MotivoTipo> motivosDisponibles = buscarMotivo();
+            pantalla.solicitarSeleccionMotivo(motivosDisponibles);
         }
         public void tomarConfirmacionCierre(bool confirmacion)
         {
             this.confirmacionCierre = confirmacion;
             validarDatosIngresados();
         }
+        public void tomarSeleccionMotivo(MotivoTipo motivo)
+        {
+            string comentario = pantalla.solicitarComentario(motivo);
+            if (!string.IsNullOrEmpty(comentario))
+            {
+                MotivoFueraServicio mfs = new MotivoFueraServicio(motivo, comentario);
+                motivosSeleccionados.Add(mfs);
+            }
+        }
+
         public void validarDatosIngresados()
         {
             if (string.IsNullOrWhiteSpace(observacion))
@@ -92,12 +105,16 @@ namespace ImplementacionCU37.Controlador
             fechaHoraActual = getFechaHoraActual();
             registrarCierreOI();
         }
-        public void tomarMotivoYComentario(MotivoTipo motivo, string comentario)
+        public void tomarComentario(MotivoTipo motivo, string comentario)
         {
-            motivoActual = motivo;
-            var motivoFS = new MotivoFueraServicio(motivoActual, comentario);
-
-            motivosSeleccionados.Add(motivoFS);
+            if (!string.IsNullOrWhiteSpace(comentario))
+            {
+                MotivoFueraServicio mfs = new MotivoFueraServicio(motivo, comentario);
+                motivosSeleccionados.Add(mfs);
+            }
+        }
+        public void motivosConfirmados() 
+        { 
             pantalla.solicitarConfirmacionCierre();
         }
 
@@ -120,7 +137,6 @@ namespace ImplementacionCU37.Controlador
 
             // Actualizar estado del sismógrafo
             actualizarEstadoSismografo();
-            pantalla.mostrarMensaje("Estado actualizado");
             pantalla.mostrarMensaje("Orden cerrada y estado del sismógrafo actualizado.");
             notificarCierre();
             finCU();
@@ -143,7 +159,7 @@ namespace ImplementacionCU37.Controlador
             }
             return null;
         }
-        public List<MotivoTipo> buscarMotivo()//Probar de poner el metodo get descripciones
+        public List<MotivoTipo> buscarMotivo()
         {
             return sistema.MotivoTipos;
         }

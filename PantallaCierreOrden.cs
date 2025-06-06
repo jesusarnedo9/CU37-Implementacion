@@ -29,7 +29,6 @@ namespace ImplementacionCU37
         //LOAD
         private void PantallaCierreOrden_Load(object sender, EventArgs e)
         {
-            gestor.opcionCerrarOrdenInspeccion();
         }
         // Atributos
         private Button btnCancelar;
@@ -44,6 +43,7 @@ namespace ImplementacionCU37
         // Métodos
         public void habilitarPantalla()
         {
+            gestor.opcionCerrarOrdenInspeccion();
             this.ShowDialog();
         }
         public void cerrarVentana()
@@ -64,41 +64,15 @@ namespace ImplementacionCU37
                 listaOrdenInspeccion.Items.Add(orden);
             }
         }
-
-        /*public void mostrarOrdenSelecionada();
-        {
-            if (listaOrdenInspeccion.SelectedItem != null)
-            {
-                OrdenDeInspeccion ordenSeleccionada = listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion;
-                if (ordenSeleccionada != null)
-                {
-                    txtObservacionCierre.Text = ordenSeleccionada.observacionCierre;
-                }
-}
-        }implementarlo abajo*/ 
-
         private void tomarOrdenSeleccionada(object sender, EventArgs e)
         {
-            try
-            {
-                if (listaOrdenInspeccion.SelectedItem == null)
-                {
-                    throw new Exception("Debe seleccionar una orden válida.");
-                }
-                // Pasar la orden seleccionada al gestor
-                string numeroOrden = (listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion).numeroOrden.ToString();
-                gestor.tomarOrdenSeleccionada(numeroOrden);
-
-                // Ocultar controles de motivos por si estaban visibles
-                lblSeleccionarMotivo.Visible = false;
-                chkMotivos.Visible = false;
-                btnConfirmarMotivos.Visible = false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtObservacionCierre.Text = "";
-            }
+             // Pasar la orden seleccionada al gestor
+             string numeroOrden = (listaOrdenInspeccion.SelectedItem as OrdenDeInspeccion).numeroOrden.ToString();
+             gestor.tomarOrdenSeleccionada(numeroOrden);
+             // Ocultar controles de motivos por si estaban visibles
+             lblSeleccionarMotivo.Visible = false;
+             chkMotivos.Visible = false;
+             btnConfirmarMotivos.Visible = false;
         }
         public void solicitarObservacionCierre()
         {
@@ -111,14 +85,6 @@ namespace ImplementacionCU37
         {
             return txtObservacionCierre.Text;
         }
-        /*public void tomarObservacionCierre(object sender, EventArgs e)//Este metodo lo tengo que cambiar en el designer
-        {
-
-        }*/
-        public void opcionCerrarOrdenInspeccion()
-        {
-            gestor.opcionCerrarOrdenInspeccion();   
-        }
         public void solicitarConfirmacionCierre()
         {
             bool confirmacion = MessageBox.Show("¿Confirmar cierre de Orden de Inspeccion?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
@@ -128,7 +94,7 @@ namespace ImplementacionCU37
         { 
             gestor.tomarConfirmacionCierre(confirmacion);
         }
-        public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)//tengo que hacer el metodo tomarSeleccionMotivo
+        public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)
         {
             chkMotivos.Items.Clear();
             chkMotivos.DisplayMember = "descripcion";
@@ -146,17 +112,7 @@ namespace ImplementacionCU37
                 MotivoTipo motivoSeleccionado = chkMotivos.Items[e.Index] as MotivoTipo;
                 if (motivoSeleccionado == null) return;
 
-                string comentario = solicitarComentario(motivoSeleccionado);
-
-                if (!string.IsNullOrEmpty(comentario))
-                {
-                    MotivoFueraServicio motivoFueraServicio = new MotivoFueraServicio(motivoSeleccionado, comentario);
-                    motivosSeleccionados.Add(motivoFueraServicio);
-                }
-                else
-                {
-                    e.NewValue = CheckState.Unchecked;
-                }
+                gestor.tomarSeleccionMotivo(motivoSeleccionado);
             }
             else if (e.NewValue == CheckState.Unchecked)
             {
@@ -181,12 +137,7 @@ namespace ImplementacionCU37
         }
         private void btnConfirmarMotivos_Click(object sender, EventArgs e)
         {
-            foreach (MotivoFueraServicio motivoFS in motivosSeleccionados)
-            {
-                gestor.tomarMotivoYComentario(motivoFS.tipo, motivoFS.comentario);
-            }
-            chkMotivos.Visible = false;
-
+            gestor.motivosConfirmados();
         }
         public string solicitarComentario(MotivoTipo motivo)
         {
@@ -194,7 +145,9 @@ namespace ImplementacionCU37
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    return form.tomarComentario();
+                    string comentario = form.tomarComentario();
+                    gestor.tomarComentario(motivo, comentario);
+
                 }
                 return string.Empty;
             }
@@ -210,8 +163,6 @@ namespace ImplementacionCU37
         {
             string observacion = tomarObservacionCierre();
             gestor.tomarObservacionCierre(observacion);
-            List<MotivoTipo> motivosDisponibles = gestor.buscarMotivo();
-            solicitarSeleccionMotivo(motivosDisponibles);
 
             lblSeleccionarMotivo.Visible = true;
             chkMotivos.Visible = true;
@@ -238,4 +189,5 @@ namespace ImplementacionCU37
             MessageBox.Show(mensaje, "Actualización Exitosa");
         }
     }
+
 }

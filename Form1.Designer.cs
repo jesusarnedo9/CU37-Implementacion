@@ -48,7 +48,7 @@
             this.btnCerrarOrden.TabIndex = 0;
             this.btnCerrarOrden.Text = "Cerrar Orden Inspeccion";
             this.btnCerrarOrden.UseVisualStyleBackColor = false;
-            this.btnCerrarOrden.Click += new System.EventHandler(this.btnCerrar);
+            this.btnCerrarOrden.Click += new System.EventHandler(this.opcionCerrarOrdenInspeccion);
             // 
             // btnCrearOrden
             // 

@@ -12,7 +12,6 @@ namespace ImplementacionCU37.Entidades
         {
             usuarioLogueado = usuario;
         }
-
         //Metodos
         public Empleado getEmpleado()
         {
