@@ -11,6 +11,10 @@ namespace ImplementacionCU37.Entidades
             this.comentario = comentario;
         }
 
+        public MotivoFueraServicio()
+        {
+        }
+
         public MotivoTipo getMotivoTipo()
         {
             return tipo;

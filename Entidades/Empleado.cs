@@ -22,6 +22,11 @@ namespace ImplementacionCU37.Entidades
             this.rol = rol;
         }
 
+        /*public bool esResponsableReparacion()
+        {
+            return rol != null && rol.getNombre();
+        }*/
+
         public bool esResponsableReparacion()
         {
             return rol != null && rol.getNombre();

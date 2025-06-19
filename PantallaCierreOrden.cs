@@ -14,15 +14,12 @@ namespace ImplementacionCU37
 {
     public partial class PantallaCierreOrden : Form
     {
-        private GestorOrdenInspeccion gestor;
-        private List<MotivoFueraServicio> motivosSeleccionados;//arreglar
-        
+        private GestorOrdenInspeccion gestor;        
 
         public PantallaCierreOrden(Sistema sistema)
         {
             InitializeComponent();
             gestor = new GestorOrdenInspeccion(sistema, this);
-            motivosSeleccionados = new List<MotivoFueraServicio>();
             this.AcceptButton = btnConfirmarMotivos;
         }
         //LOAD
@@ -37,7 +34,6 @@ namespace ImplementacionCU37
         private Label lblComentario;
         private Label lblObservacionCierre;
         private CheckedListBox listaMotivo;
-        
 
         // Métodos
         public void habilitarPantalla()
@@ -83,7 +79,6 @@ namespace ImplementacionCU37
         public string tomarObservacionCierre()
         {
             return txtObservacionCierre.Text;
-            
         }
         public void solicitarConfirmacionCierre()
         {
@@ -156,8 +151,6 @@ namespace ImplementacionCU37
                 }
             }
         }
-
-
         private void label2_Click(object sender, EventArgs e)
         {
         }
@@ -184,16 +177,15 @@ namespace ImplementacionCU37
 
         public void mostrarActualizacionEstado(EstacionSismologica estacion, string sismografo, List<MotivoFueraServicio> motivosSeleccionados, Empleado empleado, object fechaHoraCierre)
         {
+            string motivos = string.Join("\n - ", motivosSeleccionados.Select(m => m.tipo.descripcion));
             string mensaje =
                 $"Estado actualizado con éxito.\n" +
                 $"Estación: {estacion.nombre}\n" +
                 $"Sismógrafo: {sismografo}\n" +
-                //$"Motivos: {string.Join(", ", motivos.Select(m => m.descripcion))}\n" +
+                $"Motivos Seleccionados:\n - {motivos}\n" +
                 $"Responsable: {empleado.id}, {empleado.apellido} {empleado.nombre}\n" +
                 $"Fecha/Hora de cierre: {fechaHoraCierre}";
-
             MessageBox.Show(mensaje, "Actualización Exitosa");
         }
     }
-
 }

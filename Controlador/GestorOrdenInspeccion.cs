@@ -27,7 +27,7 @@ namespace ImplementacionCU37.Controlador
         private MotivoTipo motivoActual;
         private List<MotivoTipo> motivosTipos;
         private Dictionary<string, MotivoTipo> mapaMotivos;
-
+        private List<Empleado> empleados;
 
         public GestorOrdenInspeccion(Sistema sistema, PantallaCierreOrden pantalla)
         {
@@ -40,11 +40,13 @@ namespace ImplementacionCU37.Controlador
             buscarEmpleado();
             buscarOrdenesInspecciones();
         }
+        
         // Metodos
         public void buscarEmpleado()
         {
             empleado = sistema.SesionActiva.getEmpleado();
         }
+        
         public void buscarOrdenesInspecciones()
         {
             ordenes = sistema.Ordenes;
@@ -189,9 +191,19 @@ namespace ImplementacionCU37.Controlador
             var estacion = ordenSeleccionada.getEstacionSismologica();
             var sismografo = estacion.getIDSismografo();
             pantalla.mostrarActualizacionEstado(estacion, sismografo ,motivosSeleccionados, empleado, fechaHoraActual);
-        }   
-        public void notificarCierre() 
+        }
+        public void notificarCierre()
         {
+            var responsables = sistema.Empleados.Where(e => e.esResponsableReparacion()).ToList();
+            if (responsables.Count == 0)
+            {
+                pantalla.mostrarMensaje("No hay responsables de reparación para notificar.");
+                return;
+            }
+            foreach (var responsable in responsables)
+            {
+                string email = responsable.obtenerEmail();
+            }
             pantalla.mostrarMensaje("Mails enviados");
         }
         public void finCU()
