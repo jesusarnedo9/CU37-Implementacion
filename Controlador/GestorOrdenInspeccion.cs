@@ -26,7 +26,8 @@ namespace ImplementacionCU37.Controlador
         private List<MotivoFueraServicio> motivosSeleccionados = new List<MotivoFueraServicio>();
         private MotivoTipo motivoActual;
         private List<MotivoTipo> motivosTipos;
-        private object descripciones;
+        private Dictionary<string, MotivoTipo> mapaMotivos;
+
 
         public GestorOrdenInspeccion(Sistema sistema, PantallaCierreOrden pantalla)
         {
@@ -74,9 +75,24 @@ namespace ImplementacionCU37.Controlador
         {
             this.observacion = observacion;
             List<MotivoTipo> motivosDisponibles = buscarMotivo();
-            List<string> descripciones = MotivoTipo.getDescripciones(motivosDisponibles);
-            //pantalla.solicitarSeleccionMotivo(motivosDisponibles);
+            mapaMotivos = new Dictionary<string, MotivoTipo>();
+
+            List<string> descripciones = new List<string>();
+            foreach (MotivoTipo motivo in motivosDisponibles)
+            {
+                mapaMotivos[motivo.getDescripciones()] = motivo;
+                descripciones.Add(motivo.getDescripciones());
+            }
             pantalla.solicitarSeleccionMotivo(descripciones);
+        }
+        public void tomarMotivoSeleccionado(string descripcionSeleccionada, int indiceCheckbox)
+        {
+            // Ya no necesitás recuperar el objeto acá, solo validás que existe
+            if (mapaMotivos.ContainsKey(descripcionSeleccionada))
+            {
+                // Llamás a la pantalla para pedir comentario con la descripción directamente
+                pantalla.solicitarComentario(descripcionSeleccionada, indiceCheckbox);
+            }
         }
         private List<string> obtenerDescripciones(List<MotivoTipo> motivos)
         {
@@ -92,7 +108,7 @@ namespace ImplementacionCU37.Controlador
             this.confirmacionCierre = confirmacion;
             validarDatosIngresados();
         }
-        public void tomarSeleccionMotivo(MotivoTipo motivo)
+        /*public void tomarSeleccionMotivo(MotivoTipo motivo)
         {
             string comentario = pantalla.solicitarComentario(motivo);
             if (!string.IsNullOrEmpty(comentario))
@@ -100,7 +116,7 @@ namespace ImplementacionCU37.Controlador
                 MotivoFueraServicio mfs = new MotivoFueraServicio(motivo, comentario);
                 motivosSeleccionados.Add(mfs);
             }
-        }
+        }*/
         public void validarDatosIngresados()
         {
             if (string.IsNullOrWhiteSpace(observacion))
@@ -116,12 +132,16 @@ namespace ImplementacionCU37.Controlador
             fechaHoraActual = getFechaHoraActual();
             registrarCierreOI();
         }
-        public void tomarComentario(MotivoTipo motivo, string comentario)
+        public void tomarComentario(string descripcion, string comentario)
         {
             if (!string.IsNullOrWhiteSpace(comentario))
             {
-                MotivoFueraServicio mfs = new MotivoFueraServicio(motivo, comentario);
-                motivosSeleccionados.Add(mfs);
+                if (mapaMotivos.ContainsKey(descripcion))
+                {
+                    MotivoTipo motivo = mapaMotivos[descripcion];
+                    MotivoFueraServicio mfs = new MotivoFueraServicio(motivo, comentario);
+                    motivosSeleccionados.Add(mfs);
+                }
             }
         }
         public void motivosConfirmados() 
@@ -171,9 +191,9 @@ namespace ImplementacionCU37.Controlador
         }
         public List<MotivoTipo> buscarMotivo()
         {
-
             return sistema.MotivoTipos;
         }
+
         public List<OrdenDeInspeccion> ordenarOI(List<OrdenDeInspeccion> lista)
         {
             return lista

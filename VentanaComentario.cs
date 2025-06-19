@@ -13,20 +13,19 @@ namespace ImplementacionCU37
     public partial class VentanaComentario : Form
     {
         public string ComentarioIngresado { get; private set; }
+        public int IndiceCheckbox { get; internal set; }
 
         public VentanaComentario(string motivo)
         {
             InitializeComponent();
             lblMotivo.Text = $"Comentario para: {motivo}";
             this.AcceptButton = btnAceptarComentario;
-
         }
 
         public string tomarComentario()
         {
             return txtComentario.Text.Trim();
         }
-
 
         private void btnAceptarComentario_Click(object sender, EventArgs e)
         {

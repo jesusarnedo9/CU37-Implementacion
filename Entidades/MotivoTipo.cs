@@ -4,22 +4,15 @@ namespace ImplementacionCU37.Entidades
 {
     public class MotivoTipo
     {
-        public string descripcion { get; set; }
+        public string descripcion;
         public MotivoTipo(string descripcion)
         {
             this.descripcion = descripcion;
         }
-
-        public static List<string> getDescripciones(List<MotivoTipo> motivos)
+        public string getDescripciones()
         {
-            List<string> descripciones = new List<string>();
-            foreach (MotivoTipo motivo in motivos)
-            {
-                descripciones.Add(motivo.descripcion);
-            }
-            return descripciones;
+            return descripcion;
         }
-
         public override string ToString()
         {
             return this.descripcion;

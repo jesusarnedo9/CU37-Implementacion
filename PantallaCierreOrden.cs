@@ -16,13 +16,12 @@ namespace ImplementacionCU37
     {
         private GestorOrdenInspeccion gestor;
         private List<MotivoFueraServicio> motivosSeleccionados;//arreglar
-        private List<MotivoTipo> motivos;
+        
 
         public PantallaCierreOrden(Sistema sistema)
         {
             InitializeComponent();
             gestor = new GestorOrdenInspeccion(sistema, this);
-            motivos = new List<MotivoTipo>();
             motivosSeleccionados = new List<MotivoFueraServicio>();
             this.AcceptButton = btnConfirmarMotivos;
         }
@@ -95,41 +94,31 @@ namespace ImplementacionCU37
         { 
             gestor.tomarConfirmacionCierre(confirmacion);
         }
-        /*public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)
-        {
-            chkMotivos.Items.Clear();
-            chkMotivos.DisplayMember = "descripcion";
-            foreach (var motivo in motivos)
-                chkMotivos.Items.Add(motivo);
-
-            chkMotivos.Visible = true;
-            btnConfirmarMotivos.Visible = true;
-        }*/
         public void solicitarSeleccionMotivo(List<string> motivos)
         {
             chkMotivos.Items.Clear();
             foreach (var motivo in motivos)
                 chkMotivos.Items.Add(motivo);
+
             chkMotivos.Visible = true;
             btnConfirmarMotivos.Visible = true;
-        }
 
+        }
         private void tomarSeleccionMotivo(object sender, ItemCheckEventArgs e)
         {
             if (e.NewValue == CheckState.Checked)
             {
-                MotivoTipo motivoSeleccionado = chkMotivos.Items[e.Index] as MotivoTipo;
-                if (motivoSeleccionado == null) return;
-
-                gestor.tomarSeleccionMotivo(motivoSeleccionado);
+                string descripcionSeleccionada = chkMotivos.Items[e.Index].ToString();
+                gestor.tomarMotivoSeleccionado(descripcionSeleccionada, e.Index);
             }
             else if (e.NewValue == CheckState.Unchecked)
             {
-                MotivoTipo motivo = chkMotivos.Items[e.Index] as MotivoTipo;
-                if (motivo == null) return;
-                motivosSeleccionados.RemoveAll(m => m.tipo == motivo);
+                string descripcionSeleccionada = chkMotivos.Items[e.Index].ToString();
+                
             }
         }
+
+
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -148,19 +137,31 @@ namespace ImplementacionCU37
         {
             gestor.motivosConfirmados();
         }
-        public string solicitarComentario(MotivoTipo motivo)
+        public void solicitarComentario(string descripcion, int indiceCheckbox)
         {
-            using (var form = new VentanaComentario(motivo.descripcion))
+            using (var form = new VentanaComentario(descripcion))
             {
+                form.IndiceCheckbox = indiceCheckbox; // Pasás el índice
+
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    string comentario = form.tomarComentario();
-                    gestor.tomarComentario(motivo, comentario);
-
+                    var comentario = form.tomarComentario();
+                    gestor.tomarComentario(descripcion, comentario);
                 }
-                return string.Empty;
+                else
+                {
+                    // Si cancela, deschequeás el checkbox
+                    chkMotivos.ItemCheck -= tomarSeleccionMotivo; // Desuscribís para que no se dispare el evento de nuevo
+                    chkMotivos.BeginInvoke((MethodInvoker)(() =>
+                    {
+                        chkMotivos.SetItemChecked(indiceCheckbox, false);
+                    }));
+                    chkMotivos.ItemCheck += tomarSeleccionMotivo; // Volvés a suscribir
+                }
             }
         }
+
+
         private void label2_Click(object sender, EventArgs e)
         {
         }
@@ -191,7 +192,7 @@ namespace ImplementacionCU37
                 $"Estado actualizado con éxito.\n" +
                 $"Estación: {estacion.nombre}\n" +
                 $"Sismógrafo: {sismografo}\n" +
-                $"Motivos: {string.Join(", ", motivos.Select(m => m.descripcion))}\n" +
+                //$"Motivos: {string.Join(", ", motivos.Select(m => m.descripcion))}\n" +
                 $"Responsable: {empleado.id}, {empleado.apellido} {empleado.nombre}\n" +
                 $"Fecha/Hora de cierre: {fechaHoraCierre}";
 
