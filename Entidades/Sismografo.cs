@@ -9,13 +9,14 @@ namespace ImplementacionCU37.Entidades
         public DateTime fechaAdquisicion {get; set;}
         public string identificadorSismografo {get; set;}
         public string nroSerie {get; set;}
-        public CambioEstado estado {get; set;} 
-        public Estado estadoActual {get; set; } 
+        public CambioEstado estado {get; set;}
+
+        public Estado estadoActual;
         public List<CambioEstado> historialEstados {get; set;} = new List<CambioEstado>();
 
         //Metodos
         public string getID() => identificadorSismografo;
-        public void actualizarEstado(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
+        public void setEstadoActual(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
         {
             if (nuevoEstado == null) throw new ArgumentNullException(nameof(nuevoEstado), "El nuevo estado no puede ser nulo.");
             if (motivos == null || !motivos.Any()) throw new ArgumentException("La lista de motivos no puede estar vacía.", nameof(motivos));

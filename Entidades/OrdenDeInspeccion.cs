@@ -64,7 +64,7 @@ namespace ImplementacionCU37.Entidades
 
         public void actualizarEstadoSismografo(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
         {
-            estacion.actualizarSismografo(nuevoEstado, motivos, responsableLogueado);
+            estacion.actualizarEstadoSismografo(nuevoEstado, motivos, responsableLogueado);
         }
     }
 }

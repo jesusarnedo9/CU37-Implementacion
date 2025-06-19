@@ -28,12 +28,12 @@ namespace ImplementacionCU37.Entidades
         {
             return this.sismografo;
         }
-        public void actualizarSismografo(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
+        public void actualizarEstadoSismografo(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
         {
             // Lógica para actualizar el sismógrafo asociado a la estación
             if (sismografo != null)
             {
-                sismografo.actualizarEstado(nuevoEstado, motivos, responsableLogueado);
+                sismografo.setEstadoActual(nuevoEstado, motivos, responsableLogueado);
             }
         }
     }
