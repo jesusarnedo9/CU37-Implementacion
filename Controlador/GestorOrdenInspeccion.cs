@@ -89,7 +89,6 @@ namespace ImplementacionCU37.Controlador
                 motivosSeleccionados.Add(mfs);
             }
         }
-
         public void validarDatosIngresados()
         {
             if (string.IsNullOrWhiteSpace(observacion))
@@ -117,7 +116,6 @@ namespace ImplementacionCU37.Controlador
         { 
             pantalla.solicitarConfirmacionCierre();
         }
-
         public void buscarEstadoCerrada()
         {
             List<Estado> estados = sistema.EstadosDisponibles;
