@@ -15,7 +15,7 @@ namespace ImplementacionCU37
     public partial class PantallaCierreOrden : Form
     {
         private GestorOrdenInspeccion gestor;
-        private List<MotivoFueraServicio> motivosSeleccionados;
+        private List<MotivoFueraServicio> motivosSeleccionados;//arreglar
         private List<MotivoTipo> motivos;
 
         public PantallaCierreOrden(Sistema sistema)
@@ -84,6 +84,7 @@ namespace ImplementacionCU37
         public string tomarObservacionCierre()
         {
             return txtObservacionCierre.Text;
+            
         }
         public void solicitarConfirmacionCierre()
         {
@@ -94,13 +95,21 @@ namespace ImplementacionCU37
         { 
             gestor.tomarConfirmacionCierre(confirmacion);
         }
-        public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)
+        /*public void solicitarSeleccionMotivo(List<MotivoTipo> motivos)
         {
             chkMotivos.Items.Clear();
             chkMotivos.DisplayMember = "descripcion";
             foreach (var motivo in motivos)
                 chkMotivos.Items.Add(motivo);
 
+            chkMotivos.Visible = true;
+            btnConfirmarMotivos.Visible = true;
+        }*/
+        public void solicitarSeleccionMotivo(List<string> motivos)
+        {
+            chkMotivos.Items.Clear();
+            foreach (var motivo in motivos)
+                chkMotivos.Items.Add(motivo);
             chkMotivos.Visible = true;
             btnConfirmarMotivos.Visible = true;
         }

@@ -74,7 +74,6 @@ namespace ImplementacionCU37
             this.txtObservacionCierre.Size = new System.Drawing.Size(352, 22);
             this.txtObservacionCierre.TabIndex = 2;
             this.txtObservacionCierre.Visible = false;
-            //this.txtObservacionCierre.Click += new System.EventHandler(this.tomarObservacionCierre);
             this.txtObservacionCierre.TextChanged += new System.EventHandler(this.txtObservacionCierre_TextChanged);
             // 
             // btnConfirmarObservacion
@@ -102,7 +101,7 @@ namespace ImplementacionCU37
             this.chkMotivos.Location = new System.Drawing.Point(314, 265);
             this.chkMotivos.Margin = new System.Windows.Forms.Padding(4);
             this.chkMotivos.Name = "chkMotivos";
-            this.chkMotivos.Size = new System.Drawing.Size(377, 123);
+            this.chkMotivos.Size = new System.Drawing.Size(377, 114);
             this.chkMotivos.TabIndex = 5;
             this.chkMotivos.Visible = false;
             this.chkMotivos.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tomarSeleccionMotivo);
@@ -167,7 +166,6 @@ namespace ImplementacionCU37
             this.btnCancelarCerrarOI.TabIndex = 9;
             this.btnCancelarCerrarOI.Text = "Cancelar";
             this.btnCancelarCerrarOI.UseVisualStyleBackColor = false;
-            this.btnCancelarCerrarOI.Visible = false;
             this.btnCancelarCerrarOI.Click += new System.EventHandler(this.button1_Click);
             // 
             // PantallaCierreOrden

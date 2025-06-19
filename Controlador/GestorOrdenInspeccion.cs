@@ -26,6 +26,7 @@ namespace ImplementacionCU37.Controlador
         private List<MotivoFueraServicio> motivosSeleccionados = new List<MotivoFueraServicio>();
         private MotivoTipo motivoActual;
         private List<MotivoTipo> motivosTipos;
+        private object descripciones;
 
         public GestorOrdenInspeccion(Sistema sistema, PantallaCierreOrden pantalla)
         {
@@ -73,7 +74,18 @@ namespace ImplementacionCU37.Controlador
         {
             this.observacion = observacion;
             List<MotivoTipo> motivosDisponibles = buscarMotivo();
-            pantalla.solicitarSeleccionMotivo(motivosDisponibles);
+            List<string> descripciones = MotivoTipo.getDescripciones(motivosDisponibles);
+            //pantalla.solicitarSeleccionMotivo(motivosDisponibles);
+            pantalla.solicitarSeleccionMotivo(descripciones);
+        }
+        private List<string> obtenerDescripciones(List<MotivoTipo> motivos)
+        {
+            List<string> descripciones = new List<string>();
+            foreach (MotivoTipo motivo in motivos)
+            {
+                descripciones.Add(motivo.descripcion);
+            }
+            return descripciones;
         }
         public void tomarConfirmacionCierre(bool confirmacion)
         {
@@ -159,6 +171,7 @@ namespace ImplementacionCU37.Controlador
         }
         public List<MotivoTipo> buscarMotivo()
         {
+
             return sistema.MotivoTipos;
         }
         public List<OrdenDeInspeccion> ordenarOI(List<OrdenDeInspeccion> lista)

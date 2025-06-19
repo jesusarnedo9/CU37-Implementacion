@@ -43,6 +43,7 @@ namespace ImplementacionCU37
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        
         }
 
         private void txtComentario_TextChanged(object sender, EventArgs e)
