@@ -94,29 +94,13 @@ namespace ImplementacionCU37.Controlador
                 pantalla.solicitarComentario(descripcionSeleccionada, indiceCheckbox);
             }
         }
-        private List<string> obtenerDescripciones(List<MotivoTipo> motivos)
-        {
-            List<string> descripciones = new List<string>();
-            foreach (MotivoTipo motivo in motivos)
-            {
-                descripciones.Add(motivo.descripcion);
-            }
-            return descripciones;
-        }
+        
         public void tomarConfirmacionCierre(bool confirmacion)
         {
             this.confirmacionCierre = confirmacion;
             validarDatosIngresados();
         }
-        /*public void tomarSeleccionMotivo(MotivoTipo motivo)
-        {
-            string comentario = pantalla.solicitarComentario(motivo);
-            if (!string.IsNullOrEmpty(comentario))
-            {
-                MotivoFueraServicio mfs = new MotivoFueraServicio(motivo, comentario);
-                motivosSeleccionados.Add(mfs);
-            }
-        }*/
+        
         public void validarDatosIngresados()
         {
             if (string.IsNullOrWhiteSpace(observacion))
@@ -163,20 +147,18 @@ namespace ImplementacionCU37.Controlador
         public void registrarCierreOI()
         {
             buscarEstadoCerrada();
-            cerrarOI();//Agregar self en Diagramas
-
-            // Actualizar estado del sismógrafo
+            cerrarOI();
+            //Actualizar estado del sismógrafo
             actualizarEstadoSismografo();
             pantalla.mostrarMensaje("Orden cerrada y estado del sismógrafo actualizado.");
             notificarCierre();
             finCU();
         }
-
         public void cerrarOI() 
         { 
-            ordenSeleccionada.setFechaHoraCierre(fechaHoraActual);
-            ordenSeleccionada.setEstado(estadoCerrada);
+            ordenSeleccionada.cerrarOrden(fechaHoraActual, estadoCerrada);
         }
+
         public DateTime getFechaHoraActual() => DateTime.Now;
         public Estado buscarEstadoFueraServicio()
         {

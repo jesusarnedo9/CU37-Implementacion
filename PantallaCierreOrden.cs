@@ -102,8 +102,8 @@ namespace ImplementacionCU37
 
             chkMotivos.Visible = true;
             btnConfirmarMotivos.Visible = true;
-
         }
+        //Evento para manejar la selección de motivos
         private void tomarSeleccionMotivo(object sender, ItemCheckEventArgs e)
         {
             if (e.NewValue == CheckState.Checked)
@@ -113,12 +113,9 @@ namespace ImplementacionCU37
             }
             else if (e.NewValue == CheckState.Unchecked)
             {
-                string descripcionSeleccionada = chkMotivos.Items[e.Index].ToString();
-                
+                string descripcionSeleccionada = chkMotivos.Items[e.Index].ToString(); 
             }
         }
-
-
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -150,13 +147,12 @@ namespace ImplementacionCU37
                 }
                 else
                 {
-                    // Si cancela, deschequeás el checkbox
-                    chkMotivos.ItemCheck -= tomarSeleccionMotivo; // Desuscribís para que no se dispare el evento de nuevo
+                    chkMotivos.ItemCheck -= tomarSeleccionMotivo;
                     chkMotivos.BeginInvoke((MethodInvoker)(() =>
                     {
                         chkMotivos.SetItemChecked(indiceCheckbox, false);
                     }));
-                    chkMotivos.ItemCheck += tomarSeleccionMotivo; // Volvés a suscribir
+                    chkMotivos.ItemCheck += tomarSeleccionMotivo;
                 }
             }
         }

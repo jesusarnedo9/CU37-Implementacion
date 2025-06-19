@@ -43,6 +43,12 @@ namespace ImplementacionCU37.Entidades
         {
             return estacion;
         }
+
+        public void cerrarOrden(DateTime fechaHoraCierre, Estado estado)
+        {
+            setFechaHoraCierre(fechaHoraCierre);
+            setEstado(estado);
+        }
         public void setFechaHoraCierre(DateTime fechaHoraCierre)
         {
             this.fechaHoraCierre = fechaHoraCierre;
