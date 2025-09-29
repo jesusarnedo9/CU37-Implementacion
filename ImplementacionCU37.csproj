@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Controlador\GestorOrdenInspeccion.cs" />
     <Compile Include="Entidades\CambioEstado.cs" />
+    <Compile Include="Entidades\DTO.cs" />
     <Compile Include="Entidades\Empleado.cs" />
     <Compile Include="Entidades\EstacionSismologica.cs" />
     <Compile Include="Entidades\Estado.cs" />

@@ -4,7 +4,6 @@ namespace ImplementacionCU37.Entidades
 {
     public class Sesion
     {
-        //Atributos
         public DateTime fechaHoraInicio { get; set; }
         private Usuario usuarioLogueado;
 
@@ -12,7 +11,7 @@ namespace ImplementacionCU37.Entidades
         {
             usuarioLogueado = usuario;
         }
-        //Metodos
+
         public Empleado getEmpleado()
         {
             return usuarioLogueado.getRIlogueado();

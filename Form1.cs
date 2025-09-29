@@ -1,13 +1,5 @@
-﻿using ImplementacionCU37.Controlador;
-using ImplementacionCU37.Entidades;
+﻿using ImplementacionCU37.Entidades;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ImplementacionCU37
@@ -18,7 +10,6 @@ namespace ImplementacionCU37
         {
             InitializeComponent();
         }
-
         //Boton Cerrar Orden
         private void opcionCerrarOrdenInspeccion(object sender, EventArgs e)
         {
@@ -27,20 +18,14 @@ namespace ImplementacionCU37
             pantalla.habilitarPantalla();
             pantalla.Dispose();
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
-
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

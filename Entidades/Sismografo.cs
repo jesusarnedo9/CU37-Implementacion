@@ -12,8 +12,9 @@ public class Sismografo
     public Estado estadoActual { get; set; }
     public List<CambioEstado> historialEstados { get; set; } = new List<CambioEstado>();
     public CambioEstado cambioEstadoActual { get; private set; }
+
     public string getID() => identificadorSismografo;
-    public void setEstadoActual(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
+    public void setEstadoActual(Estado nuevoEstado, List<MotivoFueraServicioDTO> motivos, Empleado responsableLogueado)
     {
         if (nuevoEstado == null) throw new ArgumentNullException(nameof(nuevoEstado), "El nuevo estado no puede ser nulo.");
         if (motivos == null || !motivos.Any()) throw new ArgumentException("La lista de motivos no puede estar vacía.", nameof(motivos));
@@ -24,9 +25,8 @@ public class Sismografo
         {
             cambioEstadoActual.finalizar();
         }
+        var nuevoCambio = CambioEstado.crear(motivos, responsableLogueado);//mal
 
-        var nuevoCambio = CambioEstado.crear(motivos, responsableLogueado);
-        
         historialEstados.Add(nuevoCambio);
         estadoActual = nuevoEstado;
     }

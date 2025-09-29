@@ -5,7 +5,6 @@ namespace ImplementacionCU37.Entidades
 {
     public class OrdenDeInspeccion
     {
-        // Atributos
         public int numeroOrden { get; set; }
         public DateTime fechaHoraInicio { get; set; }
         public DateTime fechaHoraFinalizacion { get; set; }
@@ -15,7 +14,6 @@ namespace ImplementacionCU37.Entidades
         public EstacionSismologica estacion { get; set; }
         public Estado estado { get; set; }
 
-        //Constructor
         public OrdenDeInspeccion(int numeroOrden, DateTime fechaHoraInicio, EstacionSismologica estacion, Estado estado, Empleado empleadoAsignado)
         {
             this.numeroOrden = numeroOrden;
@@ -25,25 +23,18 @@ namespace ImplementacionCU37.Entidades
             this.empleadoAsignado = empleadoAsignado;
         }
 
-        //Metodos
         public bool esDeEmpleado(Empleado empleado)
         {
-                return empleadoAsignado != null && empleadoAsignado.Equals(empleado);
+            return empleadoAsignado != null && empleadoAsignado.Equals(empleado);
         }
         public bool estaRealizada()
         {
             return estado != null && estado.estaRealizada();
         }
-        
-        public string getCodigoEstacionSismologica()
-                {
-                    return estacion != null ? estacion.getIDSismografo() : "";
-                }
         public EstacionSismologica getEstacionSismologica()
         {
             return estacion;
         }
-
         public void cerrarOrden(DateTime fechaHoraCierre, Estado estado)
         {
             setFechaHoraCierre(fechaHoraCierre);
@@ -61,8 +52,7 @@ namespace ImplementacionCU37.Entidades
         {
             return $"Orden #{numeroOrden} - Estación: {estacion.nombre} - Sismógrafo: {estacion.getSismografo().getID()} - Finalización: {fechaHoraFinalizacion.ToShortDateString()}";
         }
-
-        public void actualizarEstadoSismografo(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
+        public void actualizarEstadoSismografo(Estado nuevoEstado, List<MotivoFueraServicioDTO> motivos, Empleado responsableLogueado)
         {
             estacion.actualizarEstadoSismografo(nuevoEstado, motivos, responsableLogueado);
         }

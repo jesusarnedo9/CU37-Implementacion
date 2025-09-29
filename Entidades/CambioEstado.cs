@@ -1,27 +1,27 @@
 using ImplementacionCU37.Entidades;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class CambioEstado
 {
     private DateTime fechaHoraInicio;
     private DateTime? fechaHoraFin;
-    public Estado estado { get; set; }
-    public MotivoFueraServicio motivo;
+    private Estado estado;
+    private MotivoFueraServicio motivo;
     public List<MotivoFueraServicio> motivos;
     private Empleado responsableLogueado;
 
-    public CambioEstado(DateTime inicio, List<MotivoFueraServicio> motivos)
+
+    public CambioEstado(DateTime inicio)
     {
-        inicio = getFechaHoraInicio();
-        this.motivos = motivos;
+        this.fechaHoraInicio = inicio;
+        this.motivos = new List<MotivoFueraServicio>();
     }
     public MotivoFueraServicio getMotivo()
     {
         return motivo;
     }
-    public bool esActual() 
+    public bool esActual()
     {
         return fechaHoraFin == null;
     }
@@ -29,29 +29,32 @@ public class CambioEstado
     {
         fechaHoraFin = DateTime.Now;
     }
-    public void setMotivosSeleccionado(MotivoFueraServicio motivoSeleccionado)
+    public IReadOnlyList<MotivoFueraServicio> Motivos => motivos.AsReadOnly();
+    public void AgregarMotivo(MotivoFueraServicio motivo)
     {
-        this.motivo = motivoSeleccionado;
+        motivos.Add(motivo);
     }
+
     public void setRILogueado(Empleado responsable)
     {
         this.responsableLogueado = responsable;
     }
     public DateTime getFechaHoraInicio() => fechaHoraInicio;
-    public void setFechaHoraInicio(DateTime inicio) => fechaHoraInicio = inicio;
-    public DateTime? getFechaHoraFin() => fechaHoraFin;
+
     public void setFechaHoraCierre(DateTime cierre) => fechaHoraFin = cierre;
 
-    public static CambioEstado crear(List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
+    public static CambioEstado crear(List<MotivoFueraServicioDTO> motivos, Empleado responsableLogueado)
     {
-        var nuevoCambio = new CambioEstado(DateTime.Now, motivos);
-        nuevoCambio.motivo = motivos.FirstOrDefault();
-        nuevoCambio.responsableLogueado = responsableLogueado;
-        if (motivos.Any())
+        var nuevoCambio = new CambioEstado(DateTime.Now);
+
+        nuevoCambio.setFechaHoraCierre(DateTime.Now);
+        nuevoCambio.setRILogueado(responsableLogueado);
+
+        foreach (var dto in motivos)
         {
-            var motivoNuevo = new MotivoFueraServicio(motivos.First().tipo, "Motivo creado automáticamente");
+            var motivo = new MotivoFueraServicio(dto.Motivo, dto.Comentario);
+            nuevoCambio.AgregarMotivo(motivo);
         }
         return nuevoCambio;
     }
 }
-

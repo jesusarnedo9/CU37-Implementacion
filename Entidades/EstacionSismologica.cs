@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace ImplementacionCU37.Entidades
 {
@@ -28,9 +26,8 @@ namespace ImplementacionCU37.Entidades
         {
             return this.sismografo;
         }
-        public void actualizarEstadoSismografo(Estado nuevoEstado, List<MotivoFueraServicio> motivos, Empleado responsableLogueado)
+        public void actualizarEstadoSismografo(Estado nuevoEstado, List<MotivoFueraServicioDTO> motivos, Empleado responsableLogueado)
         {
-            // Lógica para actualizar el sismógrafo asociado a la estación
             if (sismografo != null)
             {
                 sismografo.setEstadoActual(nuevoEstado, motivos, responsableLogueado);

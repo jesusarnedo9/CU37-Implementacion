@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 
@@ -11,8 +10,6 @@ namespace ImplementacionCU37.Controlador
 {
     public class GestorOrdenInspeccion
     {
-
-        // Atributos
         private Sistema sistema;
         private PantallaCierreOrden pantalla;
         private Empleado empleado;
@@ -23,54 +20,52 @@ namespace ImplementacionCU37.Controlador
         private OrdenDeInspeccion ordenSeleccionada;
         private Estado estadoCerrada;
         private Estado estadoFueraServicio;
-        private List<MotivoFueraServicio> motivosSeleccionados = new List<MotivoFueraServicio>();
+        //private List<MotivoFueraServicio> motivosSeleccionados = new List<MotivoFueraServicio>();
         private MotivoTipo motivoActual;
         private List<MotivoTipo> motivosTipos;
         private Dictionary<string, MotivoTipo> mapaMotivos;
-        private List<Empleado> empleados;
+        private readonly List<MotivoFueraServicioDTO> motivosSeleccionados;
+
 
         public GestorOrdenInspeccion(Sistema sistema, PantallaCierreOrden pantalla)
         {
             this.sistema = sistema;
             this.pantalla = pantalla;
+            this.motivosSeleccionados = new List<MotivoFueraServicioDTO>();
         }
+
         // Main
         public void opcionCerrarOrdenInspeccion()
         {
             buscarEmpleado();
             buscarOrdenesInspecciones();
         }
-        
+
         // Metodos
         public void buscarEmpleado()
         {
             empleado = sistema.SesionActiva.getEmpleado();
         }
-        
+
         public void buscarOrdenesInspecciones()
         {
             ordenes = sistema.Ordenes;
-            List<OrdenDeInspeccion> ordenesRealizadas = new List<OrdenDeInspeccion>();
-            foreach (OrdenDeInspeccion orden in ordenes)
-            {
-                if (orden.esDeEmpleado(empleado) && orden.estaRealizada())
+            var ordenesRealizadas = sistema.Ordenes
+                .Where(o => o.esDeEmpleado(empleado) && o.estaRealizada())
+                .OrderByDescending(o => o.fechaHoraFinalizacion)
+                .Select(o => new OrdenInspeccionDTO
                 {
-                    ordenesRealizadas.Add(orden);
-                }
-            }
-            ordenesRealizadas = ordenarOI(ordenesRealizadas);
+                    Id = o.numeroOrden.ToString(),   // usa un Id real de la orden
+                    Texto = o.ToString()
+                })
+                .ToList();
+
             pantalla.solicitarSeleccionOrden(ordenesRealizadas);
         }
+
         public void tomarOrdenSeleccionada(string numeroOrden)
         {
-            foreach (OrdenDeInspeccion orden in ordenes)
-            {
-                if (orden.numeroOrden.ToString() == numeroOrden)
-                {
-                    ordenSeleccionada = orden;
-                    break;
-                }
-            }
+            ordenSeleccionada = ordenes.FirstOrDefault(o => o.numeroOrden.ToString() == numeroOrden);
             pantalla.solicitarObservacionCierre();
         }
         public void tomarObservacionCierre(string observacion)
@@ -87,27 +82,49 @@ namespace ImplementacionCU37.Controlador
             }
             pantalla.solicitarSeleccionMotivo(descripciones);
         }
+        public List<MotivoTipo> buscarMotivo()
+        {
+            return sistema.MotivoTipos;
+        }
+
         public void tomarMotivoSeleccionado(string descripcionSeleccionada, int indiceCheckbox)
         {
-            // Ya no necesitás recuperar el objeto acá, solo validás que existe
             if (mapaMotivos.ContainsKey(descripcionSeleccionada))
             {
-                // Llamás a la pantalla para pedir comentario con la descripción directamente
                 pantalla.solicitarComentario(descripcionSeleccionada, indiceCheckbox);
             }
         }
-        
+        public void tomarComentario(string descripcion, string comentario)
+        {
+            if (!string.IsNullOrWhiteSpace(comentario) && mapaMotivos.ContainsKey(descripcion))
+            {
+                MotivoTipo motivo = mapaMotivos[descripcion];
+                motivosSeleccionados.Add(new MotivoFueraServicioDTO
+                {
+                    Motivo = motivo,
+                    Comentario = comentario
+                });
+            }
+        }
+
+        public void motivosConfirmados()
+        {
+            pantalla.solicitarConfirmacionCierre();
+        }
         public void tomarConfirmacionCierre(bool confirmacion)
         {
             this.confirmacionCierre = confirmacion;
             validarDatosIngresados();
         }
-        
         public void validarDatosIngresados()
         {
+            observacion = pantalla.txtObservacionCierre.Text;
             if (string.IsNullOrWhiteSpace(observacion))
             {
                 MessageBox.Show("Debe ingresar una observación de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                pantalla.txtObservacionCierre.Enabled = true;
+                pantalla.txtObservacionCierre.Focus();
+
                 return;
             }
             if (motivosSeleccionados == null || motivosSeleccionados.Count == 0)
@@ -118,21 +135,15 @@ namespace ImplementacionCU37.Controlador
             fechaHoraActual = getFechaHoraActual();
             registrarCierreOI();
         }
-        public void tomarComentario(string descripcion, string comentario)
+        public void registrarCierreOI()
         {
-            if (!string.IsNullOrWhiteSpace(comentario))
-            {
-                if (mapaMotivos.ContainsKey(descripcion))
-                {
-                    MotivoTipo motivo = mapaMotivos[descripcion];
-                    MotivoFueraServicio mfs = new MotivoFueraServicio(motivo, comentario);
-                    motivosSeleccionados.Add(mfs);
-                }
-            }
-        }
-        public void motivosConfirmados() 
-        { 
-            pantalla.solicitarConfirmacionCierre();
+            buscarEstadoCerrada();
+            cerrarOI();
+            //Actualizar estado del sismógrafo
+            actualizarEstadoSismografo();
+            pantalla.mostrarMensaje("Orden cerrada y estado del sismógrafo actualizado.");
+            notificarCierre();
+            finCU();
         }
         public void buscarEstadoCerrada()
         {
@@ -146,19 +157,18 @@ namespace ImplementacionCU37.Controlador
                 }
             }
         }
-        public void registrarCierreOI()
+        public void cerrarOI()
         {
-            buscarEstadoCerrada();
-            cerrarOI();
-            //Actualizar estado del sismógrafo
-            actualizarEstadoSismografo();
-            pantalla.mostrarMensaje("Orden cerrada y estado del sismógrafo actualizado.");
-            notificarCierre();
-            finCU();
-        }
-        public void cerrarOI() 
-        { 
             ordenSeleccionada.cerrarOrden(fechaHoraActual, estadoCerrada);
+        }
+        public void actualizarEstadoSismografo()
+        {
+            estadoFueraServicio = buscarEstadoFueraServicio();
+            ordenSeleccionada.actualizarEstadoSismografo(estadoFueraServicio, motivosSeleccionados, empleado);
+            //Muestro la actualización en la pantalla
+            var estacion = ordenSeleccionada.getEstacionSismologica();
+            var sismografo = estacion.getIDSismografo();
+            pantalla.mostrarActualizacionEstado(estacion, sismografo, motivosSeleccionados, empleado, fechaHoraActual);
         }
 
         public DateTime getFechaHoraActual() => DateTime.Now;
@@ -173,25 +183,21 @@ namespace ImplementacionCU37.Controlador
             }
             return null;
         }
-        public List<MotivoTipo> buscarMotivo()
+        public Dictionary<string, OrdenDeInspeccion> ordenarOI(Dictionary<string, OrdenDeInspeccion> ordenesOrdenadas)
         {
-            return sistema.MotivoTipos;
+            try
+            {
+                return ordenesOrdenadas
+                    .OrderByDescending(o => o.Value.fechaHoraFinalizacion)
+                    .ToDictionary(o => o.Key, o => o.Value);
+            }
+            catch (Exception)
+            {
+                pantalla.mostrarMensaje("Error ordenando ordenes");
+                return new Dictionary<string, OrdenDeInspeccion>();
+            }
         }
 
-        public List<OrdenDeInspeccion> ordenarOI(List<OrdenDeInspeccion> lista)
-        {
-            return lista
-                .OrderByDescending(o => o.fechaHoraFinalizacion)
-                .ToList();
-        }
-        public void actualizarEstadoSismografo()
-        {
-            estadoFueraServicio = buscarEstadoFueraServicio();
-            ordenSeleccionada.actualizarEstadoSismografo(estadoFueraServicio, motivosSeleccionados, empleado);
-            var estacion = ordenSeleccionada.getEstacionSismologica();
-            var sismografo = estacion.getIDSismografo();
-            pantalla.mostrarActualizacionEstado(estacion, sismografo ,motivosSeleccionados, empleado, fechaHoraActual);
-        }
         public void notificarCierre()
         {
             var responsables = sistema.Empleados.Where(e => e.esResponsableReparacion()).ToList();
@@ -208,14 +214,11 @@ namespace ImplementacionCU37.Controlador
         }
         public void finCU()
         {
-            // Cierra la pantalla de cierre de orden si está abierta
             if (pantalla != null && !pantalla.IsDisposed)
             {
-                pantalla.Close();
+                pantalla.cerrarVentana();
                 pantalla = null;
             }
-
-            // Limpieza de otras referencias
             sistema = null;
             empleado = null;
             ordenes = null;

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ImplementacionCU37
@@ -21,12 +14,10 @@ namespace ImplementacionCU37
             lblMotivo.Text = $"Comentario para: {motivo}";
             this.AcceptButton = btnAceptarComentario;
         }
-
         public string tomarComentario()
         {
             return txtComentario.Text.Trim();
         }
-
         private void btnAceptarComentario_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtComentario.Text))
@@ -37,14 +28,12 @@ namespace ImplementacionCU37
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
-
         private void btnCancelarComentario_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
-        
-        }
 
+        }
         private void txtComentario_TextChanged(object sender, EventArgs e)
         {
 

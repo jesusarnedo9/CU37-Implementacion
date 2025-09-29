@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ImplementacionCU37.Entidades
+﻿namespace ImplementacionCU37.Entidades
 {
     public class MotivoTipo
     {
@@ -17,7 +15,5 @@ namespace ImplementacionCU37.Entidades
         {
             return this.descripcion;
         }
-
     }
-
 }

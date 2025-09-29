@@ -196,12 +196,12 @@ namespace ImplementacionCU37
 
         private System.Windows.Forms.ComboBox listaOrdenInspeccion;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtObservacionCierre;
         private System.Windows.Forms.Button btnConfirmarObservacion;
-        private System.Windows.Forms.CheckedListBox chkMotivos;
+        public System.Windows.Forms.CheckedListBox chkMotivos;
         private System.Windows.Forms.Button btnConfirmarMotivos;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblSeleccionarMotivo;
         private System.Windows.Forms.Button btnCancelarCerrarOI;
+        public System.Windows.Forms.TextBox txtObservacionCierre;
     }
 }

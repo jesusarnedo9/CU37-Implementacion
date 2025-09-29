@@ -1,6 +1,6 @@
 namespace ImplementacionCU37.Entidades
 {
-   public class MotivoFueraServicio
+    public class MotivoFueraServicio
     {
         public string comentario { get; set; }
         public MotivoTipo tipo;
@@ -10,15 +10,7 @@ namespace ImplementacionCU37.Entidades
             this.tipo = tipo;
             this.comentario = comentario;
         }
-
-        public MotivoFueraServicio()
-        {
-        }
-
-        public MotivoTipo getMotivoTipo()
-        {
-            return tipo;
-        }
+        public MotivoTipo getMotivoTipo() { return tipo; }
 
         public override string ToString()
         {

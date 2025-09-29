@@ -1,5 +1,3 @@
-using System;
-
 namespace ImplementacionCU37.Entidades
 {
     public class Empleado
@@ -18,20 +16,13 @@ namespace ImplementacionCU37.Entidades
             this.apellido = apellido;
             this.mail = mail;
             this.telefono = telefono;
-            this.id = id;   
+            this.id = id;
             this.rol = rol;
         }
-
-        /*public bool esResponsableReparacion()
-        {
-            return rol != null && rol.getNombre();
-        }*/
-
         public bool esResponsableReparacion()
         {
             return rol != null && rol.getNombre();
         }
-
         public string obtenerEmail()
         {
             return mail;

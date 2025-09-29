@@ -14,32 +14,22 @@ namespace ImplementacionCU37.Entidades
         public const string AMBITO_OI = "OrdenInspeccion";
         public const string AMBITO_SISMOGRAFO = "Sismografo";
 
-        // Métodos
         public bool esAmbitoOI()
         {
             return ambito == AMBITO_OI;
         }
-
         public bool esAmbitoSismografo()
         {
             return ambito == AMBITO_SISMOGRAFO;
         }
-
-        public bool esRealizado()
-        {
-            return nombreEstado == ESTADO_REALIZADO_S;
-        }
-
         public bool estaRealizada()
         {
             return nombreEstado == ESTADO_REALIZADA_OI;
         }
-
         public bool esFueraServicio()
         {
             return nombreEstado == ESTADO_FUERA_SERVICIO_S;
         }
-
         public bool esCerrada()
         {
             return nombreEstado == ESTADO_CERRADA_OI;
