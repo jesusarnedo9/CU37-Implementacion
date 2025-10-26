@@ -12,9 +12,9 @@ namespace ImplementacionCU37.Entidades
         public string observacionCierre { get; set; }
         public Empleado empleadoAsignado { get; set; }
         public EstacionSismologica estacion { get; set; }
-        public Estado estado { get; set; }
+        public IEstado estado { get; private set; }
 
-        public OrdenDeInspeccion(int numeroOrden, DateTime fechaHoraInicio, EstacionSismologica estacion, Estado estado, Empleado empleadoAsignado)
+        public OrdenDeInspeccion(int numeroOrden, DateTime fechaHoraInicio, EstacionSismologica estacion, IEstado estado, Empleado empleadoAsignado)
         {
             this.numeroOrden = numeroOrden;
             this.fechaHoraInicio = fechaHoraInicio;
@@ -35,16 +35,16 @@ namespace ImplementacionCU37.Entidades
         {
             return estacion;
         }
-        public void cerrarOrden(DateTime fechaHoraCierre, Estado estado)
+        public void cerrarOrden(DateTime fechaHoraCierre)
         {
-            setFechaHoraCierre(fechaHoraCierre);
-            setEstado(estado);
+            estado.CerrarOrden(this, fechaHoraCierre);
+
         }
         public void setFechaHoraCierre(DateTime fechaHoraCierre)
         {
             this.fechaHoraCierre = fechaHoraCierre;
         }
-        public void setEstado(Estado nuevoEstado)
+        public void setEstado(IEstado nuevoEstado)
         {
             this.estado = nuevoEstado;
         }

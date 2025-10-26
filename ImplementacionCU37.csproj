@@ -52,6 +52,8 @@
     <Compile Include="Entidades\Empleado.cs" />
     <Compile Include="Entidades\EstacionSismologica.cs" />
     <Compile Include="Entidades\Estado.cs" />
+    <Compile Include="Estados\Class1.cs" />
+    <Compile Include="Estados\IEstado.cs" />
     <Compile Include="Entidades\MotivoFueraServicio.cs" />
     <Compile Include="Entidades\MotivoTipo.cs" />
     <Compile Include="Entidades\OrdenDeInspeccion.cs" />
@@ -60,6 +62,8 @@
     <Compile Include="Entidades\Sismografo.cs" />
     <Compile Include="Entidades\Sistema.cs" />
     <Compile Include="Entidades\Usuario.cs" />
+    <Compile Include="Estados\Cerrada.cs" />
+    <Compile Include="Estados\Realizada.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

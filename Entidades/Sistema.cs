@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImplementacionCU37.Estados;
+using System;
 using System.Collections.Generic;
 
 namespace ImplementacionCU37.Entidades
@@ -69,16 +70,26 @@ namespace ImplementacionCU37.Entidades
             var e4 = new EstacionSismologica(s4) { codigoEstacion = "EST004", nombre = "Estación Ushuaia", latitud = -54.8019, longitud = -68.3030, documentoCertificacionAdq = "DOC004", nroCertificacionAdquisicion = "CERT004", fechaSituacionCertificacion = "2023-09-01" };
 
             // Crear órdenes de inspección
-            var orden1 = new OrdenDeInspeccion(1, DateTime.Now.AddDays(-4), e1, estadoRealizada, jesus);
+            var orden1 = new OrdenDeInspeccion(1, DateTime.Now.AddDays(-4), e1,
+                EstadoFactory.CrearEstadoDesde(estadoRealizada), jesus);
             orden1.fechaHoraFinalizacion = DateTime.Now.AddDays(-15);
-            var orden2 = new OrdenDeInspeccion(2, DateTime.Now.AddDays(-3), e2, estadoCerrada, nano);
+
+            var orden2 = new OrdenDeInspeccion(2, DateTime.Now.AddDays(-3), e2,
+                EstadoFactory.CrearEstadoDesde(estadoCerrada), nano);
             orden2.fechaHoraFinalizacion = DateTime.Now.AddDays(-5);
-            var orden3 = new OrdenDeInspeccion(3, DateTime.Now.AddDays(-8), e3, estadoRealizada, jesus);
+
+            var orden3 = new OrdenDeInspeccion(3, DateTime.Now.AddDays(-8), e3,
+                EstadoFactory.CrearEstadoDesde(estadoRealizada), jesus);
             orden3.fechaHoraFinalizacion = DateTime.Now.AddDays(-7);
-            var orden4 = new OrdenDeInspeccion(4, DateTime.Now.AddDays(-1), e4, estadoRealizada, jesus);
+
+            var orden4 = new OrdenDeInspeccion(4, DateTime.Now.AddDays(-1), e4,
+                EstadoFactory.CrearEstadoDesde(estadoRealizada), jesus);
             orden4.fechaHoraFinalizacion = DateTime.Now.AddDays(-12);
-            var orden5 = new OrdenDeInspeccion(5, DateTime.Now.AddDays(-2), e3, estadoCerrada, jesus);
+
+            var orden5 = new OrdenDeInspeccion(5, DateTime.Now.AddDays(-2), e3,
+                EstadoFactory.CrearEstadoDesde(estadoCerrada), jesus);
             orden5.fechaHoraFinalizacion = DateTime.Now.AddDays(-14);
+
 
             Ordenes.Add(orden1);
             Ordenes.Add(orden2);

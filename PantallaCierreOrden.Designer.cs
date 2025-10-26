@@ -185,6 +185,7 @@ namespace ImplementacionCU37
             this.Controls.Add(this.chkMotivos);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "PantallaCierreOrden";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CerrarOrdenInscripcion";
             this.Load += new System.EventHandler(this.PantallaCierreOrden_Load);
             this.ResumeLayout(false);

@@ -20,7 +20,6 @@ namespace ImplementacionCU37.Controlador
         private OrdenDeInspeccion ordenSeleccionada;
         private Estado estadoCerrada;
         private Estado estadoFueraServicio;
-        //private List<MotivoFueraServicio> motivosSeleccionados = new List<MotivoFueraServicio>();
         private MotivoTipo motivoActual;
         private List<MotivoTipo> motivosTipos;
         private Dictionary<string, MotivoTipo> mapaMotivos;
@@ -55,7 +54,7 @@ namespace ImplementacionCU37.Controlador
                 .OrderByDescending(o => o.fechaHoraFinalizacion)
                 .Select(o => new OrdenInspeccionDTO
                 {
-                    Id = o.numeroOrden.ToString(),   // usa un Id real de la orden
+                    Id = o.numeroOrden.ToString(),
                     Texto = o.ToString()
                 })
                 .ToList();
@@ -137,7 +136,7 @@ namespace ImplementacionCU37.Controlador
         }
         public void registrarCierreOI()
         {
-            buscarEstadoCerrada();
+            fechaHoraActual = getFechaHoraActual();
             cerrarOI();
             //Actualizar estado del sismógrafo
             actualizarEstadoSismografo();
@@ -145,22 +144,12 @@ namespace ImplementacionCU37.Controlador
             notificarCierre();
             finCU();
         }
-        public void buscarEstadoCerrada()
-        {
-            List<Estado> estados = sistema.EstadosDisponibles;
-            foreach (Estado estado in estados)
-            {
-                if (estado.esAmbitoOI() && estado.esCerrada())
-                {
-                    estadoCerrada = estado;
-                    break;
-                }
-            }
-        }
+
         public void cerrarOI()
         {
-            ordenSeleccionada.cerrarOrden(fechaHoraActual, estadoCerrada);
+            ordenSeleccionada.cerrarOrden(fechaHoraActual);
         }
+
         public void actualizarEstadoSismografo()
         {
             estadoFueraServicio = buscarEstadoFueraServicio();

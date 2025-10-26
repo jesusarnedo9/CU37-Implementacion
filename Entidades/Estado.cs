@@ -34,5 +34,6 @@ namespace ImplementacionCU37.Entidades
         {
             return nombreEstado == ESTADO_CERRADA_OI;
         }
+
     }
 }
