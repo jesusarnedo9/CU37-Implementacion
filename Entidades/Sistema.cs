@@ -1,6 +1,7 @@
 ﻿using ImplementacionCU37.Estados;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace ImplementacionCU37.Entidades
 {

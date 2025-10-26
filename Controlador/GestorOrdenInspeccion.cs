@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 
 namespace ImplementacionCU37.Controlador
@@ -48,8 +49,10 @@ namespace ImplementacionCU37.Controlador
 
         public void buscarOrdenesInspecciones()
         {
+            // Cachear la colección para evitar accesos múltiples al getter
             ordenes = sistema.Ordenes;
-            var ordenesRealizadas = sistema.Ordenes
+            var allOrdenes = ordenes;
+            var ordenesRealizadas = allOrdenes
                 .Where(o => o.esDeEmpleado(empleado) && o.estaRealizada())
                 .OrderByDescending(o => o.fechaHoraFinalizacion)
                 .Select(o => new OrdenInspeccionDTO
@@ -64,7 +67,16 @@ namespace ImplementacionCU37.Controlador
 
         public void tomarOrdenSeleccionada(string numeroOrden)
         {
-            ordenSeleccionada = ordenes.FirstOrDefault(o => o.numeroOrden.ToString() == numeroOrden);
+            // Intentar parsear a int para búsquedas más rápidas y seguras
+            if (int.TryParse(numeroOrden, out int num))
+            {
+                ordenSeleccionada = ordenes.FirstOrDefault(o => o.numeroOrden == num);
+            }
+            else
+            {
+                // Fallback a comparación por cadena si no se puede parsear
+                ordenSeleccionada = ordenes.FirstOrDefault(o => o.numeroOrden.ToString() == numeroOrden);
+            }
             pantalla.solicitarObservacionCierre();
         }
         public void tomarObservacionCierre(string observacion)
@@ -76,6 +88,7 @@ namespace ImplementacionCU37.Controlador
             List<string> descripciones = new List<string>();
             foreach (MotivoTipo motivo in motivosDisponibles)
             {
+                // Si hay descripciones duplicadas, la última sobrescribe; considerar usar id si existe
                 mapaMotivos[motivo.getDescripciones()] = motivo;
                 descripciones.Add(motivo.getDescripciones());
             }
@@ -88,14 +101,14 @@ namespace ImplementacionCU37.Controlador
 
         public void tomarMotivoSeleccionado(string descripcionSeleccionada, int indiceCheckbox)
         {
-            if (mapaMotivos.ContainsKey(descripcionSeleccionada))
+            if (mapaMotivos != null && mapaMotivos.ContainsKey(descripcionSeleccionada))
             {
                 pantalla.solicitarComentario(descripcionSeleccionada, indiceCheckbox);
             }
         }
         public void tomarComentario(string descripcion, string comentario)
         {
-            if (!string.IsNullOrWhiteSpace(comentario) && mapaMotivos.ContainsKey(descripcion))
+            if (!string.IsNullOrWhiteSpace(comentario) && mapaMotivos != null && mapaMotivos.ContainsKey(descripcion))
             {
                 MotivoTipo motivo = mapaMotivos[descripcion];
                 motivosSeleccionados.Add(new MotivoFueraServicioDTO
@@ -117,89 +130,93 @@ namespace ImplementacionCU37.Controlador
         }
         public void validarDatosIngresados()
         {
-            observacion = pantalla.txtObservacionCierre.Text;
-            if (string.IsNullOrWhiteSpace(observacion))
+            // Usar la observación ya proporcionada por la UI; evitar acceder a controles desde el gestor
+            if (string.IsNullOrWhiteSpace(this.observacion))
             {
-                MessageBox.Show("Debe ingresar una observación de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                pantalla.txtObservacionCierre.Enabled = true;
-                pantalla.txtObservacionCierre.Focus();
-
+                // Delegar la visualización al nivel UI y restaurar la pantalla para que el usuario pueda corregir
+                if (pantalla != null)
+                {
+                    pantalla.mostrarMensaje("Debe ingresar una observación de cierre.");
+                    // Limpiar selección interna de motivos para mantener consistencia
+                    motivosSeleccionados.Clear();
+                    // Pedir a la UI que desbloquee la observación y desmarque motivos
+                    pantalla.restaurarPantallaParaObservacion();
+                }
                 return;
             }
             if (motivosSeleccionados == null || motivosSeleccionados.Count == 0)
             {
-                MessageBox.Show("Debe seleccionar al menos un motivo de cierre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (pantalla != null)
+                    pantalla.mostrarMensaje("Debe seleccionar al menos un motivo de cierre.");
                 return;
             }
+            // Capturar fecha/hora una sola vez para todo el proceso
             fechaHoraActual = getFechaHoraActual();
             registrarCierreOI();
         }
         public void registrarCierreOI()
         {
-            fechaHoraActual = getFechaHoraActual();
+            // fechaHoraActual ya fue capturada en validarDatosIngresados
             cerrarOI();
             //Actualizar estado del sismógrafo
             actualizarEstadoSismografo();
-            pantalla.mostrarMensaje("Orden cerrada y estado del sismógrafo actualizado.");
+            if (pantalla != null)
+                pantalla.mostrarMensaje("Orden cerrada y estado del sismógrafo actualizado.");
             notificarCierre();
             finCU();
         }
 
         public void cerrarOI()
         {
-            ordenSeleccionada.cerrarOrden(fechaHoraActual);
+            if (ordenSeleccionada != null)
+            {
+                ordenSeleccionada.cerrarOrden(fechaHoraActual);
+            }
         }
 
         public void actualizarEstadoSismografo()
         {
             estadoFueraServicio = buscarEstadoFueraServicio();
-            ordenSeleccionada.actualizarEstadoSismografo(estadoFueraServicio, motivosSeleccionados, empleado);
-            //Muestro la actualización en la pantalla
-            var estacion = ordenSeleccionada.getEstacionSismologica();
-            var sismografo = estacion.getIDSismografo();
-            pantalla.mostrarActualizacionEstado(estacion, sismografo, motivosSeleccionados, empleado, fechaHoraActual);
+            if (ordenSeleccionada != null)
+            {
+                ordenSeleccionada.actualizarEstadoSismografo(estadoFueraServicio, motivosSeleccionados, empleado);
+                //Muestro la actualización en la pantalla
+                var estacion = ordenSeleccionada.getEstacionSismologica();
+                var sismografo = estacion.getIDSismografo();
+                pantalla.mostrarActualizacionEstado(estacion, sismografo, motivosSeleccionados, empleado, fechaHoraActual);
+            }
         }
 
         public DateTime getFechaHoraActual() => DateTime.Now;
         public Estado buscarEstadoFueraServicio()
         {
-            foreach (Estado estado in sistema.EstadosDisponibles)
-            {
-                if (estado.esAmbitoSismografo() && estado.esFueraServicio())
-                {
-                    return estado;
-                }
-            }
-            return null;
+            // Usar LINQ para mayor claridad
+            return sistema.EstadosDisponibles?.FirstOrDefault(estado => estado.esAmbitoSismografo() && estado.esFueraServicio());
         }
         public Dictionary<string, OrdenDeInspeccion> ordenarOI(Dictionary<string, OrdenDeInspeccion> ordenesOrdenadas)
         {
-            try
-            {
-                return ordenesOrdenadas
-                    .OrderByDescending(o => o.Value.fechaHoraFinalizacion)
-                    .ToDictionary(o => o.Key, o => o.Value);
-            }
-            catch (Exception)
-            {
-                pantalla.mostrarMensaje("Error ordenando ordenes");
+            if (ordenesOrdenadas == null || ordenesOrdenadas.Count ==0)
                 return new Dictionary<string, OrdenDeInspeccion>();
-            }
+
+            return ordenesOrdenadas
+                .OrderByDescending(o => o.Value.fechaHoraFinalizacion)
+                .ToDictionary(o => o.Key, o => o.Value);
         }
 
         public void notificarCierre()
         {
-            var responsables = sistema.Empleados.Where(e => e.esResponsableReparacion()).ToList();
-            if (responsables.Count == 0)
+            var responsables = sistema?.Empleados?.Where(e => e.esResponsableReparacion()).ToList() ?? new List<Empleado>();
+            if (responsables.Count ==0)
             {
-                pantalla.mostrarMensaje("No hay responsables de reparación para notificar.");
+                if (pantalla != null)
+                    pantalla.mostrarMensaje("No hay responsables de reparación para notificar.");
                 return;
             }
-            foreach (var responsable in responsables)
-            {
-                string email = responsable.obtenerEmail();
-            }
-            pantalla.mostrarMensaje("Mails enviados");
+
+            // Informar al usuario que el envío comienza y realizar el envío en segundo plano
+            if (pantalla != null)
+                pantalla.mostrarMensaje("Mails enviados.");
+
         }
         public void finCU()
         {

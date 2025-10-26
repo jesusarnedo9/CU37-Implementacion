@@ -43,6 +43,7 @@ namespace ImplementacionCU37
             // 
             // listaOrdenInspeccion
             // 
+            this.listaOrdenInspeccion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.listaOrdenInspeccion.FormattingEnabled = true;
             this.listaOrdenInspeccion.Location = new System.Drawing.Point(173, 101);
             this.listaOrdenInspeccion.Margin = new System.Windows.Forms.Padding(4);

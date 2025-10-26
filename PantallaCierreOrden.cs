@@ -198,5 +198,32 @@ namespace ImplementacionCU37
 
                     MessageBox.Show(mensaje, "Actualización Exitosa");
                 }
+
+        public void restaurarPantallaParaObservacion()
+        {
+            // Evitar disparar lógica de selección mientras desmarcamos
+            chkMotivos.ItemCheck -= tomarSeleccionMotivo;
+            try
+            {
+                for (int i = 0; i < chkMotivos.Items.Count; i++)
+                {
+                    if (chkMotivos.GetItemChecked(i))
+                        chkMotivos.SetItemChecked(i, false);
+                }
+            }
+            finally
+            {
+                chkMotivos.ItemCheck += tomarSeleccionMotivo;
+            }
+
+            // Ocultar la sección de selección de motivos y volver a permitir edición de la observación
+            lblSeleccionarMotivo.Visible = false;
+            chkMotivos.Visible = false;
+            btnConfirmarMotivos.Visible = false;
+
+            txtObservacionCierre.Enabled = true;
+            btnConfirmarObservacion.Visible = true;
+            txtObservacionCierre.Focus();
+        }
     }
 }
