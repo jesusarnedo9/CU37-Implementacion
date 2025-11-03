@@ -87,6 +87,7 @@
             this.Controls.Add(this.txtComentario);
             this.Controls.Add(this.lblMotivo);
             this.Name = "VentanaComentario";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "VentanaComentario";
             this.ResumeLayout(false);
             this.PerformLayout();
