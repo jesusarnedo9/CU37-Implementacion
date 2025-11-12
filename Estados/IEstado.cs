@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using ImplementacionCU37.Entidades;
 
-namespace ImplementacionCU37.Entidades
+namespace ImplementacionCU37.Estados
 {
     public interface IEstado
     {
-       String nombre { get; }
+        int idEstado { get; set; }
+        String nombre { get; }
         bool esAmbitoOI();
         bool esAmbitoSismografo();
         bool estaRealizada();
         bool esFueraServicio();
         bool esCerrada();
 
-        void CerrarOrden(OrdenDeInspeccion orden, DateTime fechaHoraActual);
+        IEstado CerrarOrden(OrdenDeInspeccion orden, DateTime fechaHoraActual);
     }
 }

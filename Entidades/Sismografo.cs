@@ -3,36 +3,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
-public class Sismografo
+namespace ImplementacionCU37.Entidades 
 {
-    public DateTime fechaAdquisicion { get; set; }
-    public string identificadorSismografo { get; set; }
-    public string nroSerie { get; set; }
-    public Estado estadoActual { get; set; }
-    public List<CambioEstado> historialEstados { get; set; } = new List<CambioEstado>();
-    public CambioEstado cambioEstadoActual { get; private set; }
-
-    public string getID() => identificadorSismografo;
-    public void setEstadoActual(Estado nuevoEstado, List<MotivoFueraServicioDTO> motivos, Empleado responsableLogueado)
+    public class Sismografo
     {
-        if (nuevoEstado == null) throw new ArgumentNullException(nameof(nuevoEstado), "El nuevo estado no puede ser nulo.");
-        if (motivos == null || !motivos.Any()) throw new ArgumentException("La lista de motivos no puede estar vacía.", nameof(motivos));
-        if (responsableLogueado == null) throw new ArgumentNullException(nameof(responsableLogueado), "El responsable logueado no puede ser nulo.");
+        public int idSismografo { get; set; }
+        public DateTime fechaAdquisicion { get; set; }
+        public string identificadorSismografo { get; set; }
+        public string numeroSerie { get; set; }
+        public Estado estadoActual { get; set; }
+        public List<CambioEstado> historialEstados { get; set; } = new List<CambioEstado>();
+        public CambioEstado cambioEstadoActual { get; private set; }
+        public int idEstadoActualFK => estadoActual?.idEstado ?? 0;
+        public Sismografo() { }
+        public string getID() => identificadorSismografo;
 
-        var cambioEstadoActual = obtenerCambioEstadoActual();
-        if (cambioEstadoActual != null)
+        public void setEstadoActual(Estado nuevoEstado, List<MotivoFueraServicioDTO> motivos, Empleado responsableLogueado)
         {
-            cambioEstadoActual.finalizar();
-        }
-        var nuevoCambio = CambioEstado.crear(motivos, responsableLogueado);//mal
+            if (nuevoEstado == null) throw new ArgumentNullException(nameof(nuevoEstado), "El nuevo estado no puede ser nulo.");
+            if (motivos == null || !motivos.Any()) throw new ArgumentException("La lista de motivos no puede estar vacía.", nameof(motivos));
+            if (responsableLogueado == null) throw new ArgumentNullException(nameof(responsableLogueado), "El responsable logueado no puede ser nulo.");
 
-        historialEstados.Add(nuevoCambio);
-        estadoActual = nuevoEstado;
-    }
-    public CambioEstado obtenerCambioEstadoActual()
-    {
-        return historialEstados.FirstOrDefault(ce => ce.esActual());
+            var cambioEstadoActual = obtenerCambioEstadoActual();
+            if (cambioEstadoActual != null)
+            {
+                cambioEstadoActual.finalizar();
+            }
+            var nuevoCambio = CambioEstado.crear(motivos, responsableLogueado);
+
+            historialEstados.Add(nuevoCambio);
+            estadoActual = nuevoEstado;
+        }
+
+        public CambioEstado obtenerCambioEstadoActual()
+        {
+            return historialEstados.FirstOrDefault(ce => ce.esActual());
+        }
     }
 }
-

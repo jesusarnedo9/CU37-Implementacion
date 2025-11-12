@@ -1,18 +1,21 @@
+using System;
+
 namespace ImplementacionCU37.Entidades
 {
     public class Estado
     {
-        // Atributos
+        public int idEstado { get; set; }
         public string ambito { get; set; }
         public string nombreEstado { get; set; }
 
-        // Constantes internas
-        public const string ESTADO_REALIZADA_OI = "Realizada";
-        public const string ESTADO_CERRADA_OI = "Cerrada";
-        public const string ESTADO_FUERA_SERVICIO_S = "Fuera de Servicio";
-        public const string ESTADO_REALIZADO_S = "Realizado";
-        public const string AMBITO_OI = "OrdenInspeccion";
-        public const string AMBITO_SISMOGRAFO = "Sismografo";
+        public const string ESTADO_REALIZADA_OI = "REALIZADA";
+        public const string ESTADO_CERRADA_OI = "CERRADA";
+        public const string ESTADO_FUERA_SERVICIO_S = "FUERA_SERVICIO";
+        public const string ESTADO_REALIZADO_S = "ACTIVO";
+
+        public const string AMBITO_OI = "ORDEN";
+        public const string AMBITO_SISMOGRAFO = "SISMOGRAFO";
+
 
         public bool esAmbitoOI()
         {
@@ -22,18 +25,18 @@ namespace ImplementacionCU37.Entidades
         {
             return ambito == AMBITO_SISMOGRAFO;
         }
+
         public bool estaRealizada()
         {
-            return nombreEstado == ESTADO_REALIZADA_OI;
+            return nombreEstado.Equals(ESTADO_REALIZADA_OI, StringComparison.OrdinalIgnoreCase);
         }
         public bool esFueraServicio()
         {
-            return nombreEstado == ESTADO_FUERA_SERVICIO_S;
+            return nombreEstado.Equals(ESTADO_FUERA_SERVICIO_S, StringComparison.OrdinalIgnoreCase);
         }
         public bool esCerrada()
         {
-            return nombreEstado == ESTADO_CERRADA_OI;
+            return nombreEstado.Equals(ESTADO_CERRADA_OI, StringComparison.OrdinalIgnoreCase);
         }
-
     }
 }

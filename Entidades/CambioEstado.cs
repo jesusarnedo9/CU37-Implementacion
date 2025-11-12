@@ -2,59 +2,76 @@ using ImplementacionCU37.Entidades;
 using System;
 using System.Collections.Generic;
 
-public class CambioEstado
+namespace ImplementacionCU37.Entidades
 {
-    private DateTime fechaHoraInicio;
-    private DateTime? fechaHoraFin;
-    private Estado estado;
-    private MotivoFueraServicio motivo;
-    public List<MotivoFueraServicio> motivos;
-    private Empleado responsableLogueado;
-
-
-    public CambioEstado(DateTime inicio)
+    public class CambioEstado
     {
-        this.fechaHoraInicio = inicio;
-        this.motivos = new List<MotivoFueraServicio>();
-    }
-    public MotivoFueraServicio getMotivo()
-    {
-        return motivo;
-    }
-    public bool esActual()
-    {
-        return fechaHoraFin == null;
-    }
-    public void finalizar()
-    {
-        fechaHoraFin = DateTime.Now;
-    }
-    public IReadOnlyList<MotivoFueraServicio> Motivos => motivos.AsReadOnly();
-    public void AgregarMotivo(MotivoFueraServicio motivo)
-    {
-        motivos.Add(motivo);
-    }
 
-    public void setRILogueado(Empleado responsable)
-    {
-        this.responsableLogueado = responsable;
-    }
-    public DateTime getFechaHoraInicio() => fechaHoraInicio;
+        public int idCambioEstado { get; set; } 
+        public int idEmpleadoFK { get; set; }  
+        public int idSismografoFK { get; set; } 
+        public DateTime fechaHoraInicio { get; private set; }
+        public DateTime? fechaHoraFin { get; private set; }
+        public Empleado responsableLogueado { get; set; }
 
-    public void setFechaHoraCierre(DateTime cierre) => fechaHoraFin = cierre;
+        private Estado estado;
+        private MotivoFueraServicio motivo;
+        public List<MotivoFueraServicio> motivos;
 
-    public static CambioEstado crear(List<MotivoFueraServicioDTO> motivos, Empleado responsableLogueado)
-    {
-        var nuevoCambio = new CambioEstado(DateTime.Now);
-
-        nuevoCambio.setFechaHoraCierre(DateTime.Now);
-        nuevoCambio.setRILogueado(responsableLogueado);
-
-        foreach (var dto in motivos)
+        public CambioEstado()
         {
-            var motivo = new MotivoFueraServicio(dto.Motivo, dto.Comentario);
-            nuevoCambio.AgregarMotivo(motivo);
+            this.motivos = new List<MotivoFueraServicio>();
         }
-        return nuevoCambio;
+
+        public CambioEstado(DateTime inicio)
+        {
+            this.fechaHoraInicio = inicio;
+            this.motivos = new List<MotivoFueraServicio>();
+        }
+
+        public MotivoFueraServicio getMotivo()
+        {
+            return motivo;
+        }
+
+        public bool esActual()
+        {
+            return fechaHoraFin == null;
+        }
+
+        public void finalizar()
+        {
+            fechaHoraFin = DateTime.Now;
+        }
+
+        public IReadOnlyList<MotivoFueraServicio> Motivos => motivos.AsReadOnly();
+
+        public void AgregarMotivo(MotivoFueraServicio motivo)
+        {
+            motivos.Add(motivo);
+        }
+        public void setRILogueado(Empleado responsable)
+        {
+            this.responsableLogueado = responsable;
+            this.idEmpleadoFK = responsable.idEmpleado;
+        }
+
+        public static CambioEstado crear(List<MotivoFueraServicioDTO> motivos, Empleado responsableLogueado)
+        {
+            var nuevoCambio = new CambioEstado(DateTime.Now);
+
+            nuevoCambio.setFechaHoraCierre(DateTime.Now);
+            nuevoCambio.setRILogueado(responsableLogueado);
+
+            foreach (var dto in motivos)
+            {
+                var motivo = new MotivoFueraServicio(dto.Motivo, dto.Comentario);
+                nuevoCambio.AgregarMotivo(motivo);
+            }
+            return nuevoCambio;
+        }
+        public DateTime getFechaHoraInicio() => fechaHoraInicio;
+
+        public void setFechaHoraCierre(DateTime cierre) => fechaHoraFin = cierre;
     }
 }

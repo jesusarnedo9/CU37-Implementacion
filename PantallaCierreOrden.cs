@@ -20,7 +20,18 @@ namespace ImplementacionCU37
         //LOAD
         private void PantallaCierreOrden_Load(object sender, EventArgs e)
         {
+            gestor?.opcionCerrarOrdenInspeccion();
         }
+
+        private void btnCancelarCerrarOI_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("¿Está seguro que desea cancelar? Se descartarán los cambios no guardados.", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
+
         private Button btnCancelar;
         private Button btnConfirmar;
         private TextBox inputComentario;
@@ -32,7 +43,6 @@ namespace ImplementacionCU37
         // Métodos
         public void habilitarPantalla()
         {
-            gestor.opcionCerrarOrdenInspeccion();
             this.ShowDialog();
         }
 
@@ -47,14 +57,14 @@ namespace ImplementacionCU37
             if (ordenesRealizadas == null || ordenesRealizadas.Count == 0)
             {
                 MessageBox.Show("No hay ordenes realizadas", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
+                listaOrdenInspeccion.Enabled = false;
                 return;
             }
 
-            listaOrdenInspeccion.DisplayMember = "Texto"; // Propiedad para mostrar en la lista
+            listaOrdenInspeccion.DisplayMember = "Texto";
             foreach (var dto in ordenesRealizadas)
             {
-                listaOrdenInspeccion.Items.Add(dto); // muestra solo texto
+                listaOrdenInspeccion.Items.Add(dto);
             }
         }
         private void tomarOrdenSeleccionada(object sender, EventArgs e)
@@ -112,21 +122,21 @@ namespace ImplementacionCU37
         }
         private void tomarSeleccionMotivo(object sender, ItemCheckEventArgs e)
         {
+            string descripcionSeleccionada = chkMotivos.Items[e.Index].ToString();
             if (e.NewValue == CheckState.Checked)
             {
-                string descripcionSeleccionada = chkMotivos.Items[e.Index].ToString();
                 gestor.tomarMotivoSeleccionado(descripcionSeleccionada, e.Index);
             }
             else if (e.NewValue == CheckState.Unchecked)
             {
-                string descripcionSeleccionada = chkMotivos.Items[e.Index].ToString();
+                gestor.quitarMotivoSeleccionado(descripcionSeleccionada, e.Index);
             }
         }
         public void solicitarComentario(string descripcion, int indiceCheckbox)
         {
             using (var form = new VentanaComentario(descripcion))
             {
-                form.IndiceCheckbox = indiceCheckbox; // Pasás el índice
+                form.IndiceCheckbox = indiceCheckbox; 
 
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -172,32 +182,29 @@ namespace ImplementacionCU37
         private void label3_Click(object sender, EventArgs e)
         {
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+
         public void mostrarActualizacionEstado(
             EstacionSismologica estacion,
             string sismografo,
             List<MotivoFueraServicioDTO> motivosSeleccionados,
             Empleado empleado,
             object fechaHoraCierre)
-                {
-                    string motivos = string.Join(
-                        "\n - ",
-                        motivosSeleccionados.Select(m => $"{m.Motivo.descripcion}: {m.Comentario}")
-                    );
+        {
+            string motivos = string.Join(
+                "\n - ",
+                motivosSeleccionados.Select(m => $"{m.Motivo.descripcion}: {m.Comentario}")
+            );
 
-                    string mensaje =
-                        $"Estado actualizado con éxito.\n" +
-                        $"Estación: {estacion.nombre}\n" +
-                        $"Sismógrafo: {sismografo}\n" +
-                        $"Motivos Seleccionados:\n - {motivos}\n" +
-                        $"Responsable: {empleado.id}, {empleado.apellido} {empleado.nombre}\n" +
-                        $"Fecha/Hora de cierre: {fechaHoraCierre}";
+            string mensaje =
+                $"Estado actualizado con éxito.\n" +
+                $"Estación: {estacion.nombre}\n" +
+                $"Sismógrafo: {sismografo}\n" +
+                $"Motivos Seleccionados:\n - {motivos}\n" +
+                $"Responsable: {empleado.idEmpleado}, {empleado.apellido} {empleado.nombre}\n" +
+                $"Fecha/Hora de cierre: {fechaHoraCierre}";
 
-                    MessageBox.Show(mensaje, "Actualización Exitosa");
-                }
+            MessageBox.Show(mensaje, "Actualización Exitosa");
+        }
 
         public void restaurarPantallaParaObservacion()
         {
@@ -216,7 +223,6 @@ namespace ImplementacionCU37
                 chkMotivos.ItemCheck += tomarSeleccionMotivo;
             }
 
-            // Ocultar la sección de selección de motivos y volver a permitir edición de la observación
             lblSeleccionarMotivo.Visible = false;
             chkMotivos.Visible = false;
             btnConfirmarMotivos.Visible = false;

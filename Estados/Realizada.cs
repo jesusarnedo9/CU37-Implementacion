@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ImplementacionCU37.Entidades;
 
 namespace ImplementacionCU37.Estados
 {
     public class Realizada : IEstado
     {
+        public int idEstado { get; set; }
         public String nombre => "Realizada";
 
         public bool esAmbitoOI()
@@ -31,12 +28,11 @@ namespace ImplementacionCU37.Estados
         {
             return false;
         }
-        public void CerrarOrden(Entidades.OrdenDeInspeccion orden, DateTime fechaHoraActual)
+        public IEstado CerrarOrden(Entidades.OrdenDeInspeccion orden, DateTime fechaHoraActual)
         {
-            // Lógica para cerrar la orden de inspección
-            orden.setEstado(new Cerrada());
+            if (orden == null) throw new ArgumentNullException(nameof(orden));
             orden.setFechaHoraCierre(fechaHoraActual);
-            
+            return new Cerrada();
         }
     }
 }

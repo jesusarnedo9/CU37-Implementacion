@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ImplementacionCU37.Entidades;
 
 namespace ImplementacionCU37.Estados
 {
     public class Cerrada : IEstado
     {
+        public int idEstado { get; set; }
         public String nombre => "Cerrada";
         public bool esAmbitoOI()
         {
@@ -30,9 +27,8 @@ namespace ImplementacionCU37.Estados
         {
             return true;
         }
-        public void CerrarOrden(Entidades.OrdenDeInspeccion orden, DateTime fechaHoraActual)
+        public IEstado CerrarOrden(Entidades.OrdenDeInspeccion orden, DateTime fechaHoraActual)
         {
-            // La orden ya está cerrada, no se realiza ninguna acción.
             throw new InvalidOperationException("La orden de inspección ya está cerrada.");
         }
     }

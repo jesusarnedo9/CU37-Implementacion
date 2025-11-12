@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows.Forms;
 
 namespace ImplementacionCU37
@@ -13,6 +14,8 @@ namespace ImplementacionCU37
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            //var cs = ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString;
+            //ImplementacionCU37.DatabaseInitializer.Seed(cs);
             Application.Run(new Form1());
         }
     }

@@ -1,33 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ImplementacionCU37.Entidades;
 
 namespace ImplementacionCU37.Estados
 {
-    using ImplementacionCU37.Estados;
-    using ImplementacionCU37.Entidades;
-
     public static class EstadoFactory
     {
-        public static IEstado CrearEstadoDesde(Estado estadoViejo)
+        public static IEstado CrearEstadoDesde(Entidades.Estado entidad)
         {
-            if (estadoViejo == null)
-                throw new ArgumentNullException(nameof(estadoViejo));
+            if (entidad == null)
+                throw new ArgumentNullException(nameof(entidad));
 
-            if (estadoViejo.esAmbitoOI())
+            if (!entidad.esAmbitoOI())
+                throw new InvalidOperationException($"El estado '{entidad.nombreEstado}' no pertenece a OrdenDeInspeccion.");
+
+            IEstado s;
+            switch (entidad.nombreEstado?.ToUpperInvariant())
             {
-                if (estadoViejo.estaRealizada())
-                    return new Realizada();
-                if (estadoViejo.esCerrada())
-                    return new Cerrada();
+                case "REALIZADA":
+                    s = new Realizada();
+                    break;
+                case "CERRADA":
+                    s = new Cerrada();
+                    break;
+                default:
+                    throw new InvalidOperationException($"Estado '{entidad.nombreEstado}' no implementado en EstadoFactory.");
             }
 
-            // Si el estado pertenece a otro ámbito, no se convierte
-            throw new InvalidOperationException(
-                $"El estado '{estadoViejo.nombreEstado}' no pertenece a OrdenDeInspeccion o no está implementado.");
+            // Aseguramos que el ID de la BD se propaga al objeto de dominio
+            s.idEstado = entidad.idEstado;
+            return s;
         }
     }
-
 }

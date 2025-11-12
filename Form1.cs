@@ -1,5 +1,7 @@
-﻿using ImplementacionCU37.Entidades;
+﻿using ImplementacionCU37.Dao;
+using ImplementacionCU37.Entidades;
 using System;
+using System.Configuration;
 using System.Windows.Forms;
 
 namespace ImplementacionCU37
@@ -13,10 +15,20 @@ namespace ImplementacionCU37
         //Boton Cerrar Orden
         private void opcionCerrarOrdenInspeccion(object sender, EventArgs e)
         {
+            var cs = ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString;
+            DatabaseInitializer.Seed(cs);
+            Console.WriteLine("CS: " + ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString);
+
+            // Leer directo con el DAO para verificar lo que la app ve en BD
+            var ordenDao = new OrdenDeInspeccionDao(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            var todas = ordenDao.GetAll();
+            Console.WriteLine($"Ordenes desde DAO: {todas.Count}");
+
+
             Sistema sistema = new Sistema();
             PantallaCierreOrden pantalla = new PantallaCierreOrden(sistema);
             pantalla.habilitarPantalla();
-            pantalla.Dispose();
+            
         }
         private void button1_Click(object sender, EventArgs e)
         {

@@ -167,7 +167,7 @@ namespace ImplementacionCU37
             this.btnCancelarCerrarOI.TabIndex = 9;
             this.btnCancelarCerrarOI.Text = "Cancelar";
             this.btnCancelarCerrarOI.UseVisualStyleBackColor = false;
-            this.btnCancelarCerrarOI.Click += new System.EventHandler(this.button1_Click);
+            this.btnCancelarCerrarOI.Click += new System.EventHandler(this.btnCancelarCerrarOI_Click);
             // 
             // PantallaCierreOrden
             // 
