@@ -25,10 +25,9 @@ namespace ImplementacionCU37.Estados
                 default:
                     throw new InvalidOperationException($"Estado '{entidad.nombreEstado}' no implementado en EstadoFactory.");
             }
-
-            // Aseguramos que el ID de la BD se propaga al objeto de dominio
-            s.idEstado = entidad.idEstado;
+            s.idEstado = entidad.idEstado; //asigo a bd
             return s;
+
         }
     }
 }

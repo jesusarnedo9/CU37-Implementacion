@@ -39,9 +39,14 @@ namespace ImplementacionCU37.Dao
                 {
                     while (reader.Read())
                     {
+                        // Log raw DB value for diagnosis
+                        var rawFin = reader["FECHA_HORA_FIN"];
+                        Debug.WriteLine($"DB ROW -> ID_ORDEN={reader["ID_ORDEN"]}, NRO_ORDEN={reader["NRO_ORDEN"]}, FECHA_HORA_FIN={rawFin}");
+
                         int idEstadoFK = reader["ID_ESTADO"] != DBNull.Value ? (int)reader["ID_ESTADO"] :0;
                         int idEmpleadoFK = reader["ID_EMPLEADO"] != DBNull.Value ? (int)reader["ID_EMPLEADO"] :0;
                         int idEstacionFK = reader["ID_ESTACION"] != DBNull.Value ? (int)reader["ID_ESTACION"] :0;
+
 
                         Empleado empleado = idEmpleadoFK >0 ? _empleadoDao.GetById(idEmpleadoFK) : null;
                         Estado estadoReal = idEstadoFK >0 ? _estadoDao.GetById(idEstadoFK) : null;
@@ -92,6 +97,8 @@ namespace ImplementacionCU37.Dao
             using (var conn = new SqlConnection(_connectionString))
             using (var cmd = new SqlCommand(sql, conn))
             {
+                Debug.WriteLine("Estado ID = " + orden.idEstadoFK);
+
                 // Parámetros obligatorios
                 cmd.Parameters.AddWithValue("@nroOrden", orden.nroOrden);
                 cmd.Parameters.AddWithValue("@fIni", orden.fechaHoraInicio);
@@ -100,12 +107,13 @@ namespace ImplementacionCU37.Dao
                 cmd.Parameters.AddWithValue("@idEstacion", orden.idEstacionFK);
 
                 // Parámetros opcionales (manejar NULL)
-                cmd.Parameters.AddWithValue("@fFin", orden.fechaHoraFin.HasValue ? (object)orden.fechaHoraFin.Value : DBNull.Value);
+                var paramFin = orden.fechaHoraFin.HasValue ? (object)orden.fechaHoraFin.Value : DBNull.Value;
+                cmd.Parameters.AddWithValue("@fFin", paramFin);
                 cmd.Parameters.AddWithValue("@fCierre", orden.fechaHoraCierre.HasValue ? (object)orden.fechaHoraCierre.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@obsCierre", string.IsNullOrEmpty(orden.observacionCierre) ? (object)DBNull.Value : orden.observacionCierre);
 
                 conn.Open();
-                Debug.WriteLine($"Insert Orden: ID_ESTADO={orden.idEstadoFK}, ID_EMPLEADO={orden.idEmpleadoAsignadoFK}, ID_ESTACION={orden.idEstacionFK}");
+                Debug.WriteLine($"Inserting Orden -> NRO_ORDEN={orden.nroOrden}, FECHA_HORA_INICIO={orden.fechaHoraInicio}, FECHA_HORA_FIN={paramFin}");
 
                 cmd.ExecuteNonQuery();
             }

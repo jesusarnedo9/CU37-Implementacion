@@ -12,7 +12,6 @@ namespace ImplementacionCU37.Entidades
         public DateTime fechaHoraInicio { get; set; }
         public DateTime? fechaHoraFin { get; set; }
         public DateTime? fechaHoraCierre { get; set; }
-        public DateTime? fechaHoraFinalizacion { get => fechaHoraFin; set => fechaHoraFin = value; }
         public string observacionCierre { get; set; }
         public Empleado empleadoAsignado { get; set; }
         public EstacionSismologica estacion { get; set; }
@@ -30,7 +29,8 @@ namespace ImplementacionCU37.Entidades
             this.estacion = estacion;
             this.estado = estado;
             this.empleadoAsignado = empleadoAsignado;
-            this.ActualizarIdEstadoFK(estado);
+            this.idEstadoFK = estado.idEstado;
+            //this.ActualizarIdEstadoFK(estado);
         }
 
         public bool esDeEmpleado(Empleado empleado)
@@ -45,16 +45,12 @@ namespace ImplementacionCU37.Entidades
         {
             return estacion;
         }
-        public void cerrarOrden(DateTime fechaHoraCierre)
+        public void cerrarOrden(DateTime fechaHoraActual)
         {
             if (estado == null)
                 throw new InvalidOperationException("La orden no tiene estado asignado.");
 
-            IEstado nuevoEstado = estado.CerrarOrden(this, fechaHoraCierre);
-            if (nuevoEstado != null)
-            {
-                setEstado(nuevoEstado);
-            }
+            estado.CerrarOrden(this, fechaHoraActual);
         }
 
         public void setFechaHoraCierre(DateTime fechaHoraCierre)
@@ -65,14 +61,7 @@ namespace ImplementacionCU37.Entidades
         public void setEstado(IEstado nuevoEstado)
         {
             this.estado = nuevoEstado;
-        }
-
-        private void ActualizarIdEstadoFK(IEstado estado)
-        {
-            if (estado != null)
-                this.idEstadoFK = estado.idEstado;
-            else
-                this.idEstadoFK = 0;
+            this.idEstadoFK = nuevoEstado?.idEstado ?? 0;
         }
 
         public override string ToString()
@@ -80,6 +69,7 @@ namespace ImplementacionCU37.Entidades
             var fin = fechaHoraFin?.ToShortDateString() ?? "N/A";
             var sismId = estacion?.getSismografo()?.getID() ?? "N/A";
             var estName = estacion?.nombre ?? "N/A";
+
             return $"Orden #{nroOrden} - Estación: {estName} - Sismógrafo: {sismId} - Finalización: {fin}";
         }
 

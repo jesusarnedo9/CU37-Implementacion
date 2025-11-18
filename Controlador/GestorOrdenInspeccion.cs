@@ -22,6 +22,7 @@ namespace ImplementacionCU37.Controlador
         private List<OrdenDeInspeccion> ordenes;
         private DateTime fechaHoraActual;
         private bool confirmacionCierre;
+        private string descripcionSeleccionada;
         private string observacion;
         private OrdenDeInspeccion ordenSeleccionada;
         private Estado estadoCerrada;
@@ -46,7 +47,7 @@ namespace ImplementacionCU37.Controlador
         // Main
         public void opcionCerrarOrdenInspeccion()
         {
-            Console.WriteLine(ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString ?? "No encontrada");
+            //Console.WriteLine(ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString ?? "No encontrada");
             sistema.RecargarSesionPorDefecto();
             buscarEmpleado();
             buscarOrdenesInspecciones();
@@ -66,8 +67,10 @@ namespace ImplementacionCU37.Controlador
 
         public void buscarOrdenesInspecciones()
         {
-            //evita accesos múltiples al getter
+            // evita accesos múltiples al getter
             ordenes = sistema?.Ordenes ?? new List<OrdenDeInspeccion>();
+
+            // Filtramos sólo las órdenes que están en estado "Realizada" (comportamiento del domain state)
             IEnumerable<OrdenDeInspeccion> consulta = ordenes.Where(o => o.estaRealizada());
 
             if (empleado != null)
@@ -80,13 +83,13 @@ namespace ImplementacionCU37.Controlador
             }
 
             var ordenesRealizadas = consulta
-            .OrderByDescending(o => o.fechaHoraFin)
-            .Select(o => new OrdenInspeccionDTO
-            {
-                Id = o.nroOrden.ToString(),
-                Texto = o.ToString()
-            })
-            .ToList();
+                .OrderBy(o => o.fechaHoraFin)
+                .Select(o => new OrdenInspeccionDTO
+                {
+                    Id = o.nroOrden.ToString(),
+                    Texto = o.ToString()
+                })
+                .ToList();
 
             pantalla.solicitarSeleccionOrden(ordenesRealizadas);
         }
@@ -187,13 +190,47 @@ namespace ImplementacionCU37.Controlador
                     pantalla.mostrarMensaje("Debe seleccionar al menos un motivo de cierre.");
                 return;
             }
-            fechaHoraActual = getFechaHoraActual();
             Debug.WriteLine($"Persistir cierre: orden={ordenSeleccionada?.idOrden}/{ordenSeleccionada?.nroOrden} idEstadoFK={ordenSeleccionada?.idEstadoFK} empId={empleado?.idEmpleado}");
             registrarCierreOI();
         }
         public void registrarCierreOI()
         {
-            cerrarOI();
+            
+            fechaHoraActual = getFechaHoraActual();
+            if (ordenSeleccionada != null)
+            {
+                ordenSeleccionada.cerrarOrden(fechaHoraActual);
+
+                // Sincronizar el idEstadoFK en memoria inmediatamente después de la transición de estado
+                try
+                {
+                    var entidadCerradaLocal = sistema.EstadosDisponibles?.FirstOrDefault(e => e.esAmbitoOI() && e.esCerrada());
+                    if (entidadCerradaLocal != null)
+                    {
+                        ordenSeleccionada.idEstadoFK = entidadCerradaLocal.idEstado;
+                        // Si el estado de la orden es un IEstado, aseguramos que su idEstado también esté sincronizado
+                        if (ordenSeleccionada.estado != null)
+                        {
+                            try
+                            {
+                                ordenSeleccionada.estado.idEstado = entidadCerradaLocal.idEstado;
+                            }
+                            catch
+                            {
+                                // No hacemos nada si la implementación concreta no permite asignación
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Advertencia: no se encontró el Estado 'CERRADA' en sistema.EstadosDisponibles tras cerrar la orden.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error sincronizando estado en memoria: " + ex.Message);
+                }
+            }
 
             CambioEstadoDao cambioDao = null;
             MotivoFueraServicioDao motivoDao = null;
@@ -227,17 +264,7 @@ namespace ImplementacionCU37.Controlador
                         motivoDao.Insert(motivoEntity, cambioId);
                     }
 
-                    // Actualizo en db(fecha cierre, observacion)
-                    var entidadCerrada = sistema.EstadosDisponibles?.FirstOrDefault(e => e.esAmbitoOI() && e.esCerrada());
-                    if (entidadCerrada != null)
-                    {
-                        ordenSeleccionada.idEstadoFK = entidadCerrada.idEstado;
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Advertencia: no se encontró el Estado 'CERRADA' en sistema.EstadosDisponibles. Se persistirá el ID actual.");
-                    }
-
+                    // Persistir observacion y fecha de cierre (Update)
                     ordenSeleccionada.observacionCierre = this.observacion;
                     ordenSeleccionada.setFechaHoraCierre(fechaHoraActual);
                     ordenDao.Update(ordenSeleccionada);
@@ -294,7 +321,7 @@ namespace ImplementacionCU37.Controlador
             .OrderByDescending(o => o.Value.fechaHoraFin)
             .ToDictionary(o => o.Key, o => o.Value);
         }
-
+         
         public void notificarCierre()
         {
             var responsables = sistema?.Empleados?.Where(e => e.esResponsableReparacion()).ToList() ?? new List<Empleado>();
@@ -305,10 +332,9 @@ namespace ImplementacionCU37.Controlador
                 return;
             }
 
-            // Informar al usuario que el envío comienza y realizar el envío en segundo plano
+            //Simula emails
             if (pantalla != null)
                 pantalla.mostrarMensaje("Mails enviados.");
-
         }
         public void finCU()
         {
@@ -338,11 +364,14 @@ namespace ImplementacionCU37.Controlador
             try
             {
                 var ordenDao = new OrdenDeInspeccionDao(_connectionString);
-                var nuevas = ordenDao.GetAll();
-                sistema.Ordenes = nuevas;
+                var todas = ordenDao.GetAll();
+                sistema.Ordenes = todas; // reemplaza la colección en memoria
 
-                // Refrescar la UI
+                // Refrescar la vista
                 buscarOrdenesInspecciones();
+
+                if (pantalla != null)
+                    pantalla.mostrarMensaje($"Recargadas {todas.Count} órdenes desde la base.");
             }
             catch (Exception ex)
             {

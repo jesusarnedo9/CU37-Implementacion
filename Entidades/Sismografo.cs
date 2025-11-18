@@ -8,7 +8,7 @@ namespace ImplementacionCU37.Entidades
     public class Sismografo
     {
         public int idSismografo { get; set; }
-        public DateTime fechaAdquisicion { get; set; }
+        public DateTime? fechaAdquisicion{ get; set; }
         public string identificadorSismografo { get; set; }
         public string numeroSerie { get; set; }
         public Estado estadoActual { get; set; }

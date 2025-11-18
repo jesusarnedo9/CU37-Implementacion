@@ -39,16 +39,18 @@ namespace ImplementacionCU37
             this.label2 = new System.Windows.Forms.Label();
             this.lblSeleccionarMotivo = new System.Windows.Forms.Label();
             this.btnCancelarCerrarOI = new System.Windows.Forms.Button();
+            this.btnRecargar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listaOrdenInspeccion
             // 
             this.listaOrdenInspeccion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.listaOrdenInspeccion.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listaOrdenInspeccion.FormattingEnabled = true;
-            this.listaOrdenInspeccion.Location = new System.Drawing.Point(173, 101);
+            this.listaOrdenInspeccion.Location = new System.Drawing.Point(109, 81);
             this.listaOrdenInspeccion.Margin = new System.Windows.Forms.Padding(4);
             this.listaOrdenInspeccion.Name = "listaOrdenInspeccion";
-            this.listaOrdenInspeccion.Size = new System.Drawing.Size(707, 24);
+            this.listaOrdenInspeccion.Size = new System.Drawing.Size(848, 28);
             this.listaOrdenInspeccion.TabIndex = 0;
             this.listaOrdenInspeccion.SelectedIndexChanged += new System.EventHandler(this.tomarOrdenSeleccionada);
             // 
@@ -169,12 +171,29 @@ namespace ImplementacionCU37
             this.btnCancelarCerrarOI.UseVisualStyleBackColor = false;
             this.btnCancelarCerrarOI.Click += new System.EventHandler(this.btnCancelarCerrarOI_Click);
             // 
+            // btnRecargar
+            // 
+            this.btnRecargar.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnRecargar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRecargar.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnRecargar.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnRecargar.ForeColor = System.Drawing.Color.White;
+            this.btnRecargar.Location = new System.Drawing.Point(196, 484);
+            this.btnRecargar.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRecargar.Name = "btnRecargar";
+            this.btnRecargar.Size = new System.Drawing.Size(120, 57);
+            this.btnRecargar.TabIndex = 10;
+            this.btnRecargar.Text = "Actualizar";
+            this.btnRecargar.UseVisualStyleBackColor = false;
+            this.btnRecargar.Click += new System.EventHandler(this.btnRecargar_Click);
+            // 
             // PantallaCierreOrden
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Beige;
             this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.Controls.Add(this.btnRecargar);
             this.Controls.Add(this.btnCancelarCerrarOI);
             this.Controls.Add(this.lblSeleccionarMotivo);
             this.Controls.Add(this.label2);
@@ -204,6 +223,7 @@ namespace ImplementacionCU37
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblSeleccionarMotivo;
         private System.Windows.Forms.Button btnCancelarCerrarOI;
+        private System.Windows.Forms.Button btnRecargar;
         public System.Windows.Forms.TextBox txtObservacionCierre;
     }
 }

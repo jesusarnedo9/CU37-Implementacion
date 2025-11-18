@@ -1,12 +1,13 @@
 ﻿using System;
 using ImplementacionCU37.Entidades;
 
+
 namespace ImplementacionCU37.Estados
 {
-    public class Cerrada : IEstado
+    public class ParcialmenteRealizada : IEstado
     {
         public int idEstado { get; set; }
-        public String nombre => "Cerrada";
+        public String nombre => "ParcialmenteRealizada";
         public bool esAmbitoOI()
         {
             return true;
@@ -17,11 +18,11 @@ namespace ImplementacionCU37.Estados
         }
         public bool esCerrada()
         {
-            return true;
+            return false;
         }
-        public void CerrarOrden(Entidades.OrdenDeInspeccion orden, DateTime fechaHoraActual)
+        public void CerrarOrden(OrdenDeInspeccion orden, DateTime fechaHoraActual)
         {
-            throw new InvalidOperationException("La orden de inspección ya está cerrada.");
+            throw new InvalidOperationException("Operacion invalida.");
         }
     }
 }

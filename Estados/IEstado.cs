@@ -7,12 +7,11 @@ namespace ImplementacionCU37.Estados
     {
         int idEstado { get; set; }
         String nombre { get; }
-        bool esAmbitoOI();
-        bool esAmbitoSismografo();
-        bool estaRealizada();
-        bool esFueraServicio();
-        bool esCerrada();
 
-        IEstado CerrarOrden(OrdenDeInspeccion orden, DateTime fechaHoraActual);
+        // Aplicable sólo al ámbito Orden (State pattern se usa para Orden)
+        bool esAmbitoOI();
+        bool estaRealizada();
+        bool esCerrada();
+        void CerrarOrden(OrdenDeInspeccion orden, DateTime fechaHoraActual);
     }
 }

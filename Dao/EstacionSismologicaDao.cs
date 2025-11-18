@@ -33,20 +33,20 @@ namespace ImplementacionCU37.Dao
                 {
                     while (reader.Read())
                     {
-                        int idSismografoFK = (int)reader["ID_SISMOGRAFO"];
+                        int idSismografoFK = reader["ID_SISMOGRAFO"] != DBNull.Value ? Convert.ToInt32(reader["ID_SISMOGRAFO"]) :0;
 
-                        Sismografo sismografoAsignado = _sismografoDao.GetById(idSismografoFK);
+                        Sismografo sismografoAsignado = idSismografoFK >0 ? _sismografoDao.GetById(idSismografoFK) : null;
 
                         var estacion = new EstacionSismologica(sismografoAsignado)
                         {
-                            idEstacionSismologica = Convert.ToInt32(reader["ID_ESTACION_SISMOLOGICA"]),
-                            codigoEstacion = reader["CODIGO_ESTACION"].ToString(),
-                            documentoCertificacionAdq = reader["DOCUMENTO_CERTIFICACION_ADQ"].ToString(),
-                            fechaCertificacion = Convert.ToDateTime(reader["FECHA_CERTIFICACION"]),
-                            latitud = Convert.ToDouble(reader["LATITUD"]),
-                            longitud = Convert.ToDouble(reader["LONGITUD"]),
-                            nombre = reader["NOMBRE"].ToString(),
-                            nroCertificacionAdq = reader["NRO_CERTIFICACION_ADQ"].ToString()
+                            idEstacionSismologica = reader["ID_ESTACION_SISMOLOGICA"] != DBNull.Value ? Convert.ToInt32(reader["ID_ESTACION_SISMOLOGICA"]) :0,
+                            codigoEstacion = reader["CODIGO_ESTACION"] != DBNull.Value ? reader["CODIGO_ESTACION"].ToString() : null,
+                            documentoCertificacionAdq = reader["DOCUMENTO_CERTIFICACION_ADQ"] != DBNull.Value ? reader["DOCUMENTO_CERTIFICACION_ADQ"].ToString() : null,
+                            fechaCertificacion = reader["FECHA_CERTIFICACION"] != DBNull.Value ? Convert.ToDateTime(reader["FECHA_CERTIFICACION"]) : default(DateTime),
+                            latitud = reader["LATITUD"] != DBNull.Value ? Convert.ToDouble(reader["LATITUD"]) :0.0,
+                            longitud = reader["LONGITUD"] != DBNull.Value ? Convert.ToDouble(reader["LONGITUD"]) :0.0,
+                            nombre = reader["NOMBRE"] != DBNull.Value ? reader["NOMBRE"].ToString() : null,
+                            nroCertificacionAdq = reader["NRO_CERTIFICACION_ADQ"] != DBNull.Value ? reader["NRO_CERTIFICACION_ADQ"].ToString() : null
                         };
 
                         Debug.WriteLine($"Fila -> ID_ESTACION_SISMOLOGICA={reader["ID_ESTACION_SISMOLOGICA"]}, ID_SISMOGRAFO={reader["ID_SISMOGRAFO"]}");
@@ -89,7 +89,7 @@ namespace ImplementacionCU37.Dao
                 cmd.Parameters.AddWithValue("@docCert", estacion.documentoCertificacionAdq ?? (object)DBNull.Value);
 
                 // Evita desbordamiento de DateTime
-                var fechaValida = estacion.fechaCertificacion < new DateTime(1753, 1, 1)
+                var fechaValida = estacion.fechaCertificacion < new DateTime(1753,1,1)
                     ? (object)DBNull.Value
                     : estacion.fechaCertificacion;
                 cmd.Parameters.AddWithValue("@fechaCert", fechaValida);
@@ -124,20 +124,20 @@ namespace ImplementacionCU37.Dao
                 {
                     if (reader.Read())
                     {
-                        int idSismografoFK = (int)reader["ID_SISMOGRAFO"];
+                        int idSismografoFK = reader["ID_SISMOGRAFO"] != DBNull.Value ? Convert.ToInt32(reader["ID_SISMOGRAFO"]) :0;
 
-                        Sismografo sismografoAsignado = _sismografoDao.GetById(idSismografoFK);
+                        Sismografo sismografoAsignado = idSismografoFK >0 ? _sismografoDao.GetById(idSismografoFK) : null;
 
                         estacion = new EstacionSismologica(sismografoAsignado)
                         {
-                            idEstacionSismologica = (int)reader["ID_ESTACION_SISMOLOGICA"],
-                            codigoEstacion = reader["CODIGO_ESTACION"].ToString(),
-                            documentoCertificacionAdq = reader["DOCUMENTO_CERTIFICACION_ADQ"].ToString(),
-                            fechaCertificacion = Convert.ToDateTime(reader["FECHA_CERTIFICACION"]),
-                            latitud = (double)reader["LATITUD"],
-                            longitud = (double)reader["LONGITUD"],
-                            nombre = reader["NOMBRE"].ToString(),
-                            nroCertificacionAdq = reader["NRO_CERTIFICACION_ADQ"].ToString()
+                            idEstacionSismologica = reader["ID_ESTACION_SISMOLOGICA"] != DBNull.Value ? Convert.ToInt32(reader["ID_ESTACION_SISMOLOGICA"]) :0,
+                            codigoEstacion = reader["CODIGO_ESTACION"] != DBNull.Value ? reader["CODIGO_ESTACION"].ToString() : null,
+                            documentoCertificacionAdq = reader["DOCUMENTO_CERTIFICACION_ADQ"] != DBNull.Value ? reader["DOCUMENTO_CERTIFICACION_ADQ"].ToString() : null,
+                            fechaCertificacion = reader["FECHA_CERTIFICACION"] != DBNull.Value ? Convert.ToDateTime(reader["FECHA_CERTIFICACION"]) : default(DateTime),
+                            latitud = reader["LATITUD"] != DBNull.Value ? Convert.ToDouble(reader["LATITUD"]) :0.0,
+                            longitud = reader["LONGITUD"] != DBNull.Value ? Convert.ToDouble(reader["LONGITUD"]) :0.0,
+                            nombre = reader["NOMBRE"] != DBNull.Value ? reader["NOMBRE"].ToString() : null,
+                            nroCertificacionAdq = reader["NRO_CERTIFICACION_ADQ"] != DBNull.Value ? reader["NRO_CERTIFICACION_ADQ"].ToString() : null
                         };
                     }
                 }

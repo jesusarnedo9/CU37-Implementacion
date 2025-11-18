@@ -55,7 +55,7 @@
   <ItemGroup>
     <Compile Include="Controlador\GestorOrdenInspeccion.cs" />
     <Compile Include="Dao\CambioEstadoDao.cs" />
-    <Compile Include="Dao\DatabBaseInitializer.cs" />
+    <Compile Include="Dao\DataBaseInitializer.cs" />
     <Compile Include="Dao\EmpleadoDao.cs" />
     <Compile Include="Dao\EstacionSismologicaDao.cs" />
     <Compile Include="Dao\EstadoDao.cs" />
@@ -71,7 +71,7 @@
     <Compile Include="Entidades\Empleado.cs" />
     <Compile Include="Entidades\EstacionSismologica.cs" />
     <Compile Include="Entidades\Estado.cs" />
-    <Compile Include="Estados\Class1.cs" />
+    <Compile Include="Estados\EstadoFactory.cs" />
     <Compile Include="Estados\IEstado.cs" />
     <Compile Include="Entidades\MotivoFueraServicio.cs" />
     <Compile Include="Entidades\MotivoTipo.cs" />
@@ -82,6 +82,8 @@
     <Compile Include="Entidades\Sistema.cs" />
     <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Estados\Cerrada.cs" />
+    <Compile Include="Estados\ParcialmenteRealizada.cs" />
+    <Compile Include="Estados\PendienteDeRealizacion.cs" />
     <Compile Include="Estados\Realizada.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

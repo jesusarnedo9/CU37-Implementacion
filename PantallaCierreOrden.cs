@@ -23,6 +23,18 @@ namespace ImplementacionCU37
             gestor?.opcionCerrarOrdenInspeccion();
         }
 
+        private void btnRecargar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                gestor?.RecargarOrdenesDesdeBD();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void btnCancelarCerrarOI_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("¿Está seguro que desea cancelar? Se descartarán los cambios no guardados.", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

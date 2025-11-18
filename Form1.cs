@@ -17,13 +17,12 @@ namespace ImplementacionCU37
         {
             var cs = ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString;
             DatabaseInitializer.Seed(cs);
-            Console.WriteLine("CS: " + ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString);
+            //Console.WriteLine("CS: " + ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString);
 
             // Leer directo con el DAO para verificar lo que la app ve en BD
             var ordenDao = new OrdenDeInspeccionDao(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
             var todas = ordenDao.GetAll();
-            Console.WriteLine($"Ordenes desde DAO: {todas.Count}");
-
+            //Console.WriteLine($"Ordenes desde DAO: {todas.Count}");
 
             Sistema sistema = new Sistema();
             PantallaCierreOrden pantalla = new PantallaCierreOrden(sistema);

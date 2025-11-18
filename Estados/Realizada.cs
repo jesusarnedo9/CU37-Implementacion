@@ -1,5 +1,6 @@
-﻿using System;
-using ImplementacionCU37.Entidades;
+﻿using ImplementacionCU37.Entidades;
+using System;
+using ImplementacionCU37.Dao;
 
 namespace ImplementacionCU37.Estados
 {
@@ -12,26 +13,26 @@ namespace ImplementacionCU37.Estados
         {
             return true;
         }
-        public bool esAmbitoSismografo()
-        {
-            return false;
-        }
         public bool estaRealizada()
         {
             return true;
-        }
-        public bool esFueraServicio()
-        {
-            return false;
         }
         public bool esCerrada()
         {
             return false;
         }
-        public IEstado CerrarOrden(Entidades.OrdenDeInspeccion orden, DateTime fechaHoraActual)
+        public void CerrarOrden(OrdenDeInspeccion orden, DateTime fechaHoraActual)
         {
-            if (orden == null) throw new ArgumentNullException(nameof(orden));
+            Estado estadoDB = EstadoDao.GetByNombre("CERRADA");
+           
+            IEstado cerrada = EstadoFactory.CrearEstadoDesde(estadoDB);
+
             orden.setFechaHoraCierre(fechaHoraActual);
+            orden.setEstado(cerrada);
+            orden.idEstadoFK = cerrada.idEstado;
+        }
+        public IEstado crearEstado()
+        {
             return new Cerrada();
         }
     }

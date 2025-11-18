@@ -41,16 +41,19 @@ namespace ImplementacionCU37
             {
                 estadoDao.Insert(new Estado { nombreEstado = "ACTIVO", ambito = "SISMOGRAFO" });
                 estadoDao.Insert(new Estado { nombreEstado = "FUERA_SERVICIO", ambito = "SISMOGRAFO" });
-                estadoDao.Insert(new Estado { nombreEstado = "PENDIENTE", ambito = "ORDEN" });
+
+                estadoDao.Insert(new Estado { nombreEstado = "PARCIALMENTEREALIZADA", ambito = "ORDEN" });
+                estadoDao.Insert(new Estado { nombreEstado = "PENDIENTEDEREALIZACION", ambito = "ORDEN" });
                 estadoDao.Insert(new Estado { nombreEstado = "REALIZADA", ambito = "ORDEN" });
                 estadoDao.Insert(new Estado { nombreEstado = "CERRADA", ambito = "ORDEN" });
+
                 estadoDao = new EstadoDao(cs);
             }
             var estados = estadoDao.GetAll();
             var estadoActivo = estados.FirstOrDefault(e => e.nombreEstado == "ACTIVO" && e.ambito == "SISMOGRAFO");
             var estadoFueraServicio = estados.FirstOrDefault(e => e.nombreEstado == "FUERA_SERVICIO" && e.ambito == "SISMOGRAFO");
-            var estadoRealizadaDB = estados.FirstOrDefault(e => e.nombreEstado == "REALIZADA" && e.ambito == "ORDEN");
-            var estadoCerradaDB = estados.FirstOrDefault(e => e.nombreEstado == "CERRADA" && e.ambito == "ORDEN");
+            var estadoRealizadaDB = estados.FirstOrDefault(e => string.Equals(e.nombreEstado, "Realizada", StringComparison.OrdinalIgnoreCase) && e.ambito == "ORDEN");
+            var estadoCerradaDB = estados.FirstOrDefault(e => string.Equals(e.nombreEstado,"Cerrada", StringComparison.OrdinalIgnoreCase) && e.ambito == "ORDEN");
 
             // --- Motivos Tipo ---
             if (motivoTipoDao.GetAll().Count == 0)
@@ -204,7 +207,6 @@ namespace ImplementacionCU37
 
             var estaciones = estacionDao.GetAll(); // Recargar estaciones con sus IDs
 
-            // BLOQUE DE RECARGA NECESARIO (ANTES DEL PASO 6)
             // Recargamos todas las entidades necesarias para las FKs de las Órdenes
             ordenDao = new OrdenDeInspeccionDao(cs);
             estaciones = estacionDao.GetAll(); // Recarga las estaciones con sus IDs de BD
@@ -234,31 +236,45 @@ namespace ImplementacionCU37
 
                 var fechaBase = DateTime.Now;
 
+                // Generar fechas coherentes y distintas (fin siempre posterior al inicio)
+                var inicio1 = fechaBase.AddDays(-20);
+                var fin1 = inicio1.AddDays(5);
+
+                var inicio2 = fechaBase.AddDays(-15);
+                var fin2 = inicio2.AddDays(10);
+
+                var inicio3 = fechaBase.AddDays(-30);
+                var fin3 = inicio3.AddDays(23);
+
+                var inicio4 = fechaBase.AddDays(-10);
+                var fin4 = inicio4.AddDays(2);
+
+                var inicio5 = fechaBase.AddDays(-25);
+                var fin5 = inicio5.AddDays(11);
+
                 // Las 5 órdenes de inspección (usando los objetos cargados)
                 var orden1 = new OrdenDeInspeccion(1, fechaBase.AddDays(-20), e1, EstadoFactory.CrearEstadoDesde(estadoRealizadaDB), jesus)
-                { fechaHoraFin = fechaBase.AddDays(-15) };
+                { fechaHoraFin = fin1 };
                 ordenDao.Insert(orden1);
                 Debug.WriteLine($"Insertando orden con ID_ESTADO={orden1.idEstadoFK}");
 
-
-
-                var orden2 = new OrdenDeInspeccion(2, fechaBase.AddDays(-15), e2, EstadoFactory.CrearEstadoDesde(estadoCerradaDB), nano)
-                { fechaHoraFin = fechaBase.AddDays(-5), fechaHoraCierre = fechaBase.AddDays(-5).AddHours(1), observacionCierre = "Cierre estándar" };
+                var orden2 = new OrdenDeInspeccion(2, inicio2, e2, EstadoFactory.CrearEstadoDesde(estadoCerradaDB), nano)
+                { fechaHoraFin = fin2, fechaHoraCierre = fin2.AddHours(1), observacionCierre = "Cierre estándar" };
                 ordenDao.Insert(orden2);
                 Debug.WriteLine($"Insertando orden con ID_ESTADO={orden2.idEstadoFK}");
 
-                var orden3 = new OrdenDeInspeccion(3, fechaBase.AddDays(-30), e3, EstadoFactory.CrearEstadoDesde(estadoRealizadaDB), jesus)
-                { fechaHoraFin = fechaBase.AddDays(-7) };
+                var orden3 = new OrdenDeInspeccion(3, inicio3, e3, EstadoFactory.CrearEstadoDesde(estadoRealizadaDB), jesus)
+                { fechaHoraFin = fin3 };
                 ordenDao.Insert(orden3);
                 Debug.WriteLine($"Insertando orden con ID_ESTADO={orden3.idEstadoFK}");
 
-                var orden4 = new OrdenDeInspeccion(4, fechaBase.AddDays(-10), e4, EstadoFactory.CrearEstadoDesde(estadoRealizadaDB), jesus)
-                { fechaHoraFin = fechaBase.AddDays(-12) };
+                var orden4 = new OrdenDeInspeccion(4, inicio4, e4, EstadoFactory.CrearEstadoDesde(estadoRealizadaDB), jesus)
+                { fechaHoraFin = fin4 };
                 ordenDao.Insert(orden4);
                 Debug.WriteLine($"Insertando orden con ID_ESTADO={orden4.idEstadoFK}");
 
-                var orden5 = new OrdenDeInspeccion(5, fechaBase.AddDays(-25), e3, EstadoFactory.CrearEstadoDesde(estadoCerradaDB), jesus)
-                { fechaHoraFin = fechaBase.AddDays(-14), fechaHoraCierre = fechaBase.AddDays(-14).AddHours(1), observacionCierre = "Cierre por acceso" };
+                var orden5 = new OrdenDeInspeccion(5, inicio5, e3, EstadoFactory.CrearEstadoDesde(estadoCerradaDB), jesus)
+                { fechaHoraFin = fin5, fechaHoraCierre = fin5.AddHours(1), observacionCierre = "Cierre por acceso" };
                 ordenDao.Insert(orden5);
                 Debug.WriteLine($"Insertando orden con ID_ESTADO={orden5.idEstadoFK}");
 

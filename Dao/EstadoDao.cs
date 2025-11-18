@@ -1,6 +1,9 @@
 ﻿using ImplementacionCU37.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Configuration;
+using System.Linq;
 
 namespace ImplementacionCU37.Dao
 {
@@ -74,6 +77,26 @@ namespace ImplementacionCU37.Dao
                 }
             }
             return null;
+        }
+
+        internal static Estado GetByNombre(string nombre)
+        {
+            if (string.IsNullOrWhiteSpace(nombre)) return null;
+
+            // Try to get connection string from configuration
+            var cs = ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString;
+            if (string.IsNullOrWhiteSpace(cs)) return null;
+
+            var dao = new EstadoDao(cs);
+            try
+            {
+                var estados = dao.GetAll();
+                return estados.FirstOrDefault(e => string.Equals(e.nombreEstado, nombre, StringComparison.OrdinalIgnoreCase));
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
