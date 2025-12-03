@@ -37,12 +37,13 @@
             // lblMotivo
             // 
             this.lblMotivo.AutoSize = true;
-            this.lblMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMotivo.Location = new System.Drawing.Point(118, 18);
             this.lblMotivo.Name = "lblMotivo";
-            this.lblMotivo.Size = new System.Drawing.Size(86, 18);
+            this.lblMotivo.Size = new System.Drawing.Size(159, 20);
             this.lblMotivo.TabIndex = 0;
-            this.lblMotivo.Text = "Comentario";
+            this.lblMotivo.Text = "Agregar Comentario";
+            this.lblMotivo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // txtComentario
             // 

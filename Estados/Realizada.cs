@@ -29,7 +29,7 @@ namespace ImplementacionCU37.Estados
 
             orden.setFechaHoraCierre(fechaHoraActual);
             orden.setEstado(cerrada);
-            orden.idEstadoFK = cerrada.idEstado;
+            orden.idEstadoFK = cerrada.idEstado;//Sincronizo id para la bd
         }
         public IEstado crearEstado()
         {

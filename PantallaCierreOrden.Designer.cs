@@ -58,11 +58,11 @@ namespace ImplementacionCU37
             // 
             this.label1.AutoSize = true;
             this.label1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(271, 178);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(198, 20);
+            this.label1.Size = new System.Drawing.Size(229, 25);
             this.label1.TabIndex = 1;
             this.label1.Text = "Observacion de Cierre";
             this.label1.Visible = false;
@@ -104,7 +104,7 @@ namespace ImplementacionCU37
             this.chkMotivos.Location = new System.Drawing.Point(314, 265);
             this.chkMotivos.Margin = new System.Windows.Forms.Padding(4);
             this.chkMotivos.Name = "chkMotivos";
-            this.chkMotivos.Size = new System.Drawing.Size(377, 114);
+            this.chkMotivos.Size = new System.Drawing.Size(377, 104);
             this.chkMotivos.TabIndex = 5;
             this.chkMotivos.Visible = false;
             this.chkMotivos.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tomarSeleccionMotivo);
@@ -131,11 +131,12 @@ namespace ImplementacionCU37
             // 
             this.label2.AutoSize = true;
             this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(359, 52);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
+                | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(309, 31);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(291, 25);
+            this.label2.Size = new System.Drawing.Size(424, 36);
             this.label2.TabIndex = 7;
             this.label2.Text = "ORDENES DE INSPECCION";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -144,10 +145,10 @@ namespace ImplementacionCU37
             // 
             this.lblSeleccionarMotivo.AutoSize = true;
             this.lblSeleccionarMotivo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.lblSeleccionarMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSeleccionarMotivo.Location = new System.Drawing.Point(435, 245);
+            this.lblSeleccionarMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSeleccionarMotivo.Location = new System.Drawing.Point(311, 239);
             this.lblSeleccionarMotivo.Name = "lblSeleccionarMotivo";
-            this.lblSeleccionarMotivo.Size = new System.Drawing.Size(148, 16);
+            this.lblSeleccionarMotivo.Size = new System.Drawing.Size(189, 22);
             this.lblSeleccionarMotivo.TabIndex = 8;
             this.lblSeleccionarMotivo.Text = "Seleccionar Motivos";
             this.lblSeleccionarMotivo.Visible = false;
@@ -192,6 +193,8 @@ namespace ImplementacionCU37
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Beige;
+            this.BackgroundImage = global::ImplementacionCU37.Properties.Resources.lineas;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.btnRecargar);
             this.Controls.Add(this.btnCancelarCerrarOI);
@@ -203,6 +206,7 @@ namespace ImplementacionCU37
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listaOrdenInspeccion);
             this.Controls.Add(this.chkMotivos);
+            this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "PantallaCierreOrden";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

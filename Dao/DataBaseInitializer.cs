@@ -83,7 +83,7 @@ namespace ImplementacionCU37
                 usuarioDao.Insert(new Entidades.Usuario("jesus", jesus) { contrasena = "default_pass" });
             }
 
-            // PASO 4: Sismógrafos (CORREGIDO: Insertar los 4 Sismógrafos)
+            // PASO 4: Sismógrafos
             if (sismografoDao.GetAll().Count == 0)
             {
                 // Validar que los estados existen

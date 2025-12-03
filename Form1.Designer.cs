@@ -102,11 +102,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Beige;
+            this.BackgroundImage = global::ImplementacionCU37.Properties.Resources.montanas;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnVerOrden);
             this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.btnCrearOrden);
             this.Controls.Add(this.btnCerrarOrden);
+            this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Pantalla Principal";

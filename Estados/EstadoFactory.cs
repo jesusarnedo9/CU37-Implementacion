@@ -5,7 +5,7 @@ namespace ImplementacionCU37.Estados
 {
     public static class EstadoFactory
     {
-        public static IEstado CrearEstadoDesde(Entidades.Estado entidad)
+        public static IEstado CrearEstadoDesde(Estado entidad)
         {
             if (entidad == null)
                 throw new ArgumentNullException(nameof(entidad));
